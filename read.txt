@@ -1,0 +1,32 @@
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import pluginReact from "eslint-plugin-react";
+
+
+export default [
+  {files: ["**/*.{js,mjs,cjs,jsx}"]},
+  {languageOptions: { globals: globals.browser }},
+  pluginJs.configs.recommended,
+  pluginReact.configs.flat.recommended,
+];
+
+toastify {
+- https://fkhadra.github.io/react-toastify/introduction
+
+  toast.error('Falha!', {
+    toastId: 'errorToastMessage',
+    theme: 'dark'
+  });
+}
+
+axios{
+
+  import axios from '../../services/axios';
+    async function getData() {
+      const response = await axios.get('/alunos');
+      const { data } = response;
+      console.log(data);
+    }
+    getData();
+
+}

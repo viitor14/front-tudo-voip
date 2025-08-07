@@ -1,5 +1,5 @@
 export const primaryColor = '#ffffff';
-export const primaryDarkColor = '#1a1a1d';
+export const primaryDarkColor = '#000000ff';
 
 export const borderColor = 'rgba(226, 232, 240, 1)';
 

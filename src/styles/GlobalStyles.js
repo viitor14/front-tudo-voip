@@ -28,12 +28,14 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
-    background: ${colors.primaryColor};
-    border: none;
+    font-family: "Figtree", sans-serif;
+     background: linear-gradient(90deg, rgba(247, 101, 33, 1) 0%, rgba(231, 80, 9, 1) 100%);
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 4px ;
-    font-weight: 700;
+    border: none;
+    padding: 16px 19px;
+    border-radius: 5px ;
+    font-weight: 300;
+    font-size: 14px;
   }
 
   a{
@@ -65,10 +67,7 @@ export default createGlobalStyle`
 `;
 
 export const Container = styled.section`
-  max-width: 360px;
+  height: 100%;
   background-color: white;
-  margin: 30px auto;
-  padding: 30px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 50px 100px;
 `;

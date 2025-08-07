@@ -67,6 +67,8 @@ export default createGlobalStyle`
 `;
 
 export const Container = styled.section`
+  display: flex;
+  flex-direction: column;
   gap: 50px;
   height: 100%;
   background-color: white;

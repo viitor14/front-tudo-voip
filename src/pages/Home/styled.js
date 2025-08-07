@@ -9,9 +9,15 @@ export const DivTitle = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
   color: ${primaryDarkColor};
+`;
+
+export const BoxInfoDashboard = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 40px;
 `;
 
 export const Button = styled.button``;

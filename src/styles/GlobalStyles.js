@@ -67,6 +67,7 @@ export default createGlobalStyle`
 `;
 
 export const Container = styled.section`
+  gap: 50px;
   height: 100%;
   background-color: white;
   margin: 50px 100px;

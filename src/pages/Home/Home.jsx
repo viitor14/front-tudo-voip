@@ -1,11 +1,14 @@
 import { Container } from '../../styles/GlobalStyles';
 import { DivTitle, Title, BoxInfoDashboard, DivFilter } from './styled';
 
+import { useState } from 'react';
+
 import InfoDashboard from '../../components/InfoDashboard/Index';
 import InputWithIcon from '../../components/Input/Index';
 import Select from '../../components/select/Index';
 
 export default function Home() {
+  const [valueSelected, setValueSelected] = useState('Todos os Status');
   return (
     <Container>
       <DivTitle>
@@ -23,8 +26,8 @@ export default function Home() {
         <InputWithIcon placeholder="Buscar por cliente, por cidade, por CPF/CNPJ..." />
         <Select
           options={['Todos os Status', 'Ativo', 'Em Andamento', 'Recusado']}
-          value="Todos os Status"
-          onChange={(value) => console.log(value)}
+          onChange={(value) => setValueSelected(value)}
+          value={valueSelected}
         />
       </DivFilter>
     </Container>

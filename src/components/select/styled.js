@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { borderColor } from '../../config/colors';
+import { borderColor, secondaryColor } from '../../config/colors';
 
 export const SelectWrapper = styled.div`
   position: relative;
-  width: fit-content;
+  width: 10%;
   height: 100%;
 `;
 
@@ -45,6 +45,7 @@ export const OptionItem = styled.li`
   padding: 10px;
   cursor: pointer;
   &:hover {
-    background: #eee;
+    background: ${secondaryColor};
   }
+  border-radius: 5px;
 `;

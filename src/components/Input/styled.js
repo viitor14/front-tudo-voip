@@ -4,17 +4,17 @@ import { borderColor } from '../../config/colors';
 
 export const InputWrapper = styled.div`
   position: relative;
-  width: 86%;
+  width: 88%;
 `;
 
 export const StyledInput = styled.input`
   width: 100%;
-  padding: 10px 40px 10px 40px; // espaço para o ícone
+  padding: 10px 40px 10px 60px; // espaço para o ícone
   border: 2px solid ${borderColor};
   border-radius: 5px;
   font-family: 'Figtree', sans-serif;
   font-weight: 300;
-  font-size: 10px;
+  font-size: 14px;
 `;
 
 export const Icon = styled(FiSearch)`

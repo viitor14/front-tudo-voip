@@ -8,10 +8,10 @@ export const BoxInfo = styled.div`
   padding: 20px 15px;
   border-radius: 5px;
   border: 2px solid ${borderColor};
-  width: 280px;
+  width: 100%;
 
   .infoNumber {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 800;
   }
 `;
@@ -23,8 +23,8 @@ export const InfoTitle = styled.div`
   gap: 100px;
 
   p {
-    font-size: 12px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 400;
     color: rgba(100, 116, 139, 1);
   }
 `;

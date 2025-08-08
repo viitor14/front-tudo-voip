@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { primaryColor, primaryDarkColor } from '../../config/colors';
+import { borderColor, primaryColor, primaryDarkColor } from '../../config/colors';
 
 export const DivTitle = styled.div`
   display: flex;
@@ -20,4 +20,9 @@ export const BoxInfoDashboard = styled.div`
   gap: 40px;
 `;
 
-export const Button = styled.button``;
+export const DivFilter = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;

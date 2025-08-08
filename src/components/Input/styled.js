@@ -4,7 +4,7 @@ import { borderColor } from '../../config/colors';
 
 export const InputWrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 86%;
 `;
 
 export const StyledInput = styled.input`

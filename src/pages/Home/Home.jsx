@@ -1,5 +1,7 @@
 import { Container } from '../../styles/GlobalStyles';
-import { DivTitle, Title, BoxInfoDashboard, DivFilter } from './styled';
+import { DivTitle, Title, BoxInfoDashboard, DivFilter, Table } from './styled';
+
+import dados from './teste.json';
 
 import { useState } from 'react';
 
@@ -9,6 +11,19 @@ import Select from '../../components/select/Index';
 
 export default function Home() {
   const [valueSelected, setValueSelected] = useState('Todos os Status');
+
+  const colunas = [
+    'Pedido',
+    'Data',
+    'Tipo',
+    'CN',
+    'Cliente',
+    'CPF/CNPJ',
+    'Cidade',
+    'Status',
+    'Ações'
+  ];
+
   return (
     <Container>
       <DivTitle>
@@ -30,6 +45,30 @@ export default function Home() {
           value={valueSelected}
         />
       </DivFilter>
+      <Table>
+        <thead>
+          <tr>
+            {colunas.map((coluna, index) => (
+              <th key={index}>{coluna}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dados.map((pedido) => (
+            <tr key={pedido.id}>
+              <td>{pedido.id}</td>
+              <td>{pedido.data}</td>
+              <td>{pedido.tipo}</td>
+              <td>{pedido.cn}</td>
+              <td>{pedido.cliente}</td>
+              <td>{pedido.cpfCnpj}</td>
+              <td>{pedido.cidade}</td>
+              <td>{pedido.status}</td>
+              <td>-</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </Container>
   );
 }

@@ -26,3 +26,26 @@ export const DivFilter = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+export const Table = styled.table`
+  border: 2px solid ${borderColor};
+  border-radius: 5px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th,
+  td {
+    padding: 16px 24px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+  }
+
+  td {
+    border-top: 2px solid ${borderColor};
+    background: #fff;
+  }
+`;

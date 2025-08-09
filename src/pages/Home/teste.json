@@ -1,0 +1,22 @@
+[
+  {
+    "id": "001",
+    "data": "2024-08-08",
+    "tipo": "Venda",
+    "cn": "12345",
+    "cliente": "João Silva",
+    "cpfCnpj": "123.456.789-00",
+    "cidade": "São Paulo",
+    "status": "Aprovado"
+  },
+  {
+    "id": "002",
+    "data": "2024-08-07",
+    "tipo": "Serviço",
+    "cn": "67890",
+    "cliente": "Maria Souza",
+    "cpfCnpj": "98.765.432/0001-10",
+    "cidade": "Rio de Janeiro",
+    "status": "Em Andamento"
+  }
+]

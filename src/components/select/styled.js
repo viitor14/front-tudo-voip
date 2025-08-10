@@ -48,6 +48,8 @@ export const OptionItem = styled.li`
   cursor: pointer;
   &:hover {
     background: ${secondaryColor};
+    color: #fff;
+    transition: all 0.3s ease-in-out;
   }
   border-radius: 5px;
 `;
@@ -55,5 +57,6 @@ export const OptionItem = styled.li`
 export const ArrowIcon = styled(IoIosArrowDown)`
   font-size: 16px;
   color: rgba(112, 127, 148, 1);
-  rotate: ${(open) => (open.open ? '180deg' : '0')};
+  rotate: ${(open) => (open.open ? '-180deg' : '0')};
+  transition: all 0.3s ease-in-out;
 `;

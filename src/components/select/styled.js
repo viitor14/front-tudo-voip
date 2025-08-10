@@ -23,13 +23,14 @@ export const Selected = styled.div`
 `;
 
 export const OptionsList = styled.ul`
+  background-color: #fff;
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   border: 2px solid ${borderColor};
   border-radius: 5px;
-  max-height: 150px;
+  height: auto;
   overflow-y: auto;
   z-index: 10;
   margin: 0;

@@ -27,13 +27,8 @@ export default function Home() {
   const itemsPerPage = 5;
 
   // Calcula o índice inicial e final dos itens da página atual
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dados.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Calcula o número total de páginas
-  const totalPages = Math.ceil(dados.length / itemsPerPage);
-
+  const [searchTerm, setSearchTerm] = useState('');
   // Função para mudar de página
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -51,6 +46,30 @@ export default function Home() {
     'Ações'
   ];
 
+  const getFilteredData = () => {
+    return dados.filter((item) => {
+      // Filtro de texto (procura em cliente, cidade e cpf/cnpj)
+      const searchFilter =
+        searchTerm === '' ||
+        item.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.cidade.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.cpfCnpj.toLowerCase().includes(searchTerm.toLowerCase());
+
+      // Filtro de status
+      const statusFilter = valueSelected === 'Todos os Status' || item.status === valueSelected;
+
+      return searchFilter && statusFilter;
+    });
+  };
+
+  const filteredData = getFilteredData();
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Atualize o cálculo de páginas totais
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
   return (
     <Container>
       <DivTitle>
@@ -65,7 +84,11 @@ export default function Home() {
         <InfoDashboard title="Recusados" number={1} />
       </BoxInfoDashboard>
       <DivFilter>
-        <InputWithIcon placeholder="Buscar por cliente, por cidade, por CPF/CNPJ..." />
+        <InputWithIcon
+          placeholder="Buscar por cliente, por cidade, por CPF/CNPJ..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchTerm}
+        />
         <Select
           options={['Todos os Status', 'Ativo', 'Em Andamento', 'Recusado']}
           onChange={(value) => setValueSelected(value)}
@@ -103,8 +126,8 @@ export default function Home() {
         </Table>
         <PaginationContainer>
           <span>
-            Mostrando {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, dados.length)} de{' '}
-            {dados.length} registros
+            Mostrando {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} de{' '}
+            {filteredData.length} registros
           </span>
           <div className="pagination-buttons">
             <PaginationButton

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { borderColor, secondaryColor } from '../../config/colors';
+import { IoIosArrowDown } from 'react-icons/io';
 
 export const SelectWrapper = styled.div`
   position: relative;

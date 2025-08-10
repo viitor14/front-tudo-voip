@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { borderColor, primaryColor, primaryDarkColor } from '../../config/colors';
 import { VscEllipsis } from 'react-icons/vsc';
 
+import { VscChevronRight, VscChevronLeft } from 'react-icons/vsc';
+
 export const DivTitle = styled.div`
   display: flex;
   width: 100%;
@@ -89,4 +91,61 @@ export const EllipsisIcon = styled(VscEllipsis)`
   font-size: 20px;
   color: #000;
   cursor: pointer;
+`;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding-right: 20px;
+
+  span {
+    color: rgba(100, 116, 139, 1);
+    font-size: 14px;
+  }
+
+  .pagination-buttons {
+    display: flex;
+    gap: 8px;
+  }
+`;
+
+export const PaginationButton = styled.button`
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  transition: all 0.2s ease-in-out;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  transition: all 0.2s ease-in-out;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    border: none;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &:hover:not(:disabled) {
+    transition: all 0.2s ease-in-out;
+    background-color: #f0f0f0;
+  }
+`;
+
+export const ChevronRightIcon = styled(VscChevronRight)`
+  font-size: 20px;
+  color: #000;
+`;
+
+export const ChevronLeftIcon = styled(VscChevronLeft)`
+  font-size: 20px;
+  color: #000;
 `;

@@ -45,15 +45,6 @@ export const Table = styled.table`
   tbody .textStatus {
   }
 
-  .textStatus > span {
-    font-weight: bold;
-    background: rgba(209, 244, 228, 1);
-    border-radius: 5px;
-    color: rgba(0, 77, 43, 1);
-    padding: 4px 27px;
-    font-size: 14px;
-  }
-
   th,
   td {
     padding: 16px 24px;
@@ -68,4 +59,27 @@ export const Table = styled.table`
     border-top: 2px solid ${borderColor};
     background: #fff;
   }
+`;
+
+export const StatusSpan = styled.span`
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 4px 27px;
+  font-size: 14px;
+  background: ${({ status }) =>
+    status === 'Ativo'
+      ? 'rgba(209, 244, 228, 1)'
+      : status === 'Em Andamento'
+        ? 'rgba(255, 244, 184, 1)'
+        : status === 'Recusado'
+          ? 'rgba(250, 219, 216, 1)'
+          : '#fff'};
+  color: ${({ status }) =>
+    status === 'Ativo'
+      ? 'rgba(0, 77, 43, 1)'
+      : status === 'Em Andamento'
+        ? 'rgba(140, 109, 0, 1)'
+        : status === 'Recusado'
+          ? 'rgba(139, 0, 0, 1)'
+          : '#fff'};
 `;

@@ -1,5 +1,5 @@
 import { Container } from '../../styles/GlobalStyles';
-import { DivTitle, Title, BoxInfoDashboard, DivFilter, Table } from './styled';
+import { DivTitle, Title, BoxInfoDashboard, DivFilter, Table, StatusSpan } from './styled';
 
 import dados from './teste.json';
 
@@ -64,7 +64,7 @@ export default function Home() {
               <td>{pedido.cpfCnpj}</td>
               <td>{pedido.cidade}</td>
               <td className="textStatus">
-                <span>{pedido.status}</span>
+                <StatusSpan status={pedido.status}>{pedido.status}</StatusSpan>
               </td>
               <td>-</td>
             </tr>

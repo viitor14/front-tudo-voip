@@ -42,10 +42,10 @@ export const Table = styled.table`
     font-weight: 300;
   }
 
-  tbody .textCity {
+  tbody .textStatus {
   }
 
-  .textCity > span {
+  .textStatus > span {
     font-weight: bold;
     background: rgba(209, 244, 228, 1);
     border-radius: 5px;

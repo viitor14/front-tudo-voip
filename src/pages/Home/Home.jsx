@@ -62,10 +62,10 @@ export default function Home() {
               <td>{pedido.cn}</td>
               <td>{pedido.cliente}</td>
               <td>{pedido.cpfCnpj}</td>
-              <td className="textCity">
-                <span> {pedido.cidade}</span>
+              <td>{pedido.cidade}</td>
+              <td className="textStatus">
+                <span>{pedido.status}</span>
               </td>
-              <td>{pedido.status}</td>
               <td>-</td>
             </tr>
           ))}

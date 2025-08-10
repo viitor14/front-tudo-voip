@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { primaryColor, borderColor } from '../../config/colors';
+import { primaryColor, borderColor, secondaryColor } from '../../config/colors';
 import { LiaUserCircleSolid } from 'react-icons/lia';
 
 export const Nav = styled.nav`
@@ -18,6 +18,6 @@ export const Div = styled.div`
 `;
 
 export const UserIcon = styled(LiaUserCircleSolid)`
-  color: #007bff;
-  font-size: 100px;
+  color: rgba(100, 116, 139, 1);
+  font-size: 48px;
 `;

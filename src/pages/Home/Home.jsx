@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Container } from '../../styles/GlobalStyles';
 import {
   DivTitle,
@@ -15,13 +16,13 @@ import {
 
 import dados from './teste.json';
 
-import { useState } from 'react';
-
 import InfoDashboard from '../../components/InfoDashboard/Index';
 import InputWithIcon from '../../components/Input/Index';
 import Select from '../../components/select/Index';
+import CadastroPedido from '../../components/NewPedido/Index';
 
 export default function Home() {
+  const [showCadastro, setShowCadastro] = useState(false);
   const [valueSelected, setValueSelected] = useState('Todos os Status');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -80,9 +81,10 @@ export default function Home() {
 
   return (
     <Container>
+      {showCadastro && <CadastroPedido onClose={() => setShowCadastro(false)} />}
       <DivTitle>
         <Title>Dashboard</Title>
-        <button>Cadastrar Pedido</button>
+        <button onClick={() => setShowCadastro(true)}>Cadastrar Pedido</button>
       </DivTitle>
 
       <BoxInfoDashboard>

@@ -4,14 +4,14 @@ import { borderColor } from '../../config/colors';
 
 export const InputWrapper = styled.div`
   position: relative;
-  width: 88%;
+  width: ${(props) => props.width || '100%'};
 `;
 
 export const StyledInput = styled.input`
   width: 100%;
-  padding: 10px 40px 10px 60px; // espaço para o ícone
+  padding: ${(props) => props.padding || '10px'}; // espaço para o ícone
   border: 2px solid ${borderColor};
-  border-radius: 5px;
+  border-radius: ${(props) => props.borderRadius || '5px'};
   font-family: 'Figtree', sans-serif;
   font-weight: 300;
   font-size: 14px;

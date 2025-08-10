@@ -98,6 +98,8 @@ export default function Home() {
           placeholder="Buscar por cliente, por cidade, por CPF/CNPJ..."
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
+          showIcon={true}
+          padding="10px 40px 10px 60px"
         />
         <Select
           options={['Todos os Status', 'Ativo', 'Em Andamento', 'Recusado']}

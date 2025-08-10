@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { borderColor, primaryColor, primaryDarkColor } from '../../config/colors';
+import { VscEllipsis } from 'react-icons/vsc';
 
 export const DivTitle = styled.div`
   display: flex;
@@ -82,4 +83,10 @@ export const StatusSpan = styled.span`
         : status === 'Recusado'
           ? 'rgba(139, 0, 0, 1)'
           : '#fff'};
+`;
+
+export const EllipsisIcon = styled(VscEllipsis)`
+  font-size: 20px;
+  color: #000;
+  cursor: pointer;
 `;

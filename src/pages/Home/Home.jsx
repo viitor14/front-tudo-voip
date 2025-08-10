@@ -1,5 +1,13 @@
 import { Container } from '../../styles/GlobalStyles';
-import { DivTitle, Title, BoxInfoDashboard, DivFilter, Table, StatusSpan } from './styled';
+import {
+  DivTitle,
+  Title,
+  BoxInfoDashboard,
+  DivFilter,
+  Table,
+  StatusSpan,
+  EllipsisIcon
+} from './styled';
 
 import dados from './teste.json';
 
@@ -66,7 +74,9 @@ export default function Home() {
               <td className="textStatus">
                 <StatusSpan status={pedido.status}>{pedido.status}</StatusSpan>
               </td>
-              <td>-</td>
+              <td>
+                <EllipsisIcon />
+              </td>
             </tr>
           ))}
         </tbody>

@@ -9,14 +9,14 @@ export const SelectWrapper = styled.div`
 
 export const Selected = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border: 2px solid ${borderColor};
   border-radius: 5px;
   height: 100%;
   background: #fff;
   cursor: pointer;
-  padding: 0 15px;
+  padding: 10px 15px;
   font-family: 'Figtree', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -49,4 +49,10 @@ export const OptionItem = styled.li`
     background: ${secondaryColor};
   }
   border-radius: 5px;
+`;
+
+export const ArrowIcon = styled(IoIosArrowDown)`
+  font-size: 16px;
+  color: rgba(112, 127, 148, 1);
+  rotate: ${(open) => (open.open ? '180deg' : '0')};
 `;

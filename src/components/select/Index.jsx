@@ -1,5 +1,5 @@
-import { SelectWrapper, Selected, OptionsList, OptionItem } from './styled';
-import React, { useState } from 'react';
+import { SelectWrapper, Selected, OptionsList, OptionItem, ArrowIcon } from './styled';
+import { useState } from 'react';
 export default function Select({ options, value, onChange }) {
   const [open, setOpen] = useState(false);
 
@@ -10,7 +10,10 @@ export default function Select({ options, value, onChange }) {
 
   return (
     <SelectWrapper>
-      <Selected onClick={() => setOpen(!open)}>{value || 'Selecione...'}</Selected>
+      <Selected onClick={() => setOpen(!open)}>
+        {value || 'Selecione...'}
+        <ArrowIcon open={open} />
+      </Selected>
       {open && (
         <OptionsList>
           {options.map((opt) => (

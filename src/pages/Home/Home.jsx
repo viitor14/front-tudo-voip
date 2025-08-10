@@ -70,6 +70,14 @@ export default function Home() {
   // Atualize o cálculo de páginas totais
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
+  const getTotalPedidos = () => {
+    return dados.length;
+  };
+
+  const getTotalByStatus = (status) => {
+    return dados.filter((item) => item.status === status).length;
+  };
+
   return (
     <Container>
       <DivTitle>
@@ -78,10 +86,10 @@ export default function Home() {
       </DivTitle>
 
       <BoxInfoDashboard>
-        <InfoDashboard title="Total de Números" number={128} />
-        <InfoDashboard title="Ativos" number={4} />
-        <InfoDashboard title="Em Andamento" number={2} />
-        <InfoDashboard title="Recusados" number={1} />
+        <InfoDashboard title="Total de Números" number={getTotalPedidos()} />
+        <InfoDashboard title="Ativos" number={getTotalByStatus('Ativo')} />
+        <InfoDashboard title="Em Andamento" number={getTotalByStatus('Em Andamento')} />
+        <InfoDashboard title="Recusados" number={getTotalByStatus('Recusado')} />
       </BoxInfoDashboard>
       <DivFilter>
         <InputWithIcon

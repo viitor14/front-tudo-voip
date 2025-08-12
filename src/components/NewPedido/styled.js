@@ -24,9 +24,22 @@ export const ModalContent = styled.div`
   width: 80%;
   max-width: 60vw;
   height: 90vh;
+  overflow-y: auto;
 `;
 
 export const DivModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const DivContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const DivContentSon = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;

@@ -6,10 +6,11 @@ export default function InputWithIcon({
   showIcon = false,
   iconColor,
   wrapperStyle,
+  width,
   ...props
 }) {
   return (
-    <InputWrapper style={wrapperStyle}>
+    <InputWrapper style={wrapperStyle} width={width}>
       <StyledInput style={customStyle} {...props} />
       {showIcon && <Icon size={iconSize} color={iconColor} />}
     </InputWrapper>

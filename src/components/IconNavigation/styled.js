@@ -32,7 +32,7 @@ export const DivNavigation = styled.div`
   span {
     border: 2px solid transparent;
     border-radius: 50%;
-    padding: 14px 22px;
+    padding: 14px 20px;
     position: relative;
     color: transparent;
 

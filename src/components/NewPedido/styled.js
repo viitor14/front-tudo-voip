@@ -16,6 +16,7 @@ export const ModalOverlay = styled.div`
 export const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 20px;
   background-color: white;
   padding: 30px;
@@ -23,6 +24,12 @@ export const ModalContent = styled.div`
   width: 80%;
   max-width: 60vw;
   height: 90vh;
+`;
+
+export const DivModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 export const CloseButton = styled.button`
@@ -48,5 +55,73 @@ export const DivInputRegion = styled.div`
   p {
     font-weight: 600;
     margin-bottom: 8px;
+  }
+`;
+
+export const DivButtonNext = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const DivTypeCell = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  p {
+    font-weight: 600;
+  }
+`;
+
+export const DivInputRadio = styled.div`
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  font-weight: 500;
+
+  /* Esconde o input de rádio original */
+  input[type='radio'] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+  }
+
+  /* Cria o círculo externo do rádio button */
+  label::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(249, 104, 36, 1);
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Altera a borda quando o input está selecionado */
+  input[type='radio']:checked + label::before {
+    border-color: rgba(249, 104, 36, 1);
+  }
+
+  /* Cria o ponto interno laranja quando selecionado */
+  input[type='radio']:checked + label::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(249, 104, 36, 1);
+    position: absolute;
+    top: 50%;
+    left: 6px; /* Ajuste conforme necessário */
+    transform: translateY(-50%);
+  }
+
+  /* Adiciona um container para o label para posicionamento do ponto */
+  label {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
 `;

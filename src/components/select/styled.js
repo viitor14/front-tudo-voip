@@ -4,7 +4,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 
 export const SelectWrapper = styled.div`
   position: relative;
-  width: 10%;
+  width: ${(props) => props.width || '10%'};
   height: 100%;
 `;
 
@@ -14,7 +14,7 @@ export const Selected = styled.div`
   align-items: center;
   border: 2px solid ${borderColor};
   border-radius: 5px;
-  height: 100%;
+  height: ${(props) => props.height || '100%'};
   background: #fff;
   cursor: pointer;
   padding: 10px 15px;
@@ -36,7 +36,7 @@ export const OptionsList = styled.ul`
   z-index: 10;
   margin: 0;
   padding: 0;
-  margin-top: 5px;
+  margin-top: ${(props) => props.marginTop || '5px'};
   list-style: none;
   font-family: 'Figtree', sans-serif;
   font-weight: 400;

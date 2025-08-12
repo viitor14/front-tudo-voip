@@ -22,8 +22,31 @@ export const ModalContent = styled.div`
   border-radius: 8px;
   width: 80%;
   max-width: 60vw;
+  height: 90vh;
 `;
 
 export const CloseButton = styled.button`
   float: right;
+`;
+
+export const Label = styled.label`
+  p {
+    font-weight: 600;
+  }
+`;
+
+export const DivInputRegion = styled.div`
+  display: flex;
+  gap: 16px;
+  width: 100%;
+
+  > div {
+    flex: 1;
+    width: calc(33.33% - 11px);
+  }
+
+  p {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
 `;

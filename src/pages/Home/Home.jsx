@@ -22,12 +22,17 @@ import Select from '../../components/select/Index';
 import CadastroPedido from '../../components/NewPedido/Index';
 
 export default function Home() {
+  const [openSelectId, setOpenSelectId] = useState(null);
   const [showCadastro, setShowCadastro] = useState(false);
   const [valueSelected, setValueSelected] = useState('Todos os Status');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   // Calcula o índice inicial e final dos itens da página atual
+
+  const handleSelectOpen = (selectId) => {
+    setOpenSelectId(selectId);
+  };
 
   const [searchTerm, setSearchTerm] = useState('');
   // Função para mudar de página
@@ -105,6 +110,10 @@ export default function Home() {
           options={['Todos os Status', 'Ativo', 'Em Andamento', 'Recusado']}
           onChange={(value) => setValueSelected(value)}
           value={valueSelected}
+          isOpen={openSelectId === 'status'}
+          onOpen={() => handleSelectOpen('status')}
+          width="200px" // Você pode ajustar a largura conforme necessário
+          height="44px"
         />
       </DivFilter>
       <div>

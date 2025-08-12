@@ -125,3 +125,14 @@ export const DivInputRadio = styled.div`
     align-items: center;
   }
 `;
+
+export const ButtonNext = styled.button`
+  align-self: flex-end;
+  background-color: rgba(249, 104, 36, 1);
+  color: white;
+  border: none;
+  padding: 12px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: fit-content;
+`;

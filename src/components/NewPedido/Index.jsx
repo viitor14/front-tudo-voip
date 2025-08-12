@@ -7,7 +7,8 @@ import {
   DivTypeCell,
   DivInputRadio,
   DivModal,
-  DivButtonNext
+  DivButtonNext,
+  ButtonNext
 } from './styled';
 
 import { useState } from 'react';
@@ -90,22 +91,22 @@ export default function CadastroPedido({ onClose }) {
               />
             </div>
           </DivInputRegion>
-        </DivModal>
-        <DivButtonNext>
-          <DivTypeCell>
-            <p>Tipo de venda</p>
-            <DivInputRadio>
-              <label htmlFor="novo-numero">Novo Número</label>
-              <input type="radio" id="novo-numero" name="tipoVenda" value="Novo Número" />
-            </DivInputRadio>
+          <DivButtonNext>
+            <DivTypeCell>
+              <p>Tipo de venda</p>
+              <DivInputRadio>
+                <input type="radio" id="novo-numero" name="tipoVenda" value="Novo Número" />
+                <label htmlFor="novo-numero">Novo Número</label>
+              </DivInputRadio>
 
-            <DivInputRadio>
-              <label htmlFor="portabilidade">Portabilidade</label>
-              <input type="radio" id="portabilidade" name="tipoVenda" value="Portabilidade" />
-            </DivInputRadio>
-          </DivTypeCell>
-          <button>Avançar</button>
-        </DivButtonNext>
+              <DivInputRadio>
+                <input type="radio" id="portabilidade" name="tipoVenda" value="Portabilidade" />
+                <label htmlFor="portabilidade">Portabilidade</label>
+              </DivInputRadio>
+            </DivTypeCell>
+          </DivButtonNext>
+        </DivModal>
+        <ButtonNext>Avançar</ButtonNext>
       </ModalContent>
     </ModalOverlay>
   );

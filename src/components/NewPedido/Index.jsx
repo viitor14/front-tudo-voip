@@ -8,7 +8,8 @@ import {
   DivInputRadio,
   DivModal,
   DivButtonNext,
-  ButtonNext
+  ButtonNext,
+  DivIcon
 } from './styled';
 
 import { useState } from 'react';
@@ -37,7 +38,9 @@ export default function CadastroPedido({ onClose }) {
             <CloseButton onClick={onClose}>X</CloseButton>
             <h2>Cadastro de Pedido</h2>
           </div>
-          <IconNavigation />
+          <DivIcon>
+            <IconNavigation currentStep={1} />
+          </DivIcon>
           <div>
             <Label htmlFor="">
               <p>CPF/CNPJ</p>

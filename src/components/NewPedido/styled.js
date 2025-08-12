@@ -32,6 +32,11 @@ export const DivModal = styled.div`
   gap: 20px;
 `;
 
+export const DivIcon = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
 export const CloseButton = styled.button`
   float: right;
 `;

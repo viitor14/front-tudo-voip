@@ -9,14 +9,10 @@ import { Label, DivInputRegion, DivTypeCell, DivInputRadio, DivContentSon } from
 import Select from '../select/Index';
 import InputWithIcon from '../Input/Index';
 
-export default function FormularioCliente() {
-  // --- ESTADO E LÓGICA ESPECÍFICOS DESTE FORMULÁRIO ---
-
-  // Estado para os valores dos selects e inputs
+export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaChange }) {
   const [ufSelected, setUfSelected] = useState('Selecione');
   const [cnSelected, setCnSelected] = useState('Selecione');
   const [cidadeSelected, setCidadeSelected] = useState('Selecione');
-  // Você também precisará de estados para os inputs de CPF e Nome
   const [cpfCnpj, setCpfCnpj] = useState('');
   const [nomeCompleto, setNomeCompleto] = useState('');
 
@@ -27,6 +23,10 @@ export default function FormularioCliente() {
   const handleSelectOpen = (selectId) => {
     // Se o select clicado já estiver aberto, fecha. Senão, abre.
     setOpenSelectId(openSelectId === selectId ? null : selectId);
+  };
+
+  const handleRadioChange = (event) => {
+    onTipoVendaChange(event.target.value);
   };
 
   // --- JSX DO FORMULÁRIO DA ETAPA 1 ---
@@ -106,13 +106,21 @@ export default function FormularioCliente() {
             type="radio"
             id="novo-numero"
             name="tipoVenda"
-            value="Novo Número"
-            defaultChecked
+            value="Novo Numero"
+            checked={tipoVendaSelecionado === 'Novo Numero'} // Define se está marcado
+            onChange={handleRadioChange}
           />
           <label htmlFor="novo-numero">Novo Número</label>
         </DivInputRadio>
         <DivInputRadio>
-          <input type="radio" id="portabilidade" name="tipoVenda" value="Portabilidade" />
+          <input
+            type="radio"
+            id="portabilidade"
+            name="tipoVenda"
+            value="Portabilidade"
+            checked={tipoVendaSelecionado === 'Portabilidade'}
+            onChange={handleRadioChange}
+          />
           <label htmlFor="portabilidade">Portabilidade</label>
         </DivInputRadio>
       </DivTypeCell>

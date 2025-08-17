@@ -14,9 +14,11 @@ import FormularioCliente from './FormularioCliente';
 import PedidoNumero from '../PedidoNumero/Index';
 import IconNavigation from '../IconNavigation/Index';
 import ResumoPedido from '../ResumoPedido/Index';
+import NovoNumero from '../NovoNumero/Index';
 
 export default function CadastroPedido({ onClose }) {
   const [etapa, setEtapa] = useState(1);
+  const [tipoVenda, setTipoVenda] = useState('Novo Numero');
 
   const proximaEtapa = () => {
     setEtapa((etapaAtual) => etapaAtual + 1);
@@ -35,22 +37,21 @@ export default function CadastroPedido({ onClose }) {
             <h2>Cadastro de Pedido</h2>
           </div>
           <DivIcon>
-            {/* O stepper agora é controlado diretamente pelo estado 'etapa' */}
             <IconNavigation currentStep={etapa} />
           </DivIcon>
 
-          {/* 2. LÓGICA DE RENDERIZAÇÃO CENTRALIZADA E LIMPA */}
           <DivContent>
             {etapa === 1 && (
-              <FormularioCliente /> // Mostra os campos do cliente na etapa 1
+              <FormularioCliente
+                tipoVendaSelecionado={tipoVenda}
+                onTipoVendaChange={setTipoVenda}
+              /> // Mostra os campos do cliente na etapa 1
             )}
-            {etapa === 2 && (
-              <PedidoNumero /> // Mostra os campos de número na etapa 2
-            )}
+            {etapa === 2 && <>{tipoVenda === 'Novo Numero' ? <NovoNumero /> : <PedidoNumero />}</>}
             {etapa === 3 && <ResumoPedido />}
           </DivContent>
         </DivModal>
-        {/* Lógica para mostrar/esconder botões também pode usar 'etapa' */}
+
         {etapa < 3 && ( // Mostra o botão "Avançar" apenas se não for a última etapa
           <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
         )}

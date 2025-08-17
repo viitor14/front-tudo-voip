@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ImBin } from 'react-icons/im';
-import { borderColor } from '../../config/colors';
+import { borderColor, secondaryColor } from '../../config/colors';
 
 export const DivPedidoNumero = styled.div`
   display: flex;
@@ -123,7 +123,6 @@ export const InputsContainer = styled.div`
   display: flex;
   gap: 16px;
   width: 100%;
-  margin-top: 20px;
 `;
 
 // Wrapper para cada conjunto de label + input
@@ -145,8 +144,8 @@ export const LabelInput = styled.label`
 export const StyledInput = styled.input`
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 2px solid ${borderColor};
+  border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
 
@@ -156,6 +155,6 @@ export const StyledInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #805ad5;
+    border-color: ${secondaryColor};
   }
 `;

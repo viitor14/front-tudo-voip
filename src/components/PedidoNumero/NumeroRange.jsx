@@ -44,7 +44,6 @@ export default function NumeroRange() {
   };
   return (
     <DivInputsNumber>
-      {/* --- CABEÇALHO COM OS TÍTULOS (renderizado apenas uma vez) --- */}
       <InputsContainer>
         <InputWrapper>
           <LabelInput>Prefixo</LabelInput>
@@ -55,30 +54,39 @@ export default function NumeroRange() {
         <InputWrapper>
           <LabelInput>Range Final</LabelInput>
         </InputWrapper>
-        {/* Espaço reservado para alinhar com o ícone da lixeira */}
         <DivLixeira style={{ visibility: 'hidden' }} />
       </InputsContainer>
 
-      {/* --- LOOP PARA AS LINHAS DE INPUTS (sem os títulos) --- */}
       {ranges.map((rangeItem, index) => (
         <InputsContainer key={rangeItem.id}>
           <InputWrapper>
-            {/* O LabelInput foi removido daqui */}
             <StyledInput
               id={`prefixo-${rangeItem.id}`}
               type="text"
               placeholder="Ex: 81"
               value={rangeItem.prefixo}
-              onChange={(e) => handleRangeChange(rangeItem.id, 'prefixo', e.target.value)}
+              onChange={(e) => {
+                const valor = e.target.value;
+                const limite = 2;
+                if (valor.length <= limite) {
+                  handleRangeChange(rangeItem.id, 'prefixo', valor);
+                }
+              }}
             />
           </InputWrapper>
           <InputWrapper>
             <StyledInput
               id={`rangeInicial-${rangeItem.id}`}
-              type="text"
+              type="number"
               placeholder="Ex: 1234"
               value={rangeItem.rangeInicial}
-              onChange={(e) => handleRangeChange(rangeItem.id, 'rangeInicial', e.target.value)}
+              onChange={(e) => {
+                const valor = e.target.value;
+                const limite = 5;
+                if (valor.length <= limite) {
+                  handleRangeChange(rangeItem.id, 'rangeInicial', valor);
+                }
+              }}
             />
           </InputWrapper>
           <InputWrapper>
@@ -87,17 +95,21 @@ export default function NumeroRange() {
               type="text"
               placeholder="Ex: 5678"
               value={rangeItem.rangeFinal}
-              onChange={(e) => handleRangeChange(rangeItem.id, 'rangeFinal', e.target.value)}
+              onChange={(e) => {
+                const valor = e.target.value;
+                const limite = 4;
+                if (valor.length <= limite) {
+                  handleRangeChange(rangeItem.id, 'rangeFinal', valor);
+                }
+              }}
             />
           </InputWrapper>
 
-          {/* Lixeira visível apenas nas linhas extras */}
           {index > 0 ? (
             <DivLixeira style={{ alignSelf: 'flex-end', marginBottom: '1px' }}>
               <StyledTrashIcon onClick={() => handleRemoveRange(rangeItem.id)} />
             </DivLixeira>
           ) : (
-            // Espaço reservado para manter o alinhamento na primeira linha
             <DivLixeira style={{ visibility: 'hidden' }} />
           )}
         </InputsContainer>

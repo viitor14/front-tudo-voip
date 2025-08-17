@@ -9,9 +9,6 @@ export default function PedidoNumero({ display }) {
   // 1. Estado para controlar o modo ('individual' ou 'range')
   const [modo, setModo] = useState('individual');
   const [numbers, setNumbers] = useState([{ id: Date.now(), value: '' }]);
-  const [prefixo, setPrefixo] = useState('');
-  const [rangeInicial, setRangeInicial] = useState('');
-  const [rangeFinal, setRangeFinal] = useState('');
 
   // --- FUNÇÕES ---
   // Função para mudar o modo
@@ -74,14 +71,7 @@ export default function PedidoNumero({ display }) {
           onRemoveNumber={handleRemoveNumber}
         />
       ) : (
-        <NumeroRange
-          prefixo={prefixo}
-          setPrefixo={setPrefixo}
-          rangeInicial={rangeInicial}
-          setRangeInicial={setRangeInicial}
-          rangeFinal={rangeFinal}
-          setRangeFinal={setRangeFinal}
-        />
+        <NumeroRange />
       )}
     </DivPedidoNumero>
   );

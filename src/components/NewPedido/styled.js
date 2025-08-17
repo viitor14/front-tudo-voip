@@ -40,9 +40,10 @@ export const DivContent = styled.div`
 `;
 
 export const DivContentSon = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: column; /* <-- ESSA É A MUDANÇA MAIS IMPORTANTE */
+  gap: 20px; /* Adiciona um bom espaçamento vertical entre as seções */
 `;
 
 export const DivIcon = styled.div`

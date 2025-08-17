@@ -119,3 +119,43 @@ export const StyledTrashIcon = styled(ImBin)`
     transform: scale(1.1);
   }
 `;
+export const InputsContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+// Wrapper para cada conjunto de label + input
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+`;
+
+// Label de texto acima dos inputs
+export const LabelInput = styled.label`
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+`;
+
+// O input de texto estilizado
+export const StyledInput = styled.input`
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #999;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #805ad5;
+  }
+`;

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-
+import { IoIosArrowBack } from 'react-icons/io';
+import { borderColor } from '../../config/colors';
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -154,4 +155,33 @@ export const ButtonNext = styled.button`
   border-radius: 5px;
   cursor: pointer;
   width: fit-content;
+  font-weight: 600;
+`;
+
+export const ContainerBotoes = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-top: 20px;
+`;
+
+export const BotaoVoltar = styled.button`
+  background: #fff;
+  color: #000;
+  border: 2px solid ${borderColor};
+  padding: 12px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  span {
+    line-height: 1;
+  }
+`;
+
+export const StyledIconBack = styled(IoIosArrowBack)`
+  color: #000;
 `;

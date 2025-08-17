@@ -5,7 +5,10 @@ import {
   DivModal,
   ButtonNext,
   DivIcon,
-  DivContent
+  DivContent,
+  ContainerBotoes,
+  BotaoVoltar,
+  StyledIconBack
 } from './styled';
 
 import { useState } from 'react';
@@ -52,12 +55,24 @@ export default function CadastroPedido({ onClose }) {
           </DivContent>
         </DivModal>
 
-        {etapa < 3 && ( // Mostra o botão "Avançar" apenas se não for a última etapa
-          <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
-        )}
-        {etapa === 3 && ( // Mostra o botão "Finalizar" na última etapa
-          <ButtonNext>Finalizar</ButtonNext>
-        )}
+        <ContainerBotoes>
+          {etapa > 1 ? (
+            <BotaoVoltar onClick={etapaAnterior}>
+              <StyledIconBack />
+              <span>Voltar</span>
+            </BotaoVoltar>
+          ) : (
+            // Deixa um espaço vazio para manter o botão "Avançar" na direita
+            <div />
+          )}
+
+          {/* Lógica do botão de Avançar/Finalizar que você já tinha */}
+          {etapa < 3 ? (
+            <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
+          ) : (
+            <ButtonNext>Concluir Pedido</ButtonNext>
+          )}
+        </ContainerBotoes>
       </ModalContent>
     </ModalOverlay>
   );

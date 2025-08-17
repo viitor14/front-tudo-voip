@@ -13,6 +13,7 @@ import { useState } from 'react';
 import FormularioCliente from './FormularioCliente';
 import PedidoNumero from '../PedidoNumero/Index';
 import IconNavigation from '../IconNavigation/Index';
+import ResumoPedido from '../ResumoPedido/Index';
 
 export default function CadastroPedido({ onClose }) {
   const [etapa, setEtapa] = useState(1);
@@ -46,8 +47,7 @@ export default function CadastroPedido({ onClose }) {
             {etapa === 2 && (
               <PedidoNumero /> // Mostra os campos de número na etapa 2
             )}
-            {/* Adicione a etapa 3 aqui quando precisar */}
-            {/* {etapa === 3 && <FormularioRevisao />} */}
+            {etapa === 3 && <ResumoPedido />}
           </DivContent>
         </DivModal>
         {/* Lógica para mostrar/esconder botões também pode usar 'etapa' */}

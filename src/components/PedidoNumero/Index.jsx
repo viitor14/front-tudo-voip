@@ -40,7 +40,7 @@ export default function PedidoNumero({ display }) {
     setNumbers(newNumbers);
   };
   return (
-    <DivPedidoNumero>
+    <DivPedidoNumero style={{ display: display }}>
       <DivInputRadio>
         <InputRadio>
           <input
@@ -51,7 +51,7 @@ export default function PedidoNumero({ display }) {
             checked={modo === 'individual'}
             onChange={handleModoChange}
           />
-          <label>Adicionar Individualmente</label>
+          <label htmlFor="individual">Adicionar Individualmente</label>
         </InputRadio>
         <InputRadio>
           <input
@@ -62,11 +62,10 @@ export default function PedidoNumero({ display }) {
             checked={modo === 'range'}
             onChange={handleModoChange}
           />
-          <label>Em faixa (Range)</label>
+          <label htmlFor="range">Em faixa (Range)</label>
         </InputRadio>
       </DivInputRadio>
 
-      {/* Veja como a renderização condicional ficou MUITO mais limpa! */}
       {modo === 'individual' ? (
         <NumeroIndividual
           numbers={numbers}

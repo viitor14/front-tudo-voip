@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { ImBin } from 'react-icons/im';
+import { borderColor } from '../../config/colors';
 
 export const DivPedidoNumero = styled.div`
   display: flex;
@@ -84,11 +86,36 @@ export const DivInputsNumber = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  button {
+    width: fit-content;
+    background: white;
+    color: #000;
+    font-weight: 600;
+    border: ${borderColor} 2px solid;
+    border-radius: 5px;
+    padding: 13px;
+  }
 `;
 
 export const DivLixeira = styled.div`
   display: flex;
   gap: 10px;
-  background-color: red;
-  padding: 20px;
+  border: ${borderColor} 2px solid;
+  border-radius: 5px;
+  padding: 8px 8px;
+  align-items: center;
+`;
+
+export const StyledTrashIcon = styled(ImBin)`
+  font-size: 24px;
+  color: red; // Mudei a cor para branco para contrastar com o fundo vermelho
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  /* Efeitos de hover, focus, etc. */
+  &:hover {
+    color: #e74c3c;
+    transform: scale(1.1);
+  }
 `;

@@ -1,21 +1,11 @@
-// Nome do arquivo: FormularioCliente.jsx
-
 import { useState } from 'react';
 
-// Importe os componentes de estilo necessários do seu arquivo `styled.js`
 import { Label, DivInputRegion, DivTypeCell, DivInputRadio, DivContentSon } from './styled';
 
-// Importe os componentes customizados que você usa
 import Select from '../select/Index';
 import InputWithIcon from '../Input/Index';
 
-export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaChange }) {
-  const [ufSelected, setUfSelected] = useState('Selecione');
-  const [cnSelected, setCnSelected] = useState('Selecione');
-  const [cidadeSelected, setCidadeSelected] = useState('Selecione');
-  const [cpfCnpj, setCpfCnpj] = useState('');
-  const [nomeCompleto, setNomeCompleto] = useState('');
-
+export default function FormularioCliente({ dados, onFormChange }) {
   // Estado para controlar qual menu select está aberto
   const [openSelectId, setOpenSelectId] = useState(null);
 
@@ -25,11 +15,6 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
     setOpenSelectId(openSelectId === selectId ? null : selectId);
   };
 
-  const handleRadioChange = (event) => {
-    onTipoVendaChange(event.target.value);
-  };
-
-  // --- JSX DO FORMULÁRIO DA ETAPA 1 ---
   return (
     <DivContentSon>
       <div>
@@ -37,8 +22,8 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
           <p>CPF/CNPJ</p>
           <InputWithIcon
             placeholder="00.000.000/0000-00"
-            value={cpfCnpj}
-            onChange={(e) => setCpfCnpj(e.target.value)}
+            value={dados.cpfCnpj}
+            onChange={(e) => onFormChange('cpfCnpj', e.target.value)}
           />
         </Label>
       </div>
@@ -48,8 +33,8 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
           <p>Nome Completo</p>
           <InputWithIcon
             placeholder="Nome do Cliente"
-            value={nomeCompleto}
-            onChange={(e) => setNomeCompleto(e.target.value)}
+            value={dados.nomeCompleto}
+            onChange={(e) => onFormChange('nomeCompleto', e.target.value)}
           />
         </Label>
       </div>
@@ -58,15 +43,14 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
         <div>
           <p>UF</p>
           <Select
-            options={['SP', 'RJ', 'MG', 'BA']} // Exemplo de opções
+            options={['SP', 'RJ', 'MG', 'BA']}
             width="100%"
             height="44px"
             marginTop="-20px"
-            onChange={(value) => setUfSelected(value)}
-            value={ufSelected}
+            onChange={(value) => onFormChange('uf', value)}
+            value={dados.uf}
             isOpen={openSelectId === 'uf'}
             onOpen={() => handleSelectOpen('uf')}
-            // ...outras props
           />
         </div>
         <div>
@@ -76,11 +60,10 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
             width="100%"
             height="44px"
             marginTop="-20px"
-            onChange={(value) => setCnSelected(value)}
-            value={cnSelected}
+            value={dados.cn}
+            onChange={(value) => onFormChange('cn', value)}
             isOpen={openSelectId === 'cn'}
             onOpen={() => handleSelectOpen('cn')}
-            // ...outras props
           />
         </div>
         <div>
@@ -90,11 +73,10 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
             width="100%"
             height="44px"
             marginTop="-20px"
-            onChange={(value) => setCidadeSelected(value)}
-            value={cidadeSelected}
+            value={dados.cidade}
+            onChange={(value) => onFormChange('cidade', value)}
             isOpen={openSelectId === 'cidade'}
             onOpen={() => handleSelectOpen('cidade')}
-            // ...outras props
           />
         </div>
       </DivInputRegion>
@@ -107,8 +89,8 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
             id="novo-numero"
             name="tipoVenda"
             value="Novo Numero"
-            checked={tipoVendaSelecionado === 'Novo Numero'} // Define se está marcado
-            onChange={handleRadioChange}
+            checked={dados.tipoVenda === 'Novo Numero'}
+            onChange={(e) => onFormChange('tipoVenda', e.target.value)}
           />
           <label htmlFor="novo-numero">Novo Número</label>
         </DivInputRadio>
@@ -118,8 +100,8 @@ export default function FormularioCliente({ tipoVendaSelecionado, onTipoVendaCha
             id="portabilidade"
             name="tipoVenda"
             value="Portabilidade"
-            checked={tipoVendaSelecionado === 'Portabilidade'}
-            onChange={handleRadioChange}
+            checked={dados.tipoVenda === 'Portabilidade'}
+            onChange={(e) => onFormChange('tipoVenda', e.target.value)}
           />
           <label htmlFor="portabilidade">Portabilidade</label>
         </DivInputRadio>

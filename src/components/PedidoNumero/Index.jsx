@@ -5,39 +5,59 @@ import { DivPedidoNumero, DivInputRadio, InputRadio } from './styled';
 import NumeroIndividual from './NumeroIndividual';
 import NumeroRange from './NumeroRange';
 
-export default function PedidoNumero({ display }) {
-  // 1. Estado para controlar o modo ('individual' ou 'range')
-  const [modo, setModo] = useState('individual');
-  const [numbers, setNumbers] = useState([{ id: Date.now(), value: '' }]);
-
-  // --- FUNÇÕES ---
-  // Função para mudar o modo
+export default function PedidoNumero({ dados, onFormChange }) {
   const handleModoChange = (event) => {
-    setModo(event.target.value);
+    onFormChange('modo', event.target.value);
   };
 
-  // Suas funções para o modo individual (sem alterações)
   const handleAddNumber = () => {
-    setNumbers([...numbers, { id: Date.now(), value: '' }]);
+    const novosNumeros = [...dados.numerosIndividuais, { id: Date.now(), value: '' }];
+    onFormChange('numerosIndividuais', novosNumeros);
   };
 
   const handleRemoveNumber = (idToRemove) => {
-    if (numbers.length > 1) {
-      setNumbers(numbers.filter((number) => number.id !== idToRemove));
+    if (dados.numerosIndividuais.length > 1) {
+      const novosNumeros = dados.numerosIndividuais.filter((number) => number.id !== idToRemove);
+      onFormChange('numerosIndividuais', novosNumeros);
     }
   };
 
   const handleNumberChange = (id, event) => {
-    const newNumbers = numbers.map((number) => {
+    const novosNumeros = dados.numerosIndividuais.map((number) => {
       if (number.id === id) {
         return { ...number, value: event.target.value };
       }
       return number;
     });
-    setNumbers(newNumbers);
+    onFormChange('numerosIndividuais', novosNumeros);
+  };
+
+  const handleAddRange = () => {
+    const novosRanges = [
+      ...dados.ranges,
+      { id: Date.now(), prefixo: '', rangeInicial: '', rangeFinal: '' }
+    ];
+    onFormChange('ranges', novosRanges);
+  };
+
+  const handleRemoveRange = (idToRemove) => {
+    if (dados.ranges.length > 1) {
+      const novosRanges = dados.ranges.filter((range) => range.id !== idToRemove);
+      onFormChange('ranges', novosRanges);
+    }
+  };
+
+  const handleRangeChange = (id, field, value) => {
+    const novosRanges = dados.ranges.map((range) => {
+      if (range.id === id) {
+        return { ...range, [field]: value };
+      }
+      return range;
+    });
+    onFormChange('ranges', novosRanges);
   };
   return (
-    <DivPedidoNumero style={{ display: display }}>
+    <DivPedidoNumero>
       <DivInputRadio>
         <InputRadio>
           <input
@@ -45,7 +65,8 @@ export default function PedidoNumero({ display }) {
             id="individual"
             value="individual"
             name="tipoNumero"
-            checked={modo === 'individual'}
+            // 4. Lê o valor de 'dados.modo' vindo do pai
+            checked={dados.modo === 'individual'}
             onChange={handleModoChange}
           />
           <label htmlFor="individual">Adicionar Individualmente</label>
@@ -56,22 +77,28 @@ export default function PedidoNumero({ display }) {
             id="range"
             name="tipoNumero"
             value="range"
-            checked={modo === 'range'}
+            checked={dados.modo === 'range'}
             onChange={handleModoChange}
           />
           <label htmlFor="range">Em faixa (Range)</label>
         </InputRadio>
       </DivInputRadio>
 
-      {modo === 'individual' ? (
+      {dados.modo === 'individual' ? (
         <NumeroIndividual
-          numbers={numbers}
+          // 5. Passa os dados e funções corretos para o componente filho
+          numbers={dados.numerosIndividuais}
           onNumberChange={handleNumberChange}
           onAddNumber={handleAddNumber}
           onRemoveNumber={handleRemoveNumber}
         />
       ) : (
-        <NumeroRange />
+        <NumeroRange
+          ranges={dados.ranges}
+          onAddRange={handleAddRange}
+          onRemoveRange={handleRemoveRange}
+          onRangeChange={handleRangeChange}
+        /> // Este já se gerencia sozinho, como definimos antes
       )}
     </DivPedidoNumero>
   );

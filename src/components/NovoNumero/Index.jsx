@@ -1,26 +1,24 @@
 import { useState } from 'react';
 import { Div, DivInput } from './styled';
 
-export default function NovoNumero() {
-  const [valor, setValor] = useState(1);
-
+export default function NovoNumero({ formData, onFormChange }) {
   const aumentarValor = () => {
-    setValor((valorAnterior) => valorAnterior + 1);
+    const valorAtual = formData.quantidadeNumero || 0;
+
+    onFormChange('quantidadeNumero', valorAtual + 1);
   };
 
   const diminuirValor = () => {
-    setValor((valorAnterior) => {
-      if (valorAnterior > 0) {
-        return valorAnterior - 1;
-      }
-      return 0;
-    });
+    const valorAtual = formData.quantidadeNumero || 0;
+
+    if (valorAtual > 1) {
+      onFormChange('quantidadeNumero', valorAtual - 1);
+    }
   };
 
   const handleInputChange = (event) => {
     const novoValor = parseInt(event.target.value, 10);
-
-    setValor(isNaN(novoValor) ? 1 : novoValor);
+    onFormChange('quantidadeNumero', isNaN(novoValor) || novoValor < 1 ? 1 : novoValor);
   };
   return (
     <div>
@@ -28,7 +26,12 @@ export default function NovoNumero() {
         <p>Quantidade de Números</p>
         <DivInput>
           <button onClick={diminuirValor}>-</button>
-          <input type="Number" value={valor} onChange={handleInputChange} />
+          <input
+            type="Number"
+            value={formData.quantidadeNumero}
+            onChange={handleInputChange}
+            min="1"
+          />
           <button onClick={aumentarValor}>+</button>
         </DivInput>
       </Div>

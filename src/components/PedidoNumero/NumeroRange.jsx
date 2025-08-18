@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   DivInputsNumber,
   DivLixeira,
@@ -10,38 +8,7 @@ import {
   StyledTrashIcon
 } from './styled';
 
-export default function NumeroRange() {
-  const [ranges, setRanges] = useState([
-    { id: Date.now(), prefixo: '', rangeInicial: '', rangeFinal: '' }
-  ]);
-
-  const handleAddRange = () => {
-    const newRange = {
-      id: Date.now(),
-      prefixo: '',
-      rangeInicial: '',
-      rangeFinal: ''
-    };
-    setRanges([...ranges, newRange]);
-  };
-
-  const handleRemoveRange = (idToRemove) => {
-    if (ranges.length > 1) {
-      setRanges(ranges.filter((range) => range.id !== idToRemove));
-    }
-  };
-
-  // Esta função é um pouco diferente: ela precisa saber qual campo (field) atualizar
-  const handleRangeChange = (id, field, value) => {
-    const updatedRanges = ranges.map((range) => {
-      if (range.id === id) {
-        // Usa o nome do campo para atualizar a propriedade correta do objeto
-        return { ...range, [field]: value };
-      }
-      return range;
-    });
-    setRanges(updatedRanges);
-  };
+export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRangeChange }) {
   return (
     <DivInputsNumber>
       <InputsContainer>
@@ -63,13 +30,14 @@ export default function NumeroRange() {
             <StyledInput
               id={`prefixo-${rangeItem.id}`}
               type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               placeholder="Ex: 81"
               value={rangeItem.prefixo}
               onChange={(e) => {
                 const valor = e.target.value;
-                const limite = 2;
-                if (valor.length <= limite) {
-                  handleRangeChange(rangeItem.id, 'prefixo', valor);
+                if (/^[0-9]*$/.test(valor) && valor.length <= 2) {
+                  onRangeChange(rangeItem.id, 'prefixo', valor);
                 }
               }}
             />
@@ -77,14 +45,15 @@ export default function NumeroRange() {
           <InputWrapper>
             <StyledInput
               id={`rangeInicial-${rangeItem.id}`}
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               placeholder="Ex: 1234"
               value={rangeItem.rangeInicial}
               onChange={(e) => {
                 const valor = e.target.value;
-                const limite = 5;
-                if (valor.length <= limite) {
-                  handleRangeChange(rangeItem.id, 'rangeInicial', valor);
+                if (/^[0-9]*$/.test(valor) && valor.length <= 5) {
+                  onRangeChange(rangeItem.id, 'rangeInicial', valor);
                 }
               }}
             />
@@ -93,29 +62,27 @@ export default function NumeroRange() {
             <StyledInput
               id={`rangeFinal-${rangeItem.id}`}
               type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               placeholder="Ex: 5678"
               value={rangeItem.rangeFinal}
               onChange={(e) => {
                 const valor = e.target.value;
-                const limite = 4;
-                if (valor.length <= limite) {
-                  handleRangeChange(rangeItem.id, 'rangeFinal', valor);
+                if (/^[0-9]*$/.test(valor) && valor.length <= 4) {
+                  onRangeChange(rangeItem.id, 'rangeFinal', valor);
                 }
               }}
             />
           </InputWrapper>
 
-          {index > 0 ? (
+          {index > 0 && (
             <DivLixeira style={{ alignSelf: 'flex-end', marginBottom: '1px' }}>
-              <StyledTrashIcon onClick={() => handleRemoveRange(rangeItem.id)} />
+              <StyledTrashIcon onClick={() => onRemoveRange(rangeItem.id)} />
             </DivLixeira>
-          ) : (
-            <DivLixeira style={{ visibility: 'hidden' }} />
           )}
         </InputsContainer>
       ))}
-
-      <button type="button" onClick={handleAddRange}>
+      <button type="button" onClick={onAddRange}>
         + Adicionar outro range
       </button>
     </DivInputsNumber>

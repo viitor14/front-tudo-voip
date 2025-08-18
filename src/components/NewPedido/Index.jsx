@@ -11,7 +11,7 @@ import {
   StyledIconBack
 } from './styled';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import FormularioCliente from './FormularioCliente';
 import PedidoNumero from '../PedidoNumero/Index';
@@ -21,7 +21,26 @@ import NovoNumero from '../NovoNumero/Index';
 
 export default function CadastroPedido({ onClose }) {
   const [etapa, setEtapa] = useState(1);
-  const [tipoVenda, setTipoVenda] = useState('Novo Numero');
+
+  const [formData, setFormData] = useState({
+    cpfCnpj: '',
+    nomeCompleto: '',
+    uf: 'Selecione',
+    cn: 'Selecione',
+    cidade: 'Selecione',
+    tipoVenda: 'Novo Numero',
+    modo: 'individual',
+    quantidadeNumero: '1',
+    numerosIndividuais: [{ id: Date.now(), value: '' }],
+    ranges: [{ id: Date.now(), prefixo: '', rangeInicial: '', rangeFinal: '' }]
+  });
+
+  const handleFormChange = (campo, valor) => {
+    setFormData((dadosAnteriores) => ({
+      ...dadosAnteriores,
+      [campo]: valor
+    }));
+  };
 
   const proximaEtapa = () => {
     setEtapa((etapaAtual) => etapaAtual + 1);
@@ -45,13 +64,18 @@ export default function CadastroPedido({ onClose }) {
 
           <DivContent>
             {etapa === 1 && (
-              <FormularioCliente
-                tipoVendaSelecionado={tipoVenda}
-                onTipoVendaChange={setTipoVenda}
-              /> // Mostra os campos do cliente na etapa 1
+              <FormularioCliente dados={formData} onFormChange={handleFormChange} /> // Mostra os campos do cliente na etapa 1
             )}
-            {etapa === 2 && <>{tipoVenda === 'Novo Numero' ? <NovoNumero /> : <PedidoNumero />}</>}
-            {etapa === 3 && <ResumoPedido />}
+            {etapa === 2 && (
+              <>
+                {formData.tipoVenda === 'Novo Numero' ? (
+                  <NovoNumero formData={formData} onFormChange={handleFormChange} />
+                ) : (
+                  <PedidoNumero dados={formData} onFormChange={handleFormChange} />
+                )}
+              </>
+            )}
+            {etapa === 3 && <ResumoPedido formData={formData} onFormChange={handleFormChange} />}
           </DivContent>
         </DivModal>
 
@@ -62,11 +86,9 @@ export default function CadastroPedido({ onClose }) {
               <span>Voltar</span>
             </BotaoVoltar>
           ) : (
-            // Deixa um espaço vazio para manter o botão "Avançar" na direita
             <div />
           )}
 
-          {/* Lógica do botão de Avançar/Finalizar que você já tinha */}
           {etapa < 3 ? (
             <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
           ) : (

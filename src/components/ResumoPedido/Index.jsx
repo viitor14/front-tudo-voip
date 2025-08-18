@@ -9,18 +9,36 @@ import {
   DivTermo
 } from './styled';
 
-export default function ResumoPedido() {
+export default function ResumoPedido({ formData, onFormChange }) {
+  let numerosParaExibir = '';
+
+  if (formData.tipoVenda === 'Portabilidade') {
+    // Se for portabilidade, verificamos o MODO de inserção
+    if (formData.modo === 'individual' && formData.numerosIndividuais) {
+      // Lógica que você já tinha para números individuais
+      numerosParaExibir = formData.numerosIndividuais
+        .map((numero) => numero.value)
+        .filter(Boolean)
+        .join(', ');
+    } else if (formData.modo === 'range' && formData.ranges) {
+      // LÓGICA NOVA para formatar e exibir os RANGES
+      numerosParaExibir = formData.ranges
+        .filter((r) => r.prefixo && r.rangeInicial && r.rangeFinal) // Filtra ranges incompletos
+        .map((r) => `${r.prefixo} ${r.rangeInicial}-${r.rangeFinal}`) // Formata cada range
+        .join(', '); // Junta os ranges com vírgula
+    }
+  }
+
   return (
     <DivGeral>
-      {/*div geral */}
       <DivResumoPedido>
         <p>Resumo Pedido</p>
         <DivInfo>
           <DivCliente>
             <p>Cliente</p>
             <DivInfoCliente>
-              <p>nome do cliente</p>
-              <p>cpf/cnpj</p>
+              <p>{formData.nomeCompleto}</p>
+              <p>{formData.cpfCnpj}</p>
             </DivInfoCliente>
             {/**
              * adicionar depois
@@ -34,13 +52,21 @@ export default function ResumoPedido() {
             <p>Detalhes do Pedido</p>
             <DivInfoCliente>
               <p>
-                Tipo: <span>Novo Número</span>
+                Tipo: <span>{formData.tipoVenda}</span>
               </p>
+              {formData.tipoVenda === 'Novo Numero' && (
+                <p>
+                  Quantidade: <span>{formData.quantidadeNumero}</span>
+                </p>
+              )}
+
+              {formData.tipoVenda === 'Portabilidade' && (
+                <p>
+                  Números: <span>{numerosParaExibir || 'Nenhum número informado'}</span>
+                </p>
+              )}
               <p>
-                Quantidade: <span>1</span>
-              </p>
-              <p>
-                Documento: <span>doc.pdf</span>
+                Documento: <span>{formData.documento || 'Nenhum documento anexado'}</span>
               </p>
             </DivInfoCliente>
             {/**
@@ -53,9 +79,9 @@ export default function ResumoPedido() {
       <DivOberservacoes>
         <span>Observações</span>
         <TextArea
-          name=""
-          id=""
-          placeholder="Adicione qualquer informação relevante aqui..."></TextArea>
+          placeholder="Adicione qualquer informação relevante aqui..."
+          value={formData.observacoes}
+          onChange={(e) => onFormChange('observacoes', e.target.value)}></TextArea>
       </DivOberservacoes>
 
       <DivTermo>

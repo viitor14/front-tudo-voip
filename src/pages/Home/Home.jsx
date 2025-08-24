@@ -16,8 +16,6 @@ import {
 
 import axios from '../../services/axios';
 
-import dados from './teste.json';
-
 import InfoDashboard from '../../components/InfoDashboard/Index';
 import InputWithIcon from '../../components/Input/Index';
 import Select from '../../components/select/Index';

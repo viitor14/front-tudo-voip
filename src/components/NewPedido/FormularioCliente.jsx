@@ -1,13 +1,76 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Label, DivInputRegion, DivTypeCell, DivInputRadio, DivContentSon } from './styled';
 
 import Select from '../select/Index';
 import InputWithIcon from '../Input/Index';
 
+import estadosData from './assets/ESTADOS.json';
+import cidadesData from './assets/CIDADES.json';
+import zonasData from './assets/ZONA TELEFONICA - DDD.json';
+
 export default function FormularioCliente({ dados, onFormChange }) {
   // Estado para controlar qual menu select está aberto
   const [openSelectId, setOpenSelectId] = useState(null);
+  const [opcoesUF, setOpcoesUF] = useState([]);
+  const [opcoesCN, setOpcoesCN] = useState([]); // CN = Centro Numérico (DDD)
+  const [opcoesCidade, setOpcoesCidade] = useState([]);
+
+  const formatarTexto = (texto) => {
+    if (!texto) return '';
+    const textoEmMinusculo = texto.toLowerCase();
+    return textoEmMinusculo.charAt(0).toUpperCase() + textoEmMinusculo.slice(1);
+  };
+
+  useEffect(() => {
+    // Extrai os nomes dos estados e formata-os
+    const ufs = estadosData.map((estado) => formatarTexto(estado.nome_estado));
+    setOpcoesUF(ufs);
+  }, []);
+
+  useEffect(() => {
+    if (dados.uf) {
+      const ufSelecionada = dados.uf.toUpperCase();
+
+      // Filtra as cidades que pertencem ao estado selecionado
+      const cidadesFiltradas = cidadesData.filter((cidade) => cidade.nome_estado === ufSelecionada);
+
+      // Extrai as áreas telefónicas (CNs) únicas para essa UF
+      const cnsUnicos = [...new Set(cidadesFiltradas.map((cidade) => cidade.area_telefonica))];
+      setOpcoesCN(cnsUnicos);
+
+      // Extrai os nomes das cidades para essa UF
+      const nomesCidades = cidadesFiltradas.map((cidade) => formatarTexto(cidade.nome_cidade));
+      setOpcoesCidade(nomesCidades);
+
+      // Limpa a cidade selecionada anteriormente se a UF mudar
+      onFormChange('cidade', '');
+      onFormChange('cn', '');
+    } else {
+      // Se nenhuma UF for selecionada, limpa as opções de CN e Cidade
+      setOpcoesCN([]);
+      setOpcoesCidade([]);
+    }
+  }, [dados.uf]);
+
+  // 3. Efeito para atualizar as Cidades quando o CN muda (filtro adicional)
+  useEffect(() => {
+    if (dados.cn) {
+      const ufSelecionada = dados.uf.toUpperCase();
+      const cnSelecionado = parseInt(dados.cn, 10);
+
+      // Filtra as cidades que pertencem à UF e ao CN selecionados
+      const cidadesFiltradas = cidadesData.filter(
+        (cidade) => cidade.nome_estado === ufSelecionada && cidade.area_telefonica === cnSelecionado
+      );
+
+      const nomesCidades = cidadesFiltradas.map((cidade) => formatarTexto(cidade.nome_cidade));
+      setOpcoesCidade(nomesCidades);
+
+      // Limpa a cidade selecionada anteriormente se o CN mudar
+      onFormChange('cidade', '');
+    }
+  }, [dados.cn]);
 
   // Função para gerenciar qual select está aberto
   const handleSelectOpen = (selectId) => {
@@ -43,7 +106,7 @@ export default function FormularioCliente({ dados, onFormChange }) {
         <div>
           <p>UF</p>
           <Select
-            options={['SP', 'RJ', 'MG', 'BA']}
+            options={opcoesUF}
             width="100%"
             height="44px"
             marginTop="-20px"
@@ -56,7 +119,7 @@ export default function FormularioCliente({ dados, onFormChange }) {
         <div>
           <p>CN</p>
           <Select
-            options={['Exemplo CN 1', 'Exemplo CN 2']}
+            options={opcoesCN}
             width="100%"
             height="44px"
             marginTop="-20px"
@@ -69,7 +132,7 @@ export default function FormularioCliente({ dados, onFormChange }) {
         <div>
           <p>Cidade</p>
           <Select
-            options={['São Paulo', 'Rio de Janeiro', 'Belo Horizonte']}
+            options={opcoesCidade}
             width="100%"
             height="44px"
             marginTop="-20px"

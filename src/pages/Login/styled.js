@@ -28,6 +28,13 @@ export const DivLogin = styled.div`
   width: 60%;
   gap: 40px;
   padding: 0 70px;
+
+  label {
+    > p {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+  }
 `;
 
 export const TitleLogin = styled.div`
@@ -46,7 +53,7 @@ export const TitleLogin = styled.div`
   }
 `;
 
-export const DivInputs = styled.div`
+export const FormInputs = styled.form`
   display: flex;
   flex-direction: column;
   gap: 40px;

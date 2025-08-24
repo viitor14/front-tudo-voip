@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import {
   Nav,
   Div,
@@ -12,6 +14,8 @@ import {
 import logo from './img/logo.png';
 
 export default function Header() {
+  const auth = useSelector((state) => state.auth);
+  const { user } = auth;
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,14 +27,22 @@ export default function Header() {
           {open && (
             <DivInfoUser>
               <NameEmail>
-                <p>Nome</p>
-                <p>Email@gmail.com</p>
+                <p>{user.nome}</p>
+                <p>{user.email}</p>
               </NameEmail>
 
               <button>
                 <DocumentIcon />
                 Termo de portabilidade
               </button>
+
+              {user?.admin && (
+                <button type="button">
+                  <DocumentIcon />
+                  Criar Usuario
+                </button>
+              )}
+
               <button>
                 <LogoutIcon />
                 Sair

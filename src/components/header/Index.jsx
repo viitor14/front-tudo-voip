@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import * as actions from '../../store/modules/auth/actions';
+import history from '../../services/history';
 
 import {
   Nav,
@@ -14,42 +18,57 @@ import {
 import logo from './img/logo.png';
 
 export default function Header() {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const { user } = auth;
   const [open, setOpen] = useState(false);
+  const { user, isLoggedIn, isAdmin } = useSelector((state) => ({
+    user: state.auth.user,
+    isLoggedIn: state.auth.isLoggedIn,
+    isAdmin: state.auth.user?.admin
+  }));
+
+  const logout = () => {
+    dispatch(actions.loginFailure());
+    history.push('/login');
+    toast.error('Você foi desconectado');
+  };
 
   return (
     <Nav>
       <Div>
         <img src={logo} alt="" />
-        <DivIcon>
-          <UserIcon onClick={() => setOpen(!open)} />
-          {open && (
-            <DivInfoUser>
-              <NameEmail>
-                <p>{user.nome}</p>
-                <p>{user.email}</p>
-              </NameEmail>
+        {isLoggedIn && (
+          <DivIcon>
+            <UserIcon onClick={() => setOpen(!open)} />
+            {open && (
+              <DivInfoUser>
+                {user && (
+                  <NameEmail>
+                    <p>{user.nome}</p>
+                    <p>{user.email}</p>
+                  </NameEmail>
+                )}
 
-              <button>
-                <DocumentIcon />
-                Termo de portabilidade
-              </button>
-
-              {user?.admin && (
                 <button type="button">
                   <DocumentIcon />
-                  Criar Usuario
+                  Termo de portabilidade
                 </button>
-              )}
 
-              <button>
-                <LogoutIcon />
-                Sair
-              </button>
-            </DivInfoUser>
-          )}
-        </DivIcon>
+                {isAdmin && (
+                  <button type="button">
+                    <DocumentIcon />
+                    Criar Usuario
+                  </button>
+                )}
+
+                <button type="button" onClick={logout}>
+                  <LogoutIcon />
+                  Sair
+                </button>
+              </DivInfoUser>
+            )}
+          </DivIcon>
+        )}
       </Div>
     </Nav>
   );

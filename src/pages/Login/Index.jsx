@@ -1,8 +1,10 @@
 import { useDispatch } from 'react-redux';
 
-import { Container } from '../../styles/GlobalStyles';
-import { Title, Paragrafo } from './styled';
+import InputWithIcon from '../../components/Input/Index';
+import { DivMain, DivLogo, DivLogin, TitleLogin, DivInputs, ButtonLogin } from './styled';
 import * as exampleActions from '../../store/modules/example/actions';
+
+import Logo from './img/logo.png';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -15,8 +17,29 @@ export default function Login() {
     dispatch(exampleActions.clicaBotaoRequest());
   }
   return (
-    <Container>
-      <div>teeste</div>
-    </Container>
+    <DivMain>
+      <DivLogo>
+        <img src={Logo} alt="" />
+      </DivLogo>
+      <DivLogin>
+        <TitleLogin>
+          <p>Faça login na sua conta</p>
+          <p>Insira suas credenciais para acessar o painel</p>
+        </TitleLogin>
+        <DivInputs>
+          <label>
+            <p>CPF/CPNJ</p>
+            <InputWithIcon placeholder="00.000.000/0000-00" />
+          </label>
+          <label>
+            <p>Senha</p>
+            <InputWithIcon placeholder="" />
+          </label>
+          <ButtonLogin>
+            <button>Fazer Login</button>
+          </ButtonLogin>
+        </DivInputs>
+      </DivLogin>
+    </DivMain>
   );
 }

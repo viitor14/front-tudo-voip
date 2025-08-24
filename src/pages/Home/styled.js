@@ -149,3 +149,40 @@ export const ChevronLeftIcon = styled(VscChevronLeft)`
   font-size: 20px;
   color: #000;
 `;
+
+export const ActionsCell = styled.td`
+  position: relative; // Essencial para o posicionamento do menu
+  text-align: center;
+`;
+
+export const ActionsMenu = styled.div`
+  position: absolute;
+  top: 30px; // Ajuste conforme necessário
+  right: 15px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 150px;
+  padding: 8px 8px;
+`;
+
+export const MenuItem = styled.button`
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background: none;
+  color: #000;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  &.delete {
+    color: red;
+  }
+`;

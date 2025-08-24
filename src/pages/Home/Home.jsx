@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Container } from '../../styles/GlobalStyles';
 import {
   DivTitle,
@@ -11,7 +13,10 @@ import {
   PaginationContainer,
   PaginationButton,
   ChevronLeftIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  ActionsMenu, // Importe do seu styled.js
+  MenuItem, // Importe do seu styled.js
+  ActionsCell
 } from './styled';
 
 import axios from '../../services/axios';
@@ -20,6 +25,7 @@ import InfoDashboard from '../../components/InfoDashboard/Index';
 import InputWithIcon from '../../components/Input/Index';
 import Select from '../../components/select/Index';
 import CadastroPedido from '../../components/NewPedido/Index';
+import ModalVerPedido from '../../components/ModalVerPedido/Index';
 
 export default function Home() {
   const [pedidos, setPedidos] = useState([]);
@@ -27,8 +33,14 @@ export default function Home() {
   const [showCadastro, setShowCadastro] = useState(false);
   const [valueSelected, setValueSelected] = useState('Todos os Status');
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [menuAbertoId, setMenuAbertoId] = useState(null); // Controla qual menu de 3 pontos está aberto
+  const [modalVisivel, setModalVisivel] = useState(false); // Controla a visibilidade do modal de detalhes
+  const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
+
   const itemsPerPage = 5;
 
+  const token = useSelector((state) => state.auth.token);
   // Calcula o índice inicial e final dos itens da página atual
   useEffect(() => {
     async function getData() {
@@ -106,10 +118,72 @@ export default function Home() {
     return pedidos.filter((item) => item.status_pedido === status).length;
   };
 
-  console.log(pedidos);
+  const fetchData = useCallback(async () => {
+    if (!token) {
+      //setIsLoading(false);
+      return;
+    }
+    //setIsLoading(true);
+    try {
+      const response = await axios.get('/pedido', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setPedidos(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar pedidos:', error);
+    } finally {
+      //setIsLoading(false);
+    }
+  }, [token]); // A função é recriada se o token mudar
+
+  // 3. O useEffect agora apenas chama a função fetchData
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleAbrirMenu = (pedidoId) => {
+    setMenuAbertoId(menuAbertoId === pedidoId ? null : pedidoId);
+  };
+
+  const handleVerPedido = (pedido) => {
+    setPedidoSelecionado(pedido);
+    setModalVisivel(true);
+    setMenuAbertoId(null); // Fecha o menu de ações
+  };
+
+  const handleExcluirPedido = async (pedidoId) => {
+    // eslint-disable-next-line no-alert
+    if (
+      !window.confirm(
+        'Tem a certeza que deseja excluir este pedido? Esta ação não pode ser desfeita.'
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await axios.delete(`/pedido/${pedidoId}`);
+      toast.success('Pedido excluído com sucesso!');
+      fetchData();
+    } catch (error) {
+      toast.error('Erro ao excluir o pedido.');
+      console.error('Erro ao excluir pedido:', error);
+    } finally {
+      setMenuAbertoId(null);
+    }
+  };
+
   return (
     <Container>
-      {showCadastro && <CadastroPedido onClose={() => setShowCadastro(false)} />}
+      {showCadastro && (
+        <CadastroPedido onClose={() => setShowCadastro(false)} onPedidoCriado={fetchData} />
+      )}
+
+      {modalVisivel && (
+        <ModalVerPedido pedido={pedidoSelecionado} onClose={() => setModalVisivel(false)} />
+      )}
       <DivTitle>
         <Title>Dashboard</Title>
         <button onClick={() => setShowCadastro(true)}>Cadastrar Pedido</button>
@@ -165,9 +239,20 @@ export default function Home() {
                 <td className="textStatus">
                   <StatusSpan status={pedido.status_pedido}>{pedido.status_pedido}</StatusSpan>
                 </td>
-                <td>
-                  <EllipsisIcon />
-                </td>
+                <ActionsCell>
+                  <EllipsisIcon onClick={() => handleAbrirMenu(pedido.cod_pedido)} />
+                  {menuAbertoId === pedido.cod_pedido && (
+                    <ActionsMenu>
+                      <MenuItem onClick={() => handleVerPedido(pedido)}>Ver Pedido</MenuItem>
+                      {/* ✅ ALTERAÇÃO AQUI: O botão de excluir agora aparece para todos */}
+                      <MenuItem
+                        className="delete"
+                        onClick={() => handleExcluirPedido(pedido.cod_pedido)}>
+                        Excluir Pedido
+                      </MenuItem>
+                    </ActionsMenu>
+                  )}
+                </ActionsCell>
               </tr>
             ))}
           </tbody>

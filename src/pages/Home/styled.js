@@ -70,19 +70,19 @@ export const StatusSpan = styled.span`
   padding: 4px 27px;
   font-size: 14px;
   background: ${({ status }) =>
-    status === 'Ativo'
+    status === 'CONCLUÍDO'
       ? 'rgba(209, 244, 228, 1)'
-      : status === 'Em Andamento'
+      : status === 'EM ANDAMENTO'
         ? 'rgba(255, 244, 184, 1)'
-        : status === 'Recusado'
+        : status === 'RECUSADO'
           ? 'rgba(250, 219, 216, 1)'
           : '#fff'};
   color: ${({ status }) =>
-    status === 'Ativo'
+    status === 'CONCLUÍDO'
       ? 'rgba(0, 77, 43, 1)'
-      : status === 'Em Andamento'
+      : status === 'EM ANDAMENTO'
         ? 'rgba(140, 109, 0, 1)'
-        : status === 'Recusado'
+        : status === 'RECUSADO'
           ? 'rgba(139, 0, 0, 1)'
           : '#fff'};
 `;

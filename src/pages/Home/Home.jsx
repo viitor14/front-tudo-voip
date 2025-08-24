@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from '../../styles/GlobalStyles';
 import {
   DivTitle,
@@ -14,6 +14,8 @@ import {
   ChevronRightIcon
 } from './styled';
 
+import axios from '../../services/axios';
+
 import dados from './teste.json';
 
 import InfoDashboard from '../../components/InfoDashboard/Index';
@@ -22,6 +24,7 @@ import Select from '../../components/select/Index';
 import CadastroPedido from '../../components/NewPedido/Index';
 
 export default function Home() {
+  const [pedidos, setPedidos] = useState([]);
   const [openSelectId, setOpenSelectId] = useState(null);
   const [showCadastro, setShowCadastro] = useState(false);
   const [valueSelected, setValueSelected] = useState('Todos os Status');
@@ -29,6 +32,20 @@ export default function Home() {
   const itemsPerPage = 5;
 
   // Calcula o índice inicial e final dos itens da página atual
+  useEffect(() => {
+    async function getData() {
+      const response = await axios.get('/pedido');
+      setPedidos(response.data);
+    }
+
+    getData();
+  }, []);
+
+  const formatarTexto = (texto) => {
+    if (!texto) return ''; // Retorna uma string vazia se o texto for nulo
+    const textoEmMinusculo = texto.toLowerCase();
+    return textoEmMinusculo.charAt(0).toUpperCase() + textoEmMinusculo.slice(1);
+  };
 
   const handleSelectOpen = (selectId) => {
     setOpenSelectId(selectId);
@@ -52,17 +69,23 @@ export default function Home() {
     'Ações'
   ];
 
+  //CONSULTA DE PESQUISA (CASO PRECISE ADICIONAR NOVA COLUNA SÓ MUDAR A COLUNA)
   const getFilteredData = () => {
-    return dados.filter((item) => {
-      // Filtro de texto (procura em cliente, cidade e cpf/cnpj)
+    return pedidos.filter((item) => {
       const searchFilter =
         searchTerm === '' ||
-        item.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.cidade.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.cpfCnpj.toLowerCase().includes(searchTerm.toLowerCase());
+        (item.nome_completo &&
+          item.nome_completo.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item.nome_empresa && item.nome_empresa.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item.cidade?.nome_cidade &&
+          item.cidade.nome_cidade.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item.tipo_venda?.tipo_venda &&
+          item.tipo_venda.tipo_venda.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item.cpf && item.cpf.includes(searchTerm)) ||
+        (item.cnpj && item.cnpj.includes(searchTerm));
 
-      // Filtro de status
-      const statusFilter = valueSelected === 'Todos os Status' || item.status === valueSelected;
+      const statusFilter =
+        valueSelected === 'Todos os Status' || item.status_pedido === valueSelected;
 
       return searchFilter && statusFilter;
     });
@@ -77,13 +100,15 @@ export default function Home() {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const getTotalPedidos = () => {
-    return dados.length;
+    return pedidos.length;
   };
 
+  //TOTAL DE PEDIDOS DE ACORDO COM O STATUS
   const getTotalByStatus = (status) => {
-    return dados.filter((item) => item.status === status).length;
+    return pedidos.filter((item) => item.status_pedido === status).length;
   };
 
+  console.log(pedidos);
   return (
     <Container>
       {showCadastro && <CadastroPedido onClose={() => setShowCadastro(false)} />}
@@ -94,9 +119,9 @@ export default function Home() {
 
       <BoxInfoDashboard>
         <InfoDashboard title="Total de Números" number={getTotalPedidos()} />
-        <InfoDashboard title="Ativos" number={getTotalByStatus('Ativo')} />
-        <InfoDashboard title="Em Andamento" number={getTotalByStatus('Em Andamento')} />
-        <InfoDashboard title="Recusados" number={getTotalByStatus('Recusado')} />
+        <InfoDashboard title="Ativos" number={getTotalByStatus('CONCLUÍDO')} />
+        <InfoDashboard title="Em Andamento" number={getTotalByStatus('EM ANDAMENTO')} />
+        <InfoDashboard title="Recusados" number={getTotalByStatus('RECUSADO')} />
       </BoxInfoDashboard>
       <DivFilter>
         <InputWithIcon
@@ -127,16 +152,20 @@ export default function Home() {
           </thead>
           <tbody>
             {currentItems.map((pedido) => (
-              <tr key={pedido.id}>
-                <td>{pedido.id}</td>
-                <td>{pedido.data}</td>
-                <td>{pedido.tipo}</td>
-                <td>{pedido.cn}</td>
-                <td>{pedido.cliente}</td>
-                <td>{pedido.cpfCnpj}</td>
-                <td>{pedido.cidade}</td>
+              <tr key={pedido.cod_pedido}>
+                <td>{pedido.cod_pedido}</td>
+                <td>
+                  {pedido.data_pedido
+                    ? new Date(pedido.data_pedido).toLocaleDateString('pt-BR')
+                    : '-'}
+                </td>
+                <td>{formatarTexto(pedido.tipo_venda?.tipo_venda)}</td>
+                <td>{pedido.zona_telefonica?.area_telefonica}</td>
+                <td>{pedido.nome_completo || pedido.nome_empresa}</td>
+                <td>{pedido.cpf || pedido.cnpj}</td>
+                <td>{pedido.cidade?.nome_cidade}</td>
                 <td className="textStatus">
-                  <StatusSpan status={pedido.status}>{pedido.status}</StatusSpan>
+                  <StatusSpan status={pedido.status_pedido}>{pedido.status_pedido}</StatusSpan>
                 </td>
                 <td>
                   <EllipsisIcon />

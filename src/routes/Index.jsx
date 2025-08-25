@@ -14,8 +14,8 @@ export default function Routes() {
       {/* ROTA PÚBLICA: Não usa o DefaultLayout */}
       <MyRoute exact path="/login" component={Login} />
 
-      {/* ROTA PRIVADA: Usa o DefaultLayout para ter o Header */}
-      <MyRoute exact path="/">
+      {/* ROTA PRIVADA: Usa o DefaultLayout para ter o Header ----- TRAVAR ROTA PARA APENAS USUARIOS LOGADOS */}
+      <MyRoute exact path="/" isClosed={true}>
         <DefaultLayout>
           <Home />
         </DefaultLayout>

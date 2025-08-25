@@ -42,14 +42,6 @@ export default function Home() {
 
   const token = useSelector((state) => state.auth.token);
   // Calcula o índice inicial e final dos itens da página atual
-  useEffect(() => {
-    async function getData() {
-      const response = await axios.get('/pedido');
-      setPedidos(response.data);
-    }
-
-    getData();
-  }, []);
 
   const formatarTexto = (texto) => {
     if (!texto) return ''; // Retorna uma string vazia se o texto for nulo

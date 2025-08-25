@@ -3,14 +3,12 @@ import { Div, DivInput } from './styled';
 
 export default function NovoNumero({ formData, onFormChange }) {
   const aumentarValor = () => {
-    const valorAtual = formData.quantidadeNumero || 0;
-
+    const valorAtual = Number(formData.quantidadeNumero) || 0;
     onFormChange('quantidadeNumero', valorAtual + 1);
   };
 
   const diminuirValor = () => {
-    const valorAtual = formData.quantidadeNumero || 0;
-
+    const valorAtual = Number(formData.quantidadeNumero) || 0;
     if (valorAtual > 1) {
       onFormChange('quantidadeNumero', valorAtual - 1);
     }

@@ -41,7 +41,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     cidade: 'Selecione',
     tipoVenda: 'Novo Numero',
     modo: 'individual',
-    quantidadeNumero: '1',
+    quantidadeNumero: 1,
     numerosIndividuais: [{ id: Date.now(), value: '' }],
     ranges: [{ id: Date.now(), prefixo: '', rangeInicial: '', rangeFinal: '' }]
   });

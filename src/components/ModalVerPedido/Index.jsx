@@ -19,6 +19,8 @@ const formatarTexto = (texto) => {
 export default function ModalVerPedido({ pedido, onClose }) {
   if (!pedido) return null;
 
+  console.log(pedido);
+
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -66,9 +68,21 @@ export default function ModalVerPedido({ pedido, onClose }) {
 
           <DetailSection>
             <h3>Detalhes Adicionais</h3>
-            <DetailItem>
-              <strong>Qtd. Novos Números:</strong> {pedido.quantidade_novos_numeros || 'N/A'}
-            </DetailItem>
+            {pedido.tipo_venda?.tipo_venda === 'PORTABILIDADE' ? (
+              <DetailItem>
+                <strong>Número Portabilidade:</strong>
+                <span>
+                  {pedido.portabilidade?.telefone
+                    ? pedido.portabilidade.telefone
+                    : 'Nenhum número informado'}
+                </span>
+              </DetailItem>
+            ) : (
+              <DetailItem>
+                <strong>Qtd. Novos Números:</strong>
+                <span>{pedido.quantidade_novos_numeros || 'N/A'}</span>
+              </DetailItem>
+            )}
             <DetailItem>
               <strong>Observações:</strong> {pedido.observacoes || 'Nenhuma'}
             </DetailItem>

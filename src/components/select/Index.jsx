@@ -1,5 +1,5 @@
 import { SelectWrapper, Selected, OptionsList, OptionItem, ArrowIcon } from './styled';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 export default function Select({
   options,
   value,
@@ -8,38 +8,31 @@ export default function Select({
   marginTop,
   width,
   isOpen,
-  onOpen
+  onToggle
 }) {
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(isOpen);
-  }, [isOpen]);
-
-  const handleClick = () => {
-    if (!open) {
-      onOpen(); // Notifica o componente pai
-    } else {
-      setOpen(false); // Fecha o select atual
-    }
+  const handleSelect = (optionValue) => {
+    onChange(optionValue); // 1. Avisa o pai que o valor mudou
+    onToggle(); // 2. Avisa o pai para fechar o select
   };
-
-  const handleSelect = (option) => {
-    onChange(option);
-    setOpen(false);
-  };
-
+  const selectedLabel =
+    options.find((opt) => opt.value === value)?.label || value || 'Selecione...';
   return (
     <SelectWrapper width={width}>
-      <Selected height={height} onClick={handleClick}>
+      <Selected height={height} onClick={onToggle}>
         {value || 'Selecione...'}
-        <ArrowIcon open={open} />
+        <ArrowIcon open={isOpen} />
       </Selected>
-      {open && (
+      {isOpen && (
         <OptionsList marginTop={marginTop}>
+          {/* 2. ATUALIZE O MAP PARA USAR OS OBJETOS */}
           {options.map((opt) => (
-            <OptionItem key={opt} onClick={() => handleSelect(opt)}>
-              {opt}
+            <OptionItem
+              key={opt.value} // Use o 'value' como chave, que é único
+              onClick={() => handleSelect(opt.value)} // Passe apenas o 'value' para a função
+            >
+              {/* Mostre o 'label' para o usuário */}
+              {opt.label}
             </OptionItem>
           ))}
         </OptionsList>

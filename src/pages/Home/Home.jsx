@@ -38,6 +38,9 @@ export default function Home() {
   const [modalVisivel, setModalVisivel] = useState(false); // Controla a visibilidade do modal de detalhes
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
 
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
+  const [pedidoEmEdicao, setPedidoEmEdicao] = useState(null);
+
   const itemsPerPage = 5;
 
   const token = useSelector((state) => state.auth.token);
@@ -47,10 +50,6 @@ export default function Home() {
     if (!texto) return ''; // Retorna uma string vazia se o texto for nulo
     const textoEmMinusculo = texto.toLowerCase();
     return textoEmMinusculo.charAt(0).toUpperCase() + textoEmMinusculo.slice(1);
-  };
-
-  const handleSelectOpen = (selectId) => {
-    setOpenSelectId(selectId);
   };
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -167,6 +166,17 @@ export default function Home() {
     }
   };
 
+  const handleSelectToggle = () => {
+    setOpenSelectId((prevId) => (prevId === 'status' ? null : 'status'));
+  };
+
+  const statusOptions = [
+    { value: 'Todos os Status', label: 'Todos os Status' },
+    { value: 'CONCLUÍDO', label: 'Concluído' },
+    { value: 'EM ANDAMENTO', label: 'Em Andamento' },
+    { value: 'RECUSADO', label: 'Recusado' }
+  ];
+
   return (
     <Container>
       {showCadastro && (
@@ -196,13 +206,13 @@ export default function Home() {
           padding="10px 40px 10px 60px"
         />
         <Select
-          options={['Todos os Status', 'Ativo', 'Em Andamento', 'Recusado']}
+          options={statusOptions} // Sugestão: usar os valores reais do backend
           onChange={(value) => setValueSelected(value)}
           value={valueSelected}
-          isOpen={openSelectId === 'status'}
-          onOpen={() => handleSelectOpen('status')}
-          width="200px" // Você pode ajustar a largura conforme necessário
+          width="200px"
           height="44px"
+          isOpen={openSelectId === 'status'}
+          onToggle={handleSelectToggle}
         />
       </DivFilter>
       <div>

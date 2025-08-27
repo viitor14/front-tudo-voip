@@ -210,7 +210,7 @@ export default function Home() {
           onChange={(value) => setValueSelected(value)}
           value={valueSelected}
           width="200px"
-          height="44px"
+          height="100%"
           isOpen={openSelectId === 'status'}
           onToggle={handleSelectToggle}
         />

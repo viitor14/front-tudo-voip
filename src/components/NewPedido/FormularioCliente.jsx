@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
-
-import { Label, DivInputRegion, DivTypeCell, DivInputRadio, DivContentSon } from './styled';
-
+import {
+  Label,
+  DivInputRegion,
+  DivTypeCell,
+  DivInputRadio,
+  DivContentSon,
+  ErrorMessage
+} from './styled';
 import Select from '../select/Index';
 import InputWithIcon from '../Input/Index';
-
 import estadosData from './assets/ESTADOS.json';
 import cidadesData from './assets/CIDADES.json';
-import zonasData from './assets/ZONA TELEFONICA - DDD.json';
 
-export default function FormularioCliente({ dados, onFormChange }) {
-  // Estado para controlar qual menu select está aberto
+export default function FormularioCliente({ dados, onFormChange, errors }) {
+  console.log(
+    '%c[FILHO - FormularioCliente] RENDERIZANDO com props:',
+    'color: blue; font-weight: bold;',
+    { dados, errors }
+  );
+
   const [openSelectId, setOpenSelectId] = useState(null);
   const [opcoesUF, setOpcoesUF] = useState([]);
-  const [opcoesCN, setOpcoesCN] = useState([]); // CN = Centro Numérico (DDD)
+  const [opcoesCN, setOpcoesCN] = useState([]);
   const [opcoesCidade, setOpcoesCidade] = useState([]);
 
   const formatarTexto = (texto) => {
@@ -22,61 +30,74 @@ export default function FormularioCliente({ dados, onFormChange }) {
     return textoEmMinusculo.charAt(0).toUpperCase() + textoEmMinusculo.slice(1);
   };
 
+  const handleUfChange = (novaUf) => {
+    console.log('[FILHO - FormularioCliente] handleUfChange chamado com:', novaUf);
+    onFormChange('uf', novaUf);
+    onFormChange('cn', 'Selecione');
+    onFormChange('cidade', 'Selecione');
+  };
+
+  const handleCnChange = (novoCn) => {
+    onFormChange('cn', novoCn);
+    onFormChange('cidade', 'Selecione');
+  };
+
+  const handleSelectOpen = (selectId) => {
+    setOpenSelectId(openSelectId === selectId ? null : selectId);
+  };
+
   useEffect(() => {
-    // Extrai os nomes dos estados e formata-os
-    const ufs = estadosData.map((estado) => formatarTexto(estado.nome_estado));
-    setOpcoesUF(ufs);
+    console.log('[FILHO - FormularioCliente] useEffect das UFs montou.');
+
+    const ufsFormatadas = estadosData.map((estado) => ({
+      value: estado.cod_estado,
+      label: formatarTexto(estado.nome_estado)
+    }));
+
+    setOpcoesUF(ufsFormatadas);
   }, []);
 
   useEffect(() => {
-    if (dados.uf) {
-      const ufSelecionada = dados.uf.toUpperCase();
+    if (dados.uf && dados.uf !== 'Selecione') {
+      const estadoSelecionado = estadosData.find((e) => e.cod_estado === dados.uf);
+      if (!estadoSelecionado) return;
+      const nomeEstadoSelecionado = estadoSelecionado.nome_estado.toUpperCase();
+      const cidadesFiltradas = cidadesData.filter(
+        (cidade) => cidade.nome_estado.toUpperCase() === nomeEstadoSelecionado
+      );
 
-      // Filtra as cidades que pertencem ao estado selecionado
-      const cidadesFiltradas = cidadesData.filter((cidade) => cidade.nome_estado === ufSelecionada);
-
-      // Extrai as áreas telefónicas (CNs) únicas para essa UF
       const cnsUnicos = [...new Set(cidadesFiltradas.map((cidade) => cidade.area_telefonica))];
-      setOpcoesCN(cnsUnicos);
-
-      // Extrai os nomes das cidades para essa UF
-      const nomesCidades = cidadesFiltradas.map((cidade) => formatarTexto(cidade.nome_cidade));
-      setOpcoesCidade(nomesCidades);
-
-      // Limpa a cidade selecionada anteriormente se a UF mudar
-      onFormChange('cidade', '');
-      onFormChange('cn', '');
+      const cnsFormatados = cnsUnicos.map((cn) => ({ value: cn, label: cn.toString() }));
+      setOpcoesCN(cnsFormatados);
+      const cidadesFormatadas = cidadesFiltradas.map((cidade) => ({
+        value: formatarTexto(cidade.nome_cidade),
+        label: formatarTexto(cidade.nome_cidade)
+      }));
+      setOpcoesCidade(cidadesFormatadas);
     } else {
-      // Se nenhuma UF for selecionada, limpa as opções de CN e Cidade
       setOpcoesCN([]);
       setOpcoesCidade([]);
     }
   }, [dados.uf]);
 
-  // 3. Efeito para atualizar as Cidades quando o CN muda (filtro adicional)
   useEffect(() => {
-    if (dados.cn) {
-      const ufSelecionada = dados.uf.toUpperCase();
+    if (dados.cn && dados.cn !== 'Selecione' && dados.uf) {
+      const estadoSelecionado = estadosData.find((e) => e.cod_estado === dados.uf);
+      if (!estadoSelecionado) return;
+      const nomeEstadoSelecionado = estadoSelecionado.nome_estado.toUpperCase();
       const cnSelecionado = parseInt(dados.cn, 10);
-
-      // Filtra as cidades que pertencem à UF e ao CN selecionados
       const cidadesFiltradas = cidadesData.filter(
-        (cidade) => cidade.nome_estado === ufSelecionada && cidade.area_telefonica === cnSelecionado
+        (cidade) =>
+          cidade.nome_estado.toUpperCase() === nomeEstadoSelecionado &&
+          cidade.area_telefonica === cnSelecionado
       );
-
-      const nomesCidades = cidadesFiltradas.map((cidade) => formatarTexto(cidade.nome_cidade));
-      setOpcoesCidade(nomesCidades);
-
-      // Limpa a cidade selecionada anteriormente se o CN mudar
-      onFormChange('cidade', '');
+      const cidadesFormatadas = cidadesFiltradas.map((cidade) => ({
+        value: formatarTexto(cidade.nome_cidade),
+        label: formatarTexto(cidade.nome_cidade)
+      }));
+      setOpcoesCidade(cidadesFormatadas);
     }
-  }, [dados.cn]);
-
-  // Função para gerenciar qual select está aberto
-  const handleSelectOpen = (selectId) => {
-    // Se o select clicado já estiver aberto, fecha. Senão, abre.
-    setOpenSelectId(openSelectId === selectId ? null : selectId);
-  };
+  }, [dados.cn, dados.uf]);
 
   return (
     <DivContentSon>
@@ -87,7 +108,9 @@ export default function FormularioCliente({ dados, onFormChange }) {
             placeholder="00.000.000/0000-00"
             value={dados.cpfCnpj}
             onChange={(e) => onFormChange('cpfCnpj', e.target.value)}
+            hasError={!!errors.cpfCnpj}
           />
+          {errors.cpfCnpj && <ErrorMessage>{errors.cpfCnpj}</ErrorMessage>}
         </Label>
       </div>
 
@@ -98,7 +121,9 @@ export default function FormularioCliente({ dados, onFormChange }) {
             placeholder="Nome do Cliente"
             value={dados.nomeCompleto}
             onChange={(e) => onFormChange('nomeCompleto', e.target.value)}
+            hasError={!!errors.nomeCompleto}
           />
+          {errors.nomeCompleto && <ErrorMessage>{errors.nomeCompleto}</ErrorMessage>}
         </Label>
       </div>
 
@@ -107,40 +132,43 @@ export default function FormularioCliente({ dados, onFormChange }) {
           <p>UF</p>
           <Select
             options={opcoesUF}
-            width="100%"
-            height="44px"
-            marginTop="-20px"
-            onChange={(value) => onFormChange('uf', value)}
             value={dados.uf}
+            onChange={handleUfChange}
             isOpen={openSelectId === 'uf'}
-            onOpen={() => handleSelectOpen('uf')}
+            onToggle={() => handleSelectOpen('uf')}
+            hasError={!!errors.uf}
+            width="100%"
+            marginTop="-20px"
           />
+          {errors.uf && <ErrorMessage>{errors.uf}</ErrorMessage>}
         </div>
         <div>
           <p>CN</p>
           <Select
             options={opcoesCN}
-            width="100%"
-            height="44px"
-            marginTop="-20px"
             value={dados.cn}
-            onChange={(value) => onFormChange('cn', value)}
+            onChange={handleCnChange}
             isOpen={openSelectId === 'cn'}
-            onOpen={() => handleSelectOpen('cn')}
+            onToggle={() => handleSelectOpen('cn')}
+            hasError={!!errors.cn}
+            width="100%"
+            marginTop="-20px"
           />
+          {errors.cn && <ErrorMessage>{errors.cn}</ErrorMessage>}
         </div>
         <div>
           <p>Cidade</p>
           <Select
             options={opcoesCidade}
-            width="100%"
-            height="44px"
-            marginTop="-20px"
             value={dados.cidade}
             onChange={(value) => onFormChange('cidade', value)}
             isOpen={openSelectId === 'cidade'}
-            onOpen={() => handleSelectOpen('cidade')}
+            onToggle={() => handleSelectOpen('cidade')}
+            hasError={!!errors.cidade}
+            width="100%"
+            marginTop="-20px"
           />
+          {errors.cidade && <ErrorMessage>{errors.cidade}</ErrorMessage>}
         </div>
       </DivInputRegion>
 

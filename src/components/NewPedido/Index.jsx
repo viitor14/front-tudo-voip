@@ -1,9 +1,7 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import axios from '../../services/axios';
+// src/components/CadastroPedido/index.jsx
 
-import cidadesData from './assets/CIDADES.json';
-import tiposVendaData from './assets/TIPOS_VENDA.json';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import {
   ModalOverlay,
@@ -20,19 +18,15 @@ import {
 
 import FormularioCliente from './FormularioCliente';
 import PedidoNumero from '../PedidoNumero/Index';
-import IconNavigation from '../IconNavigation/Index';
 import ResumoPedido from '../ResumoPedido/Index';
 import NovoNumero from '../NovoNumero/Index';
+import IconNavigation from '../IconNavigation/Index';
 
-const formatarTexto = (texto) => {
-  if (!texto) return '';
-  const textoEmMinusculo = texto.toLowerCase();
-  return textoEmMinusculo.charAt(0).toUpperCase() + textoEmMinusculo.slice(1);
-};
-
-export default function CadastroPedido({ onClose, onPedidoCriado }) {
+export default function CadastroPedido({ onClose }) {
   const [etapa, setEtapa] = useState(1);
+  const [errors, setErrors] = useState({});
 
+  // A ÚNICA FONTE DA VERDADE PARA TODOS OS DADOS DO FORMULÁRIO
   const [formData, setFormData] = useState({
     cpfCnpj: '',
     nomeCompleto: '',
@@ -40,85 +34,63 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     cn: 'Selecione',
     cidade: 'Selecione',
     tipoVenda: 'Novo Numero',
-    modo: 'individual',
     quantidadeNumero: 1,
+    // Estado para a Etapa 2
+    modo: 'individual',
     numerosIndividuais: [{ id: Date.now(), value: '' }],
-    ranges: [{ id: Date.now(), prefixo: '', rangeInicial: '', rangeFinal: '' }]
+    ranges: [{ id: Date.now(), prefixo: '', rangeInicial: '', rangeFinal: '' }],
+    // Estado para a Etapa 3
+    observacoes: '',
+    aceitouTermos: false
   });
 
+  console.log(
+    '%c[PAI - CadastroPedido] RENDERIZANDO com formData:',
+    'color: green; font-weight: bold;',
+    formData
+  );
+
   const handleFormChange = (campo, valor) => {
-    setFormData((dadosAnteriores) => ({
-      ...dadosAnteriores,
-      [campo]: valor
-    }));
+    console.log(
+      `[PAI - CadastroPedido] handleFormChange chamado para atualizar o campo '${campo}' para o valor '${valor}'`
+    );
+    setFormData((dadosAnteriores) => {
+      const newState = { ...dadosAnteriores, [campo]: valor };
+      console.log('[PAI - CadastroPedido] Estado ANTERIOR:', dadosAnteriores);
+      console.log('[PAI - CadastroPedido] Estado NOVO:', newState);
+      return newState;
+    });
   };
 
+  // Função de validação para a Etapa 1
+  const validateStep1 = () => {
+    const newErrors = {};
+    const docLimpo = formData.cpfCnpj.replace(/\D/g, '');
+    if (docLimpo.length !== 11 && docLimpo.length !== 14)
+      newErrors.cpfCnpj = 'CPF ou CNPJ inválido.';
+    if (!formData.nomeCompleto.trim()) newErrors.nomeCompleto = 'O nome é obrigatório.';
+    if (formData.uf === 'Selecione') newErrors.uf = 'Selecione uma UF.';
+    if (formData.cn === 'Selecione') newErrors.cn = 'Selecione um CN.';
+    if (formData.cidade === 'Selecione') newErrors.cidade = 'Selecione uma cidade.';
+    return newErrors;
+  };
+
+  // Funções de navegação
   const proximaEtapa = () => {
-    setEtapa((etapaAtual) => etapaAtual + 1);
+    if (etapa === 1) {
+      const validationErrors = validateStep1();
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        toast.error('Por favor, corrija os campos destacados.');
+        return;
+      }
+    }
+    setErrors({}); // Limpa os erros ao avançar
+    if (etapa < 3) setEtapa((etapaAtual) => etapaAtual + 1);
   };
 
   const etapaAnterior = () => {
-    setEtapa((etapaAtual) => etapaAtual - 1);
-  };
-
-  const handleSubmit = async () => {
-    //setIsLoading(true);
-
-    // 1. Traduz os nomes para códigos
-    const cidadeSelecionada = cidadesData.find(
-      (c) => formatarTexto(c.nome_cidade) === formData.cidade
-    );
-    const tipoVendaSelecionado = tiposVendaData.find(
-      (tv) => tv.tipo_venda === formData.tipoVenda.toUpperCase()
-    );
-
-    if (!cidadeSelecionada || !tipoVendaSelecionado) {
-      toast.error('Por favor, preencha todos os campos corretamente.');
-      //setIsLoading(false);
-      return;
-    }
-
-    // 2. Monta o objeto final no formato que a API espera
-    const dadosParaApi = {
-      cod_cidade: cidadeSelecionada.cod_cidade,
-      cod_tipo_venda: tipoVendaSelecionado.cod_tipo_venda,
-      observacoes: formData.observacoes
-    };
-
-    // Adiciona os campos de pessoa física ou jurídica
-    if (formData.cpfCnpj.length <= 11) {
-      dadosParaApi.cpf = formData.cpfCnpj;
-      dadosParaApi.nome_completo = formData.nomeCompleto;
-    } else {
-      dadosParaApi.cnpj = formData.cpfCnpj;
-      dadosParaApi.nome_empresa = formData.nomeCompleto;
-    }
-
-    // Adiciona os detalhes do tipo de venda
-    if (tipoVendaSelecionado.cod_tipo_venda === 1) {
-      // Novo Número
-      dadosParaApi.quantidade_novos_numeros = parseInt(formData.quantidadeNumero, 10);
-    } else {
-      // Portabilidade
-      dadosParaApi.numeros_portabilidade = formData.numerosIndividuais
-        .map((n) => n.value)
-        .filter(Boolean); // Filtra números vazios
-    }
-
-    // 3. Envia a requisição para a API
-
-    try {
-      await axios.post('/pedido', dadosParaApi);
-      toast.success('Pedido criado com sucesso!');
-      onPedidoCriado();
-      console.log(dadosParaApi);
-      onClose(); // Fecha o modal em caso de sucesso
-    } catch (error) {
-      const errors = error.response?.data?.errors || ['Ocorreu um erro.'];
-      errors.forEach((err) => toast.error(err));
-    } finally {
-      //setIsLoading(false);
-    }
+    if (etapa > 1) setEtapa((etapaAtual) => etapaAtual - 1);
   };
 
   return (
@@ -135,7 +107,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
 
           <DivContent>
             {etapa === 1 && (
-              <FormularioCliente dados={formData} onFormChange={handleFormChange} /> // Mostra os campos do cliente na etapa 1
+              <FormularioCliente dados={formData} onFormChange={handleFormChange} errors={errors} />
             )}
             {etapa === 2 && (
               <>
@@ -163,7 +135,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
           {etapa < 3 ? (
             <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
           ) : (
-            <ButtonNext onClick={handleSubmit}>Concluir Pedido</ButtonNext>
+            <ButtonNext>Concluir Pedido</ButtonNext>
           )}
         </ContainerBotoes>
       </ModalContent>

@@ -66,6 +66,7 @@ export const DivInputRegion = styled.div`
   display: flex;
   gap: 16px;
   width: 100%;
+  margin-bottom: 20px;
 
   > div {
     flex: 1;
@@ -184,4 +185,10 @@ export const BotaoVoltar = styled.button`
 
 export const StyledIconBack = styled(IoIosArrowBack)`
   color: #000;
+`;
+
+export const ErrorMessage = styled.span`
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
 `;

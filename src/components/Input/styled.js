@@ -15,6 +15,12 @@ export const StyledInput = styled.input`
   font-family: 'Figtree', sans-serif;
   font-weight: 300;
   font-size: 14px;
+
+  border: 1px solid ${(props) => (props.hasError ? '#e74c3c' : '#ccc')};
+
+  &:focus {
+    border-color: ${(props) => (props.hasError ? '#e74c3c' : '#3400a3ff')};
+  }
 `;
 
 export const Icon = styled(FiSearch)`

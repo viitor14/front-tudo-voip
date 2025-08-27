@@ -1,0 +1,3 @@
+validar campo de uf, cn e cidade, coloca a função para verificar quando sair de focus
+
+depois ajeitar em detalhes e em revisão

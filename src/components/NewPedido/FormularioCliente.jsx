@@ -12,7 +12,7 @@ import InputWithIcon from '../Input/Index';
 import estadosData from './assets/ESTADOS.json';
 import cidadesData from './assets/CIDADES.json';
 
-export default function FormularioCliente({ dados, onFormChange, errors }) {
+export default function FormularioCliente({ dados, onFormChange, errors, onBlur }) {
   console.log(
     '%c[FILHO - FormularioCliente] RENDERIZANDO com props:',
     'color: blue; font-weight: bold;',
@@ -31,7 +31,6 @@ export default function FormularioCliente({ dados, onFormChange, errors }) {
   };
 
   const handleUfChange = (novaUf) => {
-    console.log('[FILHO - FormularioCliente] handleUfChange chamado com:', novaUf);
     onFormChange('uf', novaUf);
     onFormChange('cn', 'Selecione');
     onFormChange('cidade', 'Selecione');
@@ -47,8 +46,6 @@ export default function FormularioCliente({ dados, onFormChange, errors }) {
   };
 
   useEffect(() => {
-    console.log('[FILHO - FormularioCliente] useEffect das UFs montou.');
-
     const ufsFormatadas = estadosData.map((estado) => ({
       value: estado.cod_estado,
       label: formatarTexto(estado.nome_estado)
@@ -105,9 +102,11 @@ export default function FormularioCliente({ dados, onFormChange, errors }) {
         <Label>
           <p>CPF/CNPJ</p>
           <InputWithIcon
+            name="cpfCnpj"
             placeholder="00.000.000/0000-00"
             value={dados.cpfCnpj}
             onChange={(e) => onFormChange('cpfCnpj', e.target.value)}
+            onBlur={onBlur}
             hasError={!!errors.cpfCnpj}
           />
           {errors.cpfCnpj && <ErrorMessage>{errors.cpfCnpj}</ErrorMessage>}
@@ -118,9 +117,11 @@ export default function FormularioCliente({ dados, onFormChange, errors }) {
         <Label>
           <p>Nome Completo</p>
           <InputWithIcon
+            name="nomeCompleto"
             placeholder="Nome do Cliente"
             value={dados.nomeCompleto}
             onChange={(e) => onFormChange('nomeCompleto', e.target.value)}
+            onBlur={onBlur}
             hasError={!!errors.nomeCompleto}
           />
           {errors.nomeCompleto && <ErrorMessage>{errors.nomeCompleto}</ErrorMessage>}

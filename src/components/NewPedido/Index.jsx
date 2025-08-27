@@ -44,20 +44,9 @@ export default function CadastroPedido({ onClose }) {
     aceitouTermos: false
   });
 
-  console.log(
-    '%c[PAI - CadastroPedido] RENDERIZANDO com formData:',
-    'color: green; font-weight: bold;',
-    formData
-  );
-
   const handleFormChange = (campo, valor) => {
-    console.log(
-      `[PAI - CadastroPedido] handleFormChange chamado para atualizar o campo '${campo}' para o valor '${valor}'`
-    );
     setFormData((dadosAnteriores) => {
       const newState = { ...dadosAnteriores, [campo]: valor };
-      console.log('[PAI - CadastroPedido] Estado ANTERIOR:', dadosAnteriores);
-      console.log('[PAI - CadastroPedido] Estado NOVO:', newState);
       return newState;
     });
   };
@@ -93,6 +82,41 @@ export default function CadastroPedido({ onClose }) {
     if (etapa > 1) setEtapa((etapaAtual) => etapaAtual - 1);
   };
 
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'cpfCnpj':
+        const docLimpo = value.replace(/\D/g, '');
+        if (docLimpo.length !== 11 && docLimpo.length !== 14) {
+          return 'CPF ou CNPJ inválido.';
+        }
+        return null;
+      case 'nomeCompleto':
+        if (!value.trim()) {
+          return 'O nome completo é obrigatório.';
+        }
+        return null;
+      case 'uf':
+        if (value === 'Selecione') {
+          return 'Selecione uma UF.';
+        }
+        return null;
+      // Adicione outros 'cases' para 'cn' e 'cidade'
+      default:
+        return null;
+    }
+  };
+
+  const handleBlur = (event) => {
+    const { name, value } = event.target;
+    const errorMessage = validateField(name, value);
+
+    // Atualiza o estado de erros para aquele campo específico
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errorMessage
+    }));
+  };
+
   return (
     <ModalOverlay>
       <ModalContent>
@@ -107,7 +131,12 @@ export default function CadastroPedido({ onClose }) {
 
           <DivContent>
             {etapa === 1 && (
-              <FormularioCliente dados={formData} onFormChange={handleFormChange} errors={errors} />
+              <FormularioCliente
+                dados={formData}
+                onFormChange={handleFormChange}
+                errors={errors}
+                onBlur={handleBlur}
+              />
             )}
             {etapa === 2 && (
               <>

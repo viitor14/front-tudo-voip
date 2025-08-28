@@ -15,7 +15,7 @@ import {
   LogoutIcon,
   DocumentIcon
 } from './styled';
-import logo from './img/logo.png';
+import logo from './img/logo2.png';
 
 export default function Header() {
   const dispatch = useDispatch();

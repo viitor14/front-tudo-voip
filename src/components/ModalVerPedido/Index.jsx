@@ -1,4 +1,5 @@
-// Ficheiro: src/components/ModalVerPedido/index.jsx
+import { useState } from 'react';
+
 import {
   ModalOverlay,
   ModalContent,
@@ -7,7 +8,9 @@ import {
   ModalBody,
   DetailSection,
   DetailItem
-} from './styled'; // Crie estes estilos no seu ficheiro styled.js
+} from './styled';
+
+import Select from '../select/Index';
 
 // Função auxiliar para formatar texto
 const formatarTexto = (texto) => {
@@ -17,6 +20,7 @@ const formatarTexto = (texto) => {
 };
 
 export default function ModalVerPedido({ pedido, onClose }) {
+  const [valueSelected, setValueSelected] = useState(pedido.status_pedido);
   if (!pedido) return null;
 
   console.log(pedido);
@@ -32,7 +36,14 @@ export default function ModalVerPedido({ pedido, onClose }) {
           <DetailSection>
             <h3>Resumo</h3>
             <DetailItem>
-              <strong>Status:</strong> {formatarTexto(pedido.status_pedido)}
+              {/*<strong>Status:</strong> {formatarTexto(pedido.status_pedido)}*/}
+              <Select
+                options={['Todos os Status', 'Ativo', 'Em Andamento', 'Recusado']}
+                onChange={(value) => setValueSelected(value)}
+                value={valueSelected}
+                width="200px" // Você pode ajustar a largura conforme necessário
+                height="36px"
+              />
             </DetailItem>
             <DetailItem>
               <strong>Data do Pedido:</strong>

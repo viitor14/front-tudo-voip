@@ -9,6 +9,7 @@ export const BoxInfo = styled.div`
   border-radius: 5px;
   border: 2px solid ${borderColor};
   width: 100%;
+  background: ${(props) => props.backgroundColor};
 
   .infoNumber {
     font-size: 28px;

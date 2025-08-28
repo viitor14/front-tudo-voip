@@ -192,10 +192,26 @@ export default function Home() {
       </DivTitle>
 
       <BoxInfoDashboard>
-        <InfoDashboard title="Total de Números" number={getTotalPedidos()} />
-        <InfoDashboard title="Ativos" number={getTotalByStatus('CONCLUÍDO')} />
-        <InfoDashboard title="Em Andamento" number={getTotalByStatus('EM ANDAMENTO')} />
-        <InfoDashboard title="Recusados" number={getTotalByStatus('RECUSADO')} />
+        <InfoDashboard
+          title="Total de Números"
+          number={getTotalPedidos()}
+          colorBackground="linear-gradient(to right,rgba(214, 234, 248, 1), rgba(234, 242, 253, 1) )"
+        />
+        <InfoDashboard
+          title="Ativos"
+          number={getTotalByStatus('CONCLUÍDO')}
+          colorBackground="linear-gradient(to right, rgba(234, 242, 253, 1),rgba(214, 234, 248, 1) )"
+        />
+        <InfoDashboard
+          title="Em Andamento"
+          number={getTotalByStatus('EM ANDAMENTO')}
+          colorBackground="linear-gradient(to right,rgba(255, 238, 194, 1), rgba(255, 248, 230, 1) )"
+        />
+        <InfoDashboard
+          title="Recusados"
+          number={getTotalByStatus('RECUSADO')}
+          colorBackground="linear-gradient(to right,rgba(250, 219, 216, 1), rgba(253, 237, 236, 1) )"
+        />
       </BoxInfoDashboard>
       <DivFilter>
         <InputWithIcon

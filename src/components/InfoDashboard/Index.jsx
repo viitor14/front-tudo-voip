@@ -1,9 +1,10 @@
 import { BoxInfo, InfoTitle } from './styled';
 import PropTypes from 'prop-types';
 
-export default function InfoDashboard({ title, number }) {
+export default function InfoDashboard({ title, number, colorBackground }) {
+  console.log(colorBackground);
   return (
-    <BoxInfo>
+    <BoxInfo backgroundColor={colorBackground}>
       <InfoTitle>
         <p>{title}</p>
         <p>#</p>
@@ -14,5 +15,6 @@ export default function InfoDashboard({ title, number }) {
 }
 InfoDashboard.propTypes = {
   title: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired
+  number: PropTypes.number.isRequired,
+  colorBackground: PropTypes.string.isRequired
 };

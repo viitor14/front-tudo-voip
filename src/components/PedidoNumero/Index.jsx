@@ -56,6 +56,7 @@ export default function PedidoNumero({ dados, onFormChange }) {
     });
     onFormChange('ranges', novosRanges);
   };
+
   return (
     <DivPedidoNumero>
       <DivInputRadio>

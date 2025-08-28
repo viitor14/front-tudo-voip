@@ -17,6 +17,11 @@ export const Div = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
+  img {
+    width: 234px;
+    height: 58px;
+  }
 `;
 
 export const DivIcon = styled.div`

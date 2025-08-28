@@ -18,18 +18,18 @@ export default createGlobalStyle`
 
   body{
     font-family: "Figtree", sans-serif;
-    background-color: ${colors.primary};
+    background-color: rgba(240, 240, 240, 1);
     color: ${colors.primaryDarkColor};
   }
 
   html, body, #root{
-    height: 100%;
+    height: 100%
   }
 
   button {
     cursor: pointer;
     font-family: "Figtree", sans-serif;
-     background: linear-gradient(90deg, rgba(247, 101, 33, 1) 0%, rgba(231, 80, 9, 1) 100%);
+     background: rgba(11, 42, 86, 1);
     color: #fff;
     border: none;
     padding: 16px 19px;
@@ -70,6 +70,6 @@ export const Container = styled.section`
   display: flex;
   flex-direction: column;
   gap: 50px;
-  background-color: white;
+  background-color: rgba(240, 240, 240, 1);
   margin: 50px 100px;
 `;

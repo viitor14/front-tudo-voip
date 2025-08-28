@@ -13,12 +13,6 @@ import estadosData from './assets/ESTADOS.json';
 import cidadesData from './assets/CIDADES.json';
 
 export default function FormularioCliente({ dados, onFormChange, errors, onBlur }) {
-  console.log(
-    '%c[FILHO - FormularioCliente] RENDERIZANDO com props:',
-    'color: blue; font-weight: bold;',
-    { dados, errors }
-  );
-
   const [openSelectId, setOpenSelectId] = useState(null);
   const [opcoesUF, setOpcoesUF] = useState([]);
   const [opcoesCN, setOpcoesCN] = useState([]);

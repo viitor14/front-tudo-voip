@@ -43,6 +43,11 @@ export const Table = styled.table`
 
   thead th {
     font-weight: 300;
+    background: rgba(17, 64, 131, 1);
+    color: #fff;
+  }
+
+  thead th > tr {
   }
 
   tbody .textStatus {
@@ -67,21 +72,22 @@ export const Table = styled.table`
 export const StatusSpan = styled.span`
   font-weight: bold;
   border-radius: 5px;
-  padding: 4px 27px;
+  padding: 4px 10px;
   font-size: 14px;
+  white-space: nowrap;
   background: ${({ status }) =>
     status === 'CONCLUÍDO'
-      ? 'rgba(209, 244, 228, 1)'
+      ? 'rgba(46, 204, 113, 1)'
       : status === 'EM ANDAMENTO'
-        ? 'rgba(255, 244, 184, 1)'
+        ? 'rgba(241, 196, 15, 1)'
         : status === 'RECUSADO'
-          ? 'rgba(250, 219, 216, 1)'
+          ? 'rgba(231, 76, 60, 1)'
           : '#fff'};
   color: ${({ status }) =>
     status === 'CONCLUÍDO'
       ? 'rgba(0, 77, 43, 1)'
       : status === 'EM ANDAMENTO'
-        ? 'rgba(140, 109, 0, 1)'
+        ? 'rgba(88, 69, 1, 1)'
         : status === 'RECUSADO'
           ? 'rgba(139, 0, 0, 1)'
           : '#fff'};

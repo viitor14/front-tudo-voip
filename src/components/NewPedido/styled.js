@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
-import { borderColor } from '../../config/colors';
+import { borderColor, secondaryColor } from '../../config/colors';
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -57,6 +57,9 @@ export const CloseButton = styled.button`
 `;
 
 export const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   p {
     font-weight: 600;
   }
@@ -66,7 +69,6 @@ export const DivInputRegion = styled.div`
   display: flex;
   gap: 16px;
   width: 100%;
-  margin-bottom: 20px;
 
   > div {
     flex: 1;
@@ -113,7 +115,7 @@ export const DivInputRadio = styled.div`
     display: inline-block;
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(249, 104, 36, 1);
+    border: 2px solid ${secondaryColor};
     border-radius: 50%;
     margin-right: 10px;
     background-color: white;
@@ -122,7 +124,7 @@ export const DivInputRadio = styled.div`
 
   /* Altera a borda quando o input está selecionado */
   input[type='radio']:checked + label::before {
-    border-color: rgba(249, 104, 36, 1);
+    border-color: ${secondaryColor};
   }
 
   /* Cria o ponto interno laranja quando selecionado */
@@ -132,7 +134,7 @@ export const DivInputRadio = styled.div`
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: rgba(249, 104, 36, 1);
+    background-color: ${secondaryColor};
     position: absolute;
     top: 50%;
     left: 6px; /* Ajuste conforme necessário */
@@ -149,7 +151,7 @@ export const DivInputRadio = styled.div`
 
 export const ButtonNext = styled.button`
   align-self: flex-end;
-  background-color: rgba(249, 104, 36, 1);
+  background-color: ${secondaryColor};
   color: white;
   border: none;
   padding: 12px 10px;
@@ -190,5 +192,5 @@ export const StyledIconBack = styled(IoIosArrowBack)`
 export const ErrorMessage = styled.span`
   color: #e74c3c;
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: -5px;
 `;

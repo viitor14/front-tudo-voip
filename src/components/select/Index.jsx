@@ -13,7 +13,7 @@ export default function Select({ options, value, onChange, isOpen, onToggle, ...
 
   return (
     <SelectWrapper {...rest}>
-      <Selected onClick={onToggle}>
+      <Selected onClick={onToggle} {...rest}>
         {selectedLabel}
         <ArrowIcon open={isOpen} />
       </Selected>

@@ -133,6 +133,7 @@ export default function FormularioCliente({ dados, onFormChange, errors, onBlur 
             onToggle={() => handleSelectOpen('uf')}
             hasError={!!errors.uf}
             width="100%"
+            height="auto"
             marginTop="-20px"
           />
           {errors.uf && <ErrorMessage>{errors.uf}</ErrorMessage>}
@@ -147,7 +148,7 @@ export default function FormularioCliente({ dados, onFormChange, errors, onBlur 
             onToggle={() => handleSelectOpen('cn')}
             hasError={!!errors.cn}
             width="100%"
-            marginTop="-20px"
+            height="auto"
           />
           {errors.cn && <ErrorMessage>{errors.cn}</ErrorMessage>}
         </div>
@@ -161,6 +162,7 @@ export default function FormularioCliente({ dados, onFormChange, errors, onBlur 
             onToggle={() => handleSelectOpen('cidade')}
             hasError={!!errors.cidade}
             width="100%"
+            height="auto"
             marginTop="-20px"
           />
           {errors.cidade && <ErrorMessage>{errors.cidade}</ErrorMessage>}

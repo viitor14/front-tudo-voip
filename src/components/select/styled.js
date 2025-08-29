@@ -5,7 +5,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 export const SelectWrapper = styled.div`
   position: relative;
   width: ${(props) => props.width || '10%'};
-  height: 100%;
+  //height: 100%;
 `;
 
 export const Selected = styled.div`

@@ -23,12 +23,23 @@ export default function PedidoNumero({ dados, onFormChange }) {
   };
 
   const handleNumberChange = (id, event) => {
-    const novosNumeros = dados.numerosIndividuais.map((number) => {
-      if (number.id === id) {
-        return { ...number, value: event.target.value };
+    const newValue = event.target.value;
+    const regexNumber = /^[0-9]*$/; // O asterisco '*' permite a string vazia
+
+    if (!regexNumber.test(newValue)) {
+      // Se o valor não for um número (ou for algo como "123a"),
+      // a função simplesmente para e não atualiza o estado.
+      console.log('Entrada inválida. Digite apenas números.');
+      return;
+    }
+    const novosNumeros = dados.numerosIndividuais.map((numero) => {
+      if (numero.id === id) {
+        // Retorna o objeto atualizado com o novo valor
+        return { ...numero, value: newValue };
       }
-      return number;
+      return numero;
     });
+    // 3. Atualize o estado apenas com os valores válidos
     onFormChange('numerosIndividuais', novosNumeros);
   };
 

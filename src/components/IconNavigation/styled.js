@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const activeStyles = css`
+  /*
   background:
     linear-gradient(white, white) padding-box,
     linear-gradient(to bottom, rgba(249, 104, 36, 1), rgba(147, 61, 21, 1)) border-box;
@@ -8,14 +9,31 @@ export const activeStyles = css`
     background: linear-gradient(to bottom, rgba(249, 104, 36, 1), rgba(147, 61, 21, 1));
     -webkit-background-clip: text;
     background-clip: text;
+    }*/
+  background:
+    linear-gradient(white, white) padding-box,
+    rgba(26, 57, 107, 1) border-box;
+  &::before {
+    background: rgba(26, 57, 107, 1);
+    -webkit-background-clip: text;
+    background-clip: text;
   }
 `;
 
 export const inactiveStyles = css`
+  /*
   border-color: #ccc;
   background: white;
   &::before {
-    color: #ccc;
+    color: #000;
+    }*/
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(215, 215, 215, 1)) border-box;
+  &::before {
+    background: #000;
+    -webkit-background-clip: text;
+    background-clip: text;
   }
 `;
 
@@ -88,7 +106,7 @@ export const StepContainer = styled.div`
 export const Line = styled.hr`
   flex-grow: 1; /* Faz a linha ocupar todo o espaço disponível */
   border: none;
-  border-top: 2px solid #ccc;
+  border-top: 2px solid rgba(226, 232, 240, 1);
   margin: 0;
 `;
 

@@ -16,6 +16,7 @@ export default function NumeroIndividual({ numbers, onNumberChange, onAddNumber,
             value={numberItem.value}
             onChange={(e) => onNumberChange(numberItem.id, e)}
           />
+
           {index > 0 && (
             <DivLixeira>
               <StyledTrashIcon onClick={() => onRemoveNumber(numberItem.id)} />

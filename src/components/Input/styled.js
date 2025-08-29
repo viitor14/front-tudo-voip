@@ -10,16 +10,16 @@ export const InputWrapper = styled.div`
 export const StyledInput = styled.input`
   width: 100%;
   padding: ${(props) => props.padding || '10px'}; // espaço para o ícone
-  border: 2px solid ${borderColor};
+  //border: 2px solid ${borderColor};
   border-radius: ${(props) => props.borderRadius || '5px'};
   font-family: 'Figtree', sans-serif;
   font-weight: 300;
   font-size: 14px;
 
-  border: 1px solid ${(props) => (props.hasError ? '#e74c3c' : '#ccc')};
+  border: 2px solid ${(props) => (props.hasError ? '#e74c3c' : borderColor)};
 
   &:focus {
-    border-color: ${(props) => (props.hasError ? '#e74c3c' : '#3400a3ff')};
+    border-color: ${(props) => (props.hasError ? '#e74c3c' : '#fd9800ff')};
   }
 `;
 

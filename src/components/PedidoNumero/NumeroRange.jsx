@@ -5,10 +5,11 @@ import {
   InputWrapper,
   LabelInput,
   StyledInput,
-  StyledTrashIcon
+  StyledTrashIcon,
+  ErrorMessage
 } from './styled';
 
-export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRangeChange }) {
+export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRangeChange, errors }) {
   return (
     <DivInputsNumber>
       <InputsContainer>
@@ -82,6 +83,7 @@ export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRange
           )}
         </InputsContainer>
       ))}
+      {errors.numerosIndividuais && <ErrorMessage>{errors.numerosIndividuais}</ErrorMessage>}
       <button type="button" onClick={onAddRange}>
         + Adicionar outro range
       </button>

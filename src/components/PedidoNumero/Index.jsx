@@ -5,7 +5,7 @@ import { DivPedidoNumero, DivInputRadio, InputRadio } from './styled';
 import NumeroIndividual from './NumeroIndividual';
 import NumeroRange from './NumeroRange';
 
-export default function PedidoNumero({ dados, onFormChange }) {
+export default function PedidoNumero({ dados, onFormChange, errors, onBlur }) {
   const handleModoChange = (event) => {
     onFormChange('modo', event.target.value);
   };
@@ -103,6 +103,8 @@ export default function PedidoNumero({ dados, onFormChange }) {
           onNumberChange={handleNumberChange}
           onAddNumber={handleAddNumber}
           onRemoveNumber={handleRemoveNumber}
+          errors={errors}
+          onBlur={onBlur}
         />
       ) : (
         <NumeroRange
@@ -110,6 +112,7 @@ export default function PedidoNumero({ dados, onFormChange }) {
           onAddRange={handleAddRange}
           onRemoveRange={handleRemoveRange}
           onRangeChange={handleRangeChange}
+          errors={errors}
         /> // Este já se gerencia sozinho, como definimos antes
       )}
     </DivPedidoNumero>

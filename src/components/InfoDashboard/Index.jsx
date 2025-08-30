@@ -2,7 +2,6 @@ import { BoxInfo, InfoTitle } from './styled';
 import PropTypes from 'prop-types';
 
 export default function InfoDashboard({ title, number, colorBackground }) {
-  console.log(colorBackground);
   return (
     <BoxInfo backgroundColor={colorBackground}>
       <InfoTitle>

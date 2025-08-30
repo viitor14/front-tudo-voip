@@ -6,10 +6,11 @@ import {
   DivInfoCliente,
   DivOberservacoes,
   TextArea,
-  DivTermo
+  DivTermo,
+  ErrorMessage
 } from './styled';
 
-export default function ResumoPedido({ formData, onFormChange }) {
+export default function ResumoPedido({ formData, onFormChange, errors }) {
   let numerosParaExibir = '';
 
   if (formData.tipoVenda === 'Portabilidade') {
@@ -85,9 +86,16 @@ export default function ResumoPedido({ formData, onFormChange }) {
       </DivOberservacoes>
 
       <DivTermo>
-        <input type="checkbox" name="termos" id="termos" />
+        <input
+          type="checkbox"
+          name="termos"
+          id="termos"
+          checked={formData.aceitouTermos}
+          onChange={(e) => onFormChange('aceitouTermos', e.target.checked)}
+        />
         <label htmlFor="termos">Eu declaro que li e aceito os Termos e condições do pedido</label>
       </DivTermo>
+      {errors.aceitouTermos && <ErrorMessage>{errors.aceitouTermos}</ErrorMessage>}
     </DivGeral>
   );
 }

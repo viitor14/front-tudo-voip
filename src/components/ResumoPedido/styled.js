@@ -128,3 +128,9 @@ export const DivTermo = styled.div`
     cursor: pointer;
   }
 `;
+
+export const ErrorMessage = styled.span`
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: -5px;
+`;

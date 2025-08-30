@@ -12,17 +12,13 @@ import InputWithIcon from '../Input/Index';
 import estadosData from './assets/ESTADOS.json';
 import cidadesData from './assets/CIDADES.json';
 
+import { formatarTexto } from '../../utils/formatters';
+
 export default function FormularioCliente({ dados, onFormChange, errors, onBlur }) {
   const [openSelectId, setOpenSelectId] = useState(null);
   const [opcoesUF, setOpcoesUF] = useState([]);
   const [opcoesCN, setOpcoesCN] = useState([]);
   const [opcoesCidade, setOpcoesCidade] = useState([]);
-
-  const formatarTexto = (texto) => {
-    if (!texto) return '';
-    const textoEmMinusculo = texto.toLowerCase();
-    return textoEmMinusculo.charAt(0).toUpperCase() + textoEmMinusculo.slice(1);
-  };
 
   const handleUfChange = (novaUf) => {
     onFormChange('uf', novaUf);

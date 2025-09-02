@@ -11,7 +11,7 @@ import {
   StyledIconBack
 } from './styled';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import axios from '../../services/axios';
 
@@ -47,6 +47,24 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     observacoes: '',
     aceitouTermos: false
   });
+
+  const [termoAnexado, setTermoAnexado] = useState(null);
+  const termoInputRef = useRef(null);
+
+  const handleAnexarClick = () => {
+    termoInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setTermoAnexado(file);
+    }
+  };
+
+  const handleRemoverAnexo = () => {
+    setTermoAnexado(null);
+  };
 
   const handleFormChange = (campo, valor) => {
     setFormData((dadosAnteriores) => {
@@ -127,7 +145,11 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
   const validateStep3 = () => {
     const newErrors = {};
     if (!formData.aceitouTermos) {
-      newErrors.aceitouTermos = 'Você precisa aceitar os termos e condições para continuar.';
+      newErrors.aceitouTermos = 'Você precisa aceitar os termos e condições.';
+    }
+    // Para portabilidade, o anexo do termo é obrigatório
+    if (formData.tipoVenda !== 'Novo Numero' && !termoAnexado) {
+      newErrors.termoAnexado = 'Para portabilidade, é obrigatório anexar o termo de contrato.';
     }
     return newErrors;
   };
@@ -217,36 +239,33 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     const validationErrors = validateStep3();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      toast.error(validationErrors.aceitouTermos); // Mostra a notificação de erro
-      return; // Para a execução e não envia o formulário
+      // Mostra o primeiro erro encontrado
+      const primeiroErro = Object.values(validationErrors)[0];
+      toast.error(primeiroErro);
+      return;
     }
-    //setIsLoading(true);
+
+    // setIsLoading(true);
 
     try {
-      console.log(formData);
-      // 1. Traduz os nomes para códigos
+      // 1. Monta o objeto de dados base (lógica que você já tinha)
       const cidadeSelecionada = cidadesData.find(
         (c) => formatarTexto(c.nome_cidade) === formData.cidade
       );
-
       const tipoVendaSelecionado = tiposVendaData.find(
         (tv) => tv.tipo_venda === formData.tipoVenda.toUpperCase()
       );
 
       if (!cidadeSelecionada || !tipoVendaSelecionado) {
-        toast.error('Cidade ou Tipo de Venda inválido. Por favor, preencha todos os campos.');
-        setIsLoading(false);
+        toast.error('Cidade ou Tipo de Venda inválido.');
         return;
       }
 
-      // 2. Monta a base do objeto para a API
       const dadosParaApi = {
         cod_cidade: cidadeSelecionada.cod_cidade,
         cod_tipo_venda: tipoVendaSelecionado.cod_tipo_venda,
         observacoes: formData.observacoes
       };
-
-      // 3. Adiciona os campos de pessoa (física ou jurídica)
       const docLimpo = formData.cpfCnpj.replace(/\D/g, '');
       if (docLimpo.length <= 11) {
         dadosParaApi.cpf = docLimpo;
@@ -255,52 +274,45 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
         dadosParaApi.cnpj = docLimpo;
         dadosParaApi.nome_empresa = formData.nomeCompleto;
       }
-
-      // 4. Adiciona os detalhes dos números (Novo Número vs. Portabilidade)
-      if (formData.tipoVenda === 'Novo Numero') {
-        dadosParaApi.quantidade_novos_numeros = parseInt(formData.quantidadeNumero, 10);
-      } else {
-        // Portabilidade
-        let numerosParaPortar = [];
-
-        if (formData.modo === 'individual') {
-          numerosParaPortar = formData.numerosIndividuais
-            .map((n) => n.value.replace(/\D/g, '')) // Limpa os números
-            .filter(Boolean); // Filtra strings vazias
-        } else if (formData.modo === 'range') {
-          formData.ranges.forEach((range) => {
-            if (range.prefixo && range.rangeInicial && range.rangeFinal) {
-              const prefixo = range.prefixo.replace(/\D/g, '');
-              const inicio = parseInt(range.rangeInicial.replace(/\D/g, ''), 10);
-              const fim = parseInt(range.rangeFinal.replace(/\D/g, ''), 10);
-
-              if (!isNaN(inicio) && !isNaN(fim) && inicio <= fim) {
-                for (let i = inicio; i <= fim; i++) {
-                  numerosParaPortar.push(`${prefixo}${i}`);
-                }
-              }
-            }
-          });
-        }
+      if (formData.tipoVenda !== 'Novo Numero') {
+        const numerosParaPortar = formData.numerosIndividuais
+          .map((n) => n.value.replace(/\D/g, ''))
+          .filter(Boolean);
         dadosParaApi.numeros_portabilidade = numerosParaPortar;
       }
 
-      // Log para verificar o objeto final antes de enviar
-      console.log('ENVIANDO PARA A API:', dadosParaApi);
+      // 2. Cria o FormData para a requisição
+      const finalFormData = new FormData();
 
-      // 5. Envia para a API
-      await axios.post('/pedido', dadosParaApi); // Ajuste a URL da sua API aqui
+      // 3. Anexa o ficheiro
+      if (termoAnexado) {
+        finalFormData.append('termo', termoAnexado);
+      }
+
+      // 4. Anexa todos os outros campos de dados
+      for (const key in dadosParaApi) {
+        // Trata o array de números de forma especial para o backend
+        if (key === 'numeros_portabilidade' && Array.isArray(dadosParaApi[key])) {
+          dadosParaApi[key].forEach((numero) => {
+            finalFormData.append('numeros_portabilidade[]', numero);
+          });
+        } else {
+          finalFormData.append(key, dadosParaApi[key]);
+        }
+      }
+
+      console.log('ENVIANDO FORMDATA PARA A API:', finalFormData);
+      await axios.post('/pedido', finalFormData);
 
       toast.success('Pedido criado com sucesso!');
-      if (onPedidoCriado) onPedidoCriado(); // Função para talvez atualizar uma lista na tela anterior
-      onClose(); // Fecha o modal
+      if (onPedidoCriado) onPedidoCriado();
+      onClose();
     } catch (error) {
-      // Tratamento de erro da API
-      const errorMsg = error.response?.data?.error || 'Ocorreu um erro ao enviar o pedido.';
-      console.log(error);
+      const errorMsg = error.response?.data?.errors?.[0] || 'Ocorreu um erro ao enviar o pedido.';
+      console.error(error);
       toast.error(errorMsg);
     } finally {
-      //setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -335,12 +347,22 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
                     onFormChange={handleFormChange}
                     errors={errors}
                     onBlur={handleBlur}
+                    termoAnexado={termoAnexado}
+                    onAnexarClick={handleAnexarClick}
+                    onFileChange={handleFileChange}
+                    onRemoverAnexo={handleRemoverAnexo}
+                    termoInputRef={termoInputRef}
                   />
                 )}
               </>
             )}
             {etapa === 3 && (
-              <ResumoPedido formData={formData} onFormChange={handleFormChange} errors={errors} />
+              <ResumoPedido
+                formData={formData}
+                onFormChange={handleFormChange}
+                errors={errors}
+                termoAnexado={termoAnexado}
+              />
             )}
           </DivContent>
         </DivModal>

@@ -5,7 +5,17 @@ import { DivPedidoNumero, DivInputRadio, InputRadio } from './styled';
 import NumeroIndividual from './NumeroIndividual';
 import NumeroRange from './NumeroRange';
 
-export default function PedidoNumero({ dados, onFormChange, errors, onBlur }) {
+export default function PedidoNumero({
+  dados,
+  onFormChange,
+  errors,
+  onBlur,
+  termoAnexado,
+  onAnexarClick,
+  onFileChange,
+  onRemoverAnexo,
+  termoInputRef
+}) {
   const handleModoChange = (event) => {
     onFormChange('modo', event.target.value);
   };
@@ -105,6 +115,11 @@ export default function PedidoNumero({ dados, onFormChange, errors, onBlur }) {
           onRemoveNumber={handleRemoveNumber}
           errors={errors}
           onBlur={onBlur}
+          termoAnexado={termoAnexado}
+          onAnexarClick={onAnexarClick}
+          onFileChange={onFileChange}
+          onRemoverAnexo={onRemoverAnexo}
+          termoInputRef={termoInputRef}
         />
       ) : (
         <NumeroRange

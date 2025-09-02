@@ -10,7 +10,7 @@ import {
   ErrorMessage
 } from './styled';
 
-export default function ResumoPedido({ formData, onFormChange, errors }) {
+export default function ResumoPedido({ formData, onFormChange, errors, termoAnexado }) {
   let numerosParaExibir = '';
 
   if (formData.tipoVenda === 'Portabilidade') {
@@ -67,7 +67,8 @@ export default function ResumoPedido({ formData, onFormChange, errors }) {
                 </p>
               )}
               <p>
-                Documento: <span>{formData.documento || 'Nenhum documento anexado'}</span>
+                Documento:{' '}
+                <span> {termoAnexado ? termoAnexado.name : 'Nenhum documento anexado'}</span>
               </p>
             </DivInfoCliente>
             {/**

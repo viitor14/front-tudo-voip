@@ -1,3 +1,4 @@
+import { useRef } from 'react'; // NOVO: Importe o useRef
 import {
   DivInputsNumber,
   LabelNumber,
@@ -15,7 +16,13 @@ export default function NumeroIndividual({
   onAddNumber,
   onRemoveNumber,
   errors,
-  onBlur
+  onBlur,
+  // NOVO: Props para o anexo de termo
+  termoAnexado,
+  onAnexarClick,
+  onFileChange,
+  onRemoverAnexo,
+  termoInputRef // NOVO: A referência para o input
 }) {
   return (
     <DivInputsNumber>
@@ -23,23 +30,20 @@ export default function NumeroIndividual({
         <p>Números</p>
       </Labell>
       {numbers.map((numberItem, index) => {
-        // 1. Define o nome único para este campo
         const fieldName = `numero_${numberItem.id}`;
-        // 2. Pega a mensagem de erro específica para este campo
         const fieldError = errors?.numerosIndividuais?.[fieldName];
 
         return (
-          // Use um container extra ou um Fragment se precisar agrupar o input e o erro
           <div key={numberItem.id}>
             <LabelNumber>
               <InputWithIcon
-                name={fieldName} // 3. Usa o nome único
+                name={fieldName}
                 placeholder="11999999999"
                 width="100%"
                 value={numberItem.value}
                 onChange={(e) => onNumberChange(numberItem.id, e)}
                 onBlur={onBlur}
-                hasError={!!fieldError} // 4. O erro agora é individual
+                hasError={!!fieldError}
               />
               {index > 0 && (
                 <DivLixeira>
@@ -47,13 +51,11 @@ export default function NumeroIndividual({
                 </DivLixeira>
               )}
             </LabelNumber>
-            {/* 5. A mensagem de erro agora aparece embaixo do seu respectivo input */}
             {fieldError && <ErrorMessage>{fieldError}</ErrorMessage>}
           </div>
         );
       })}
 
-      {/* Opcional: Você ainda pode ter um erro geral para a lista, se a validação do botão "Avançar" o gerar */}
       {typeof errors.numerosIndividuais === 'string' && (
         <ErrorMessage>{errors.numerosIndividuais}</ErrorMessage>
       )}
@@ -61,6 +63,42 @@ export default function NumeroIndividual({
       <button type="button" onClick={onAddNumber}>
         + Adicionar outro número
       </button>
+
+      {/* ======================= LÓGICA DO ANEXO INTEGRADA ======================= */}
+
+      {/* NOVO: Input de ficheiro escondido, que faz o trabalho pesado */}
+      <input
+        type="file"
+        ref={termoInputRef}
+        onChange={onFileChange}
+        style={{ display: 'none' }}
+        accept=".pdf,.jpg,.jpeg,.png"
+      />
+
+      {/* NOVO: O seu botão agora tem uma função */}
+      <button type="button" onClick={onAnexarClick}>
+        Anexar Termo
+      </button>
+
+      {/* NOVO: Feedback visual para o utilizador saber qual ficheiro foi selecionado */}
+      {termoAnexado && (
+        <div style={{ marginTop: '10px', fontSize: '14px' }}>
+          <span>Ficheiro: {termoAnexado.name}</span>
+          <button
+            type="button"
+            onClick={onRemoverAnexo}
+            style={{
+              marginLeft: '10px',
+              color: 'red',
+              border: 'none',
+              background: 'transparent',
+              cursor: 'pointer'
+            }}>
+            Remover
+          </button>
+        </div>
+      )}
+      {/* ======================================================================= */}
     </DivInputsNumber>
   );
 }

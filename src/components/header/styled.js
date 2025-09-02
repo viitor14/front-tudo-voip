@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { primaryColor, borderColor, secondaryColor } from '../../config/colors';
 import { LiaUserCircleSolid } from 'react-icons/lia';
+import { PiUserCirclePlusThin } from 'react-icons/pi';
 import { SlLogout } from 'react-icons/sl';
 import { GrDocumentText } from 'react-icons/gr';
+import { FiUserPlus } from 'react-icons/fi';
 
 export const Nav = styled.nav`
   background-color: ${primaryColor};
@@ -87,4 +89,9 @@ export const UserIcon = styled(LiaUserCircleSolid)`
   color: rgba(100, 116, 139, 1);
   font-size: 48px;
   cursor: pointer;
+`;
+
+export const IconUserAdd = styled(FiUserPlus)`
+  font-size: 18px;
+  color: #000;
 `;

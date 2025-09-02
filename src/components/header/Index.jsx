@@ -13,7 +13,8 @@ import {
   DivInfoUser,
   NameEmail,
   LogoutIcon,
-  DocumentIcon
+  DocumentIcon,
+  IconUserAdd
 } from './styled';
 import logo from './img/logo2.png';
 
@@ -56,7 +57,7 @@ export default function Header() {
 
                 {isAdmin && (
                   <button type="button">
-                    <DocumentIcon />
+                    <IconUserAdd />
                     Criar Usuario
                   </button>
                 )}

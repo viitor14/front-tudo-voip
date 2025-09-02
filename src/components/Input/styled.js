@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { FiSearch } from 'react-icons/fi';
-import { borderColor } from '../../config/colors';
+import { borderColor, secondaryColor } from '../../config/colors';
 
 export const InputWrapper = styled.div`
   position: relative;
@@ -19,7 +19,7 @@ export const StyledInput = styled.input`
   border: 2px solid ${(props) => (props.hasError ? '#e74c3c' : borderColor)};
 
   &:focus {
-    border-color: ${(props) => (props.hasError ? '#e74c3c' : '#fd9800ff')};
+    border-color: ${(props) => (props.hasError ? '#e74c3c' : secondaryColor)};
   }
 `;
 

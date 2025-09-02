@@ -33,7 +33,7 @@ export const InputRadio = styled.div`
     display: inline-block;
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(249, 104, 36, 1);
+    border: 2px solid ${secondaryColor};
     border-radius: 50%;
     margin-right: 10px;
     background-color: white;
@@ -42,7 +42,7 @@ export const InputRadio = styled.div`
 
   /* Altera a borda quando o input está selecionado */
   input[type='radio']:checked + label::before {
-    border-color: rgba(249, 104, 36, 1);
+    border-color: ${secondaryColor};
   }
 
   /* Cria o ponto interno laranja quando selecionado */
@@ -52,7 +52,7 @@ export const InputRadio = styled.div`
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: rgba(249, 104, 36, 1);
+    background-color: ${secondaryColor};
     position: absolute;
     top: 50%;
     left: 6px; /* Ajuste conforme necessário */

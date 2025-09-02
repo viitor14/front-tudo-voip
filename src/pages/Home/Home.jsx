@@ -184,7 +184,11 @@ export default function Home() {
       )}
 
       {modalVisivel && (
-        <ModalVerPedido pedido={pedidoSelecionado} onClose={() => setModalVisivel(false)} />
+        <ModalVerPedido
+          pedido={pedidoSelecionado}
+          onClose={() => setModalVisivel(false)}
+          onUpdate={fetchData}
+        />
       )}
       <DivTitle>
         <Title>Dashboard</Title>

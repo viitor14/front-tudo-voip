@@ -24,6 +24,8 @@ export default function NumeroIndividual({
   onRemoverAnexo,
   termoInputRef // NOVO: A referência para o input
 }) {
+  const termoError = errors?.termoAnexado;
+  console.log(errors);
   return (
     <DivInputsNumber>
       <Labell>
@@ -76,9 +78,10 @@ export default function NumeroIndividual({
       />
 
       {/* NOVO: O seu botão agora tem uma função */}
-      <button type="button" onClick={onAnexarClick}>
+      <button type="button" onClick={onAnexarClick} hasError={!!termoError}>
         Anexar Termo
       </button>
+      {termoError && <ErrorMessage>{termoError}</ErrorMessage>}
 
       {/* NOVO: Feedback visual para o utilizador saber qual ficheiro foi selecionado */}
       {termoAnexado && (

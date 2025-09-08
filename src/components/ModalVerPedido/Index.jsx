@@ -29,17 +29,25 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
   const isAdmin = useSelector((state) => state.auth.user?.admin);
   const [statusSelecionado, setStatusSelecionado] = useState(pedido.status_pedido);
   const [isLoading, setIsLoading] = useState(false);
+  const [motivoCancelamento, setMotivoCancelamento] = useState(pedido.motivo_cancelamento || '');
 
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [isStatusSelectOpen, setIsStatusSelectOpen] = useState(false); // Estado para controlar o Select de status
+  const [isMotivoSelectOpen, setIsMotivoSelectOpen] = useState(false); // Estado para controlar o Select de motivo
+
+  const motivosCancelamentoOptions = [
+    { value: 'NÚMERO VAGO', label: 'Número Vago' },
+    { value: 'CPF DIVERGENTE', label: 'Cpf Divergente' },
+    { value: 'CNPJ DIVERGENTE', label: 'Cnpj Divergente' },
+    { value: 'LOCALIDADE NÃO ATENDIDA', label: 'Localidade não encontrada' }
+  ];
 
   // PASSO 2: Crie a função que vai abrir/fechar o Select
-  const handleToggleSelect = () => {
-    setIsSelectOpen(!isSelectOpen);
-  };
+  const handleToggleStatusSelect = () => setIsStatusSelectOpen(!isStatusSelectOpen); // Toggle para o Select de status
+  const handleToggleMotivoSelect = () => setIsMotivoSelectOpen(!isMotivoSelectOpen); // Toggle para o Select de motivo
 
   if (!pedido) return null;
 
-  const API_URL = 'http://localhost:3002';
+  const API_URL = 'http://localhost:3002'; //Criar um .env
 
   // IMPORTANTE: Seu componente Select espera um array de objetos.
   // Vamos ajustar o formato das opções.
@@ -50,12 +58,21 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
   ];
 
   const handleStatusChange = async () => {
+    if (statusSelecionado === 'RECUSADO' && !motivoCancelamento) {
+      toast.error('É obrigatório selecionar um motivo para recusar o pedido.');
+      return; // Para a execução
+    }
+
     setIsLoading(true);
 
     try {
-      await axios.put(`/pedido/${pedido.cod_pedido}`, {
-        status_pedido: statusSelecionado
-      });
+      const dadosParaAtualizar = {
+        status_pedido: statusSelecionado,
+        // Se o status for RECUSADO, envia o motivo. Senão, envia null para limpar o campo.
+        motivo_cancelamento: statusSelecionado === 'RECUSADO' ? motivoCancelamento : null
+      };
+
+      await axios.put(`/pedido/${pedido.cod_pedido}`, dadosParaAtualizar);
       toast.success('Status do pedido atualizado com sucesso!');
       onUpdate(); // Chama a função para atualizar o dashboard
       onClose(); // Fecha o modal
@@ -66,7 +83,7 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
       setIsLoading(false);
     }
   };
-
+  console.log('Pedido recebido no modal:', pedido);
   // Verifica se o status foi alterado para mostrar o botão de salvar
   const statusFoiAlterado = statusSelecionado !== pedido.status_pedido;
   return (
@@ -88,13 +105,32 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
                   value={statusSelecionado}
                   width="200px"
                   height="36px"
-                  isOpen={isSelectOpen}
-                  onToggle={handleToggleSelect}
+                  isOpen={isStatusSelectOpen}
+                  onToggle={handleToggleStatusSelect}
                 />
               ) : (
                 <span>{formatarTexto(pedido.status_pedido)}</span>
               )}
             </DetailItem>
+            {statusSelecionado === 'RECUSADO' && (
+              <DetailItem>
+                <strong>Motivo do Cancelamento:</strong>
+                {isAdmin ? (
+                  <Select
+                    options={motivosCancelamentoOptions}
+                    onChange={(valor) => setMotivoCancelamento(valor)}
+                    value={motivoCancelamento}
+                    isOpen={isMotivoSelectOpen}
+                    onToggle={handleToggleMotivoSelect}
+                    placeholder="Selecione um motivo..."
+                    width="100%"
+                    height="36px"
+                  />
+                ) : (
+                  <span>{formatarTexto(pedido.motivo_cancelamento)}</span>
+                )}
+              </DetailItem>
+            )}
             <DetailItem>
               <strong>Data do Pedido:</strong>
               {pedido.data_pedido ? new Date(pedido.data_pedido).toLocaleDateString('pt-BR') : '-'}

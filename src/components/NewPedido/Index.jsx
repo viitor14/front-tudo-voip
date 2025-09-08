@@ -50,6 +50,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
 
   const [termoAnexado, setTermoAnexado] = useState(null);
   const termoInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAnexarClick = () => {
     termoInputRef.current.click();
@@ -245,8 +246,9 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
       return;
     }
 
-    // setIsLoading(true);
+    if (isLoading) return;
 
+    setIsLoading(true);
     try {
       // 1. Monta o objeto de dados base (lógica que você já tinha)
       const cidadeSelecionada = cidadesData.find(
@@ -312,7 +314,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
       console.error(error);
       toast.error(errorMsg);
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -380,7 +382,9 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
           {etapa < 3 ? (
             <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
           ) : (
-            <ButtonNext onClick={handleSubmit}>Concluir Pedido</ButtonNext>
+            <ButtonNext onClick={handleSubmit} disabled={isLoading}>
+              {isLoading ? 'A Enviar...' : 'Concluir Pedido'}
+            </ButtonNext>
           )}
         </ContainerBotoes>
       </ModalContent>

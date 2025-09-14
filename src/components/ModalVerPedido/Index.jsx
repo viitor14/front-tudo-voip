@@ -206,6 +206,50 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
                 )}
               </DetailItem>
             </DetailSection>
+            <DetailSection>
+              <h3>Foto Documento</h3>
+              <DetailItem>
+                {pedido.fotos_documento && pedido.fotos_documento.length > 0 ? (
+                  <ul>
+                    {pedido.fotos_documento.map((foto) => (
+                      <li key={foto.cod_foto_documento}>
+                        <DownloadLink
+                          href={`${API_URL}/fotos/${foto.caminho_arquivo}`}
+                          download={foto.nome_arquivo}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {foto.nome_arquivo}
+                        </DownloadLink>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Nenhuma foto de documento anexada.</span>
+                )}
+              </DetailItem>
+            </DetailSection>
+            <DetailSection>
+              <h3>Fatura</h3>
+              <DetailItem>
+                {pedido.faturas && pedido.faturas.length > 0 ? (
+                  <ul>
+                    {pedido.faturas.map((fatura) => (
+                      <li key={fatura.cod_fatura}>
+                        <DownloadLink
+                          href={`${API_URL}/faturas/${fatura.caminho_arquivo}`}
+                          download={fatura.nome_arquivo}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {fatura.nome_arquivo}
+                        </DownloadLink>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Nenhuma foto de documento anexada.</span>
+                )}
+              </DetailItem>
+            </DetailSection>
           </DetailSection>
           {isAdmin && statusFoiAlterado && (
             <SaveChangesButton onClick={handleStatusChange} disabled={isLoading}>

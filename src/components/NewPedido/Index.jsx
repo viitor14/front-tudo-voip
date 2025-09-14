@@ -27,6 +27,7 @@ import cidadesData from './assets/CIDADES.json';
 import tiposVendaData from './assets/TIPOS_VENDA.json';
 
 export default function CadastroPedido({ onClose, onPedidoCriado }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [etapa, setEtapa] = useState(1);
   const [errors, setErrors] = useState({});
 
@@ -48,23 +49,37 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     aceitouTermos: false
   });
 
-  const [termoAnexado, setTermoAnexado] = useState(null);
-  const termoInputRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [anexos, setAnexos] = useState({
+    termo_contrato: null,
+    foto_documento: null,
+    fatura: null
+  });
 
-  const handleAnexarClick = () => {
-    termoInputRef.current.click();
+  const inputRefs = useRef({
+    termo: null,
+    documento: null,
+    fatura: null
+  });
+
+  const handleAnexarClick = (tipoAnexo) => {
+    inputRefs.current[tipoAnexo]?.click();
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (tipoAnexo, event) => {
     const file = event.target.files[0];
     if (file) {
-      setTermoAnexado(file);
+      setAnexos((prevAnexos) => ({
+        ...prevAnexos,
+        [tipoAnexo]: file
+      }));
     }
   };
 
-  const handleRemoverAnexo = () => {
-    setTermoAnexado(null);
+  const handleRemoverAnexo = (tipoAnexo) => {
+    setAnexos((prevAnexos) => ({
+      ...prevAnexos,
+      [tipoAnexo]: null
+    }));
   };
 
   const handleFormChange = (campo, valor) => {
@@ -147,10 +162,6 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     const newErrors = {};
     if (!formData.aceitouTermos) {
       newErrors.aceitouTermos = 'Você precisa aceitar os termos e condições.';
-    }
-    // Para portabilidade, o anexo do termo é obrigatório
-    if (formData.tipoVenda !== 'Novo Numero' && !termoAnexado) {
-      newErrors.termoAnexado = 'Para portabilidade, é obrigatório anexar o termo de contrato.';
     }
     return newErrors;
   };
@@ -287,9 +298,12 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
       const finalFormData = new FormData();
 
       // 3. Anexa o ficheiro
-      if (termoAnexado) {
-        finalFormData.append('termo', termoAnexado);
-      }
+      Object.keys(anexos).forEach((tipoAnexo) => {
+        if (anexos[tipoAnexo]) {
+          // O nome do campo no backend será 'termo', 'documento', 'fatura'
+          finalFormData.append(tipoAnexo, anexos[tipoAnexo]);
+        }
+      });
 
       // 4. Anexa todos os outros campos de dados
       for (const key in dadosParaApi) {
@@ -349,11 +363,11 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
                     onFormChange={handleFormChange}
                     errors={errors}
                     onBlur={handleBlur}
-                    termoAnexado={termoAnexado}
+                    anexos={anexos}
                     onAnexarClick={handleAnexarClick}
                     onFileChange={handleFileChange}
                     onRemoverAnexo={handleRemoverAnexo}
-                    termoInputRef={termoInputRef}
+                    inputRefs={inputRefs}
                   />
                 )}
               </>
@@ -363,7 +377,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
                 formData={formData}
                 onFormChange={handleFormChange}
                 errors={errors}
-                termoAnexado={termoAnexado}
+                anexos={anexos}
               />
             )}
           </DivContent>

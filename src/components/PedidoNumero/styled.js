@@ -164,3 +164,9 @@ export const ErrorMessage = styled.span`
   font-size: 12px;
   margin-top: -5px;
 `;
+
+export const AnexarButton = styled.button`
+  background-color: ${secondaryColor};
+  color: white;
+  font-weight: 600;
+`;

@@ -10,7 +10,7 @@ import {
   ErrorMessage
 } from './styled';
 
-export default function ResumoPedido({ formData, onFormChange, errors, termoAnexado }) {
+export default function ResumoPedido({ formData, onFormChange, errors, anexos }) {
   let numerosParaExibir = '';
 
   if (formData.tipoVenda === 'Portabilidade') {
@@ -29,6 +29,10 @@ export default function ResumoPedido({ formData, onFormChange, errors, termoAnex
         .join(', '); // Junta os ranges com vírgula
     }
   }
+  const listaDeAnexos = Object.values(anexos || {}) // Usa um objeto vazio como fallback
+    .filter(Boolean) // Remove os ficheiros não anexados (que são null)
+    .map((file) => file.name) // Pega o nome de cada ficheiro
+    .join(', '); // Junta tudo numa string, separado por vírgula
 
   return (
     <DivGeral>
@@ -67,8 +71,7 @@ export default function ResumoPedido({ formData, onFormChange, errors, termoAnex
                 </p>
               )}
               <p>
-                Documento:{' '}
-                <span> {termoAnexado ? termoAnexado.name : 'Nenhum documento anexado'}</span>
+                Documentos Anexados: <span> {listaDeAnexos || 'Nenhum documento anexado'}</span>
               </p>
             </DivInfoCliente>
             {/**

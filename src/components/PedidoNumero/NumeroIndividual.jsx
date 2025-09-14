@@ -5,10 +5,34 @@ import {
   Labell,
   DivLixeira,
   StyledTrashIcon,
-  ErrorMessage
+  ErrorMessage,
+  AnexarButton
 } from './styled';
 
 import InputWithIcon from '../Input/Index';
+
+const BlocoAnexo = ({ tipo, label, anexo, onAnexar, onRemover, onFileChange, inputRef }) => (
+  <div style={{ marginTop: '15px' }}>
+    <input
+      type="file"
+      ref={inputRef}
+      onChange={onFileChange}
+      style={{ display: 'none' }}
+      accept=".pdf,.jpg,.jpeg,.png"
+    />
+    <AnexarButton type="button" onClick={onAnexar}>
+      {label}
+    </AnexarButton>
+    {anexo && (
+      <div style={{ marginTop: '10px', fontSize: '14px' }}>
+        <span>Ficheiro: {anexo.name}</span>
+        <button type="button" onClick={onRemover} /* ... estilos ... */>
+          Remover
+        </button>
+      </div>
+    )}
+  </div>
+);
 
 export default function NumeroIndividual({
   numbers = [],
@@ -17,15 +41,13 @@ export default function NumeroIndividual({
   onRemoveNumber,
   errors,
   onBlur,
-  // NOVO: Props para o anexo de termo
-  termoAnexado,
+  anexos,
   onAnexarClick,
   onFileChange,
   onRemoverAnexo,
-  termoInputRef // NOVO: A referência para o input
+  inputRefs
 }) {
   const termoError = errors?.termoAnexado;
-  console.log(errors);
   return (
     <DivInputsNumber>
       <Labell>
@@ -68,39 +90,33 @@ export default function NumeroIndividual({
 
       {/* ======================= LÓGICA DO ANEXO INTEGRADA ======================= */}
 
-      {/* NOVO: Input de ficheiro escondido, que faz o trabalho pesado */}
-      <input
-        type="file"
-        ref={termoInputRef}
-        onChange={onFileChange}
-        style={{ display: 'none' }}
-        accept=".pdf,.jpg,.jpeg,.png"
+      <BlocoAnexo
+        tipo="termo_contrato" // ALTERADO
+        label="Anexar Termo"
+        anexo={anexos.termo_contrato} // ALTERADO
+        onAnexar={() => onAnexarClick('termo_contrato')} // ALTERADO
+        onRemover={() => onRemoverAnexo('termo_contrato')} // ALTERADO
+        onFileChange={(e) => onFileChange('termo_contrato', e)} // ALTERADO
+        inputRef={(el) => (inputRefs.current.termo_contrato = el)} // ALTERADO
       />
-
-      {/* NOVO: O seu botão agora tem uma função */}
-      <button type="button" onClick={onAnexarClick} hasError={!!termoError}>
-        Anexar Termo
-      </button>
-      {termoError && <ErrorMessage>{termoError}</ErrorMessage>}
-
-      {/* NOVO: Feedback visual para o utilizador saber qual ficheiro foi selecionado */}
-      {termoAnexado && (
-        <div style={{ marginTop: '10px', fontSize: '14px' }}>
-          <span>Ficheiro: {termoAnexado.name}</span>
-          <button
-            type="button"
-            onClick={onRemoverAnexo}
-            style={{
-              marginLeft: '10px',
-              color: 'red',
-              border: 'none',
-              background: 'transparent',
-              cursor: 'pointer'
-            }}>
-            Remover
-          </button>
-        </div>
-      )}
+      <BlocoAnexo
+        tipo="foto_documento" // ALTERADO
+        label="Anexar Foto do Documento"
+        anexo={anexos.foto_documento} // ALTERADO
+        onAnexar={() => onAnexarClick('foto_documento')} // ALTERADO
+        onRemover={() => onRemoverAnexo('foto_documento')} // ALTERADO
+        onFileChange={(e) => onFileChange('foto_documento', e)} // ALTERADO
+        inputRef={(el) => (inputRefs.current.foto_documento = el)} // ALTERADO
+      />
+      <BlocoAnexo
+        tipo="fatura"
+        label="Anexar Fatura"
+        anexo={anexos.fatura}
+        onAnexar={() => onAnexarClick('fatura')}
+        onRemover={() => onRemoverAnexo('fatura')}
+        onFileChange={(e) => onFileChange('fatura', e)}
+        inputRef={(el) => (inputRefs.current.fatura = el)}
+      />
       {/* ======================================================================= */}
     </DivInputsNumber>
   );

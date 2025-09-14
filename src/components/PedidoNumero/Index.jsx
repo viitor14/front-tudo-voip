@@ -10,11 +10,11 @@ export default function PedidoNumero({
   onFormChange,
   errors,
   onBlur,
-  termoAnexado,
+  anexos,
   onAnexarClick,
   onFileChange,
   onRemoverAnexo,
-  termoInputRef
+  inputRefs
 }) {
   const handleModoChange = (event) => {
     onFormChange('modo', event.target.value);
@@ -115,11 +115,11 @@ export default function PedidoNumero({
           onRemoveNumber={handleRemoveNumber}
           errors={errors}
           onBlur={onBlur}
-          termoAnexado={termoAnexado}
+          anexos={anexos}
           onAnexarClick={onAnexarClick}
           onFileChange={onFileChange}
           onRemoverAnexo={onRemoverAnexo}
-          termoInputRef={termoInputRef}
+          inputRefs={inputRefs}
         />
       ) : (
         <NumeroRange

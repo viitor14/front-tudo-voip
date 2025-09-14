@@ -78,12 +78,10 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
       onClose(); // Fecha o modal
     } catch (error) {
       toast.error('Erro ao atualizar o status do pedido.');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
-  console.log('Pedido recebido no modal:', pedido);
   // Verifica se o status foi alterado para mostrar o botão de salvar
   const statusFoiAlterado = statusSelecionado !== pedido.status_pedido;
   return (

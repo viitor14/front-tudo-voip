@@ -1,4 +1,3 @@
-import { useRef } from 'react'; // NOVO: Importe o useRef
 import {
   DivInputsNumber,
   LabelNumber,
@@ -6,12 +5,17 @@ import {
   DivLixeira,
   StyledTrashIcon,
   ErrorMessage,
-  AnexarButton
+  AnexarButton,
+  DivAnexo,
+  DivMessageAnexo,
+  RemoveAnexo
 } from './styled';
+
+import { BsTrash } from 'react-icons/bs';
 
 import InputWithIcon from '../Input/Index';
 
-const BlocoAnexo = ({ tipo, label, anexo, onAnexar, onRemover, onFileChange, inputRef }) => (
+const BlocoAnexo = ({ tipo, label, anexo, onAnexar, onRemover, onFileChange, inputRef, error }) => (
   <div style={{ marginTop: '15px' }}>
     <input
       type="file"
@@ -20,16 +24,20 @@ const BlocoAnexo = ({ tipo, label, anexo, onAnexar, onRemover, onFileChange, inp
       style={{ display: 'none' }}
       accept=".pdf,.jpg,.jpeg,.png"
     />
-    <AnexarButton type="button" onClick={onAnexar}>
+
+    <AnexarButton type="button" onClick={onAnexar} hasError={!!error && !anexo}>
       {label}
     </AnexarButton>
-    {anexo && (
-      <div style={{ marginTop: '10px', fontSize: '14px' }}>
+
+    {anexo ? (
+      <DivMessageAnexo>
         <span>Ficheiro: {anexo.name}</span>
-        <button type="button" onClick={onRemover} /* ... estilos ... */>
-          Remover
-        </button>
-      </div>
+        <RemoveAnexo type="button" onClick={onRemover}>
+          <BsTrash size={20} />
+        </RemoveAnexo>
+      </DivMessageAnexo>
+    ) : (
+      error && <ErrorMessage>{error}</ErrorMessage>
     )}
   </div>
 );
@@ -47,7 +55,7 @@ export default function NumeroIndividual({
   onRemoverAnexo,
   inputRefs
 }) {
-  const termoError = errors?.termoAnexado;
+  const anexosError = errors?.anexos;
   return (
     <DivInputsNumber>
       <Labell>
@@ -88,35 +96,38 @@ export default function NumeroIndividual({
         + Adicionar outro número
       </button>
 
-      {/* ======================= LÓGICA DO ANEXO INTEGRADA ======================= */}
-
-      <BlocoAnexo
-        tipo="termo_contrato" // ALTERADO
-        label="Anexar Termo"
-        anexo={anexos.termo_contrato} // ALTERADO
-        onAnexar={() => onAnexarClick('termo_contrato')} // ALTERADO
-        onRemover={() => onRemoverAnexo('termo_contrato')} // ALTERADO
-        onFileChange={(e) => onFileChange('termo_contrato', e)} // ALTERADO
-        inputRef={(el) => (inputRefs.current.termo_contrato = el)} // ALTERADO
-      />
-      <BlocoAnexo
-        tipo="foto_documento" // ALTERADO
-        label="Anexar Foto do Documento"
-        anexo={anexos.foto_documento} // ALTERADO
-        onAnexar={() => onAnexarClick('foto_documento')} // ALTERADO
-        onRemover={() => onRemoverAnexo('foto_documento')} // ALTERADO
-        onFileChange={(e) => onFileChange('foto_documento', e)} // ALTERADO
-        inputRef={(el) => (inputRefs.current.foto_documento = el)} // ALTERADO
-      />
-      <BlocoAnexo
-        tipo="fatura"
-        label="Anexar Fatura"
-        anexo={anexos.fatura}
-        onAnexar={() => onAnexarClick('fatura')}
-        onRemover={() => onRemoverAnexo('fatura')}
-        onFileChange={(e) => onFileChange('fatura', e)}
-        inputRef={(el) => (inputRefs.current.fatura = el)}
-      />
+      <DivAnexo>
+        <BlocoAnexo
+          tipo="termo_contrato"
+          label="Anexar Termo"
+          anexo={anexos.termo_contrato}
+          onAnexar={() => onAnexarClick('termo_contrato')}
+          onRemover={() => onRemoverAnexo('termo_contrato')}
+          onFileChange={(e) => onFileChange('termo_contrato', e)}
+          inputRef={(el) => (inputRefs.current.termo_contrato = el)}
+          error={anexosError}
+        />
+        <BlocoAnexo
+          tipo="foto_documento" // ALTERADO
+          label="Anexar Foto do Documento"
+          anexo={anexos.foto_documento} // ALTERADO
+          onAnexar={() => onAnexarClick('foto_documento')} // ALTERADO
+          onRemover={() => onRemoverAnexo('foto_documento')} // ALTERADO
+          onFileChange={(e) => onFileChange('foto_documento', e)} // ALTERADO
+          inputRef={(el) => (inputRefs.current.foto_documento = el)}
+          error={anexosError}
+        />
+        <BlocoAnexo
+          tipo="fatura"
+          label="Anexar Fatura"
+          anexo={anexos.fatura}
+          onAnexar={() => onAnexarClick('fatura')}
+          onRemover={() => onRemoverAnexo('fatura')}
+          onFileChange={(e) => onFileChange('fatura', e)}
+          inputRef={(el) => (inputRefs.current.fatura = el)}
+          error={anexosError}
+        />
+      </DivAnexo>
       {/* ======================================================================= */}
     </DivInputsNumber>
   );

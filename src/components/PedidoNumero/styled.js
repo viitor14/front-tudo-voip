@@ -170,3 +170,24 @@ export const AnexarButton = styled.button`
   color: white;
   font-weight: 600;
 `;
+
+export const DivAnexo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+`;
+
+export const DivMessageAnexo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+  margin-top: -10px;
+`;
+
+export const RemoveAnexo = styled.button`
+  background: transparent !important;
+  border: none !important;
+`;

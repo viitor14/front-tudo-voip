@@ -153,6 +153,21 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
           }
         }
       }
+      const documentosFaltantes = [];
+
+      if (!anexos.termo_contrato) {
+        documentosFaltantes.push('Termo de Contrato');
+      }
+      if (!anexos.foto_documento) {
+        documentosFaltantes.push('Foto do Documento');
+      }
+      if (!anexos.fatura) {
+        documentosFaltantes.push('Fatura');
+      }
+
+      if (documentosFaltantes.length > 0) {
+        newErrors.anexos = `Anexos obrigatórios em falta: ${documentosFaltantes.join(', ')}.`;
+      }
     }
 
     return newErrors;

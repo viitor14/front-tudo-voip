@@ -26,6 +26,7 @@ import InputWithIcon from '../../components/Input/Index';
 import Select from '../../components/select/Index';
 import CadastroPedido from '../../components/NewPedido/Index';
 import ModalVerPedido from '../../components/ModalVerPedido/Index';
+import Footer from '../../components/footer/Index';
 
 export default function Home() {
   const [pedidos, setPedidos] = useState([]);
@@ -178,126 +179,133 @@ export default function Home() {
   ];
 
   return (
-    <Container>
-      {showCadastro && (
-        <CadastroPedido onClose={() => setShowCadastro(false)} onPedidoCriado={fetchData} />
-      )}
+    <>
+      <Container>
+        {showCadastro && (
+          <CadastroPedido onClose={() => setShowCadastro(false)} onPedidoCriado={fetchData} />
+        )}
 
-      {modalVisivel && (
-        <ModalVerPedido
-          pedido={pedidoSelecionado}
-          onClose={() => setModalVisivel(false)}
-          onUpdate={fetchData}
-        />
-      )}
-      <DivTitle>
-        <Title>Dashboard</Title>
-        <button onClick={() => setShowCadastro(true)}>Cadastrar Pedido</button>
-      </DivTitle>
+        {modalVisivel && (
+          <ModalVerPedido
+            pedido={pedidoSelecionado}
+            onClose={() => setModalVisivel(false)}
+            onUpdate={fetchData}
+          />
+        )}
+        <DivTitle>
+          <Title>Dashboard</Title>
+          <button onClick={() => setShowCadastro(true)}>Cadastrar Pedido</button>
+        </DivTitle>
 
-      <BoxInfoDashboard>
-        <InfoDashboard
-          title="Total de Números"
-          number={getTotalPedidos()}
-          colorBackground="linear-gradient(to right,rgba(214, 234, 248, 1), rgba(234, 242, 253, 1) )"
-        />
-        <InfoDashboard
-          title="Ativos"
-          number={getTotalByStatus('CONCLUÍDO')}
-          colorBackground="linear-gradient(to right, rgba(234, 242, 253, 1),rgba(214, 234, 248, 1) )"
-        />
-        <InfoDashboard
-          title="Em Andamento"
-          number={getTotalByStatus('EM ANDAMENTO')}
-          colorBackground="linear-gradient(to right,rgba(255, 238, 194, 1), rgba(255, 248, 230, 1) )"
-        />
-        <InfoDashboard
-          title="Recusados"
-          number={getTotalByStatus('RECUSADO')}
-          colorBackground="linear-gradient(to right,rgba(250, 219, 216, 1), rgba(253, 237, 236, 1) )"
-        />
-      </BoxInfoDashboard>
-      <DivFilter>
-        <InputWithIcon
-          placeholder="Buscar por cliente, por cidade, por CPF/CNPJ..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          value={searchTerm}
-          showIcon={true}
-          padding="10px 40px 10px 60px"
-        />
-        <Select
-          options={statusOptions} // Sugestão: usar os valores reais do backend
-          onChange={(value) => setValueSelected(value)}
-          value={valueSelected}
-          width="200px"
-          height="100%"
-          isOpen={openSelectId === 'status'}
-          onToggle={handleSelectToggle}
-        />
-      </DivFilter>
-      <div>
-        <Table>
-          <thead>
-            <tr>
-              {colunas.map((coluna, index) => (
-                <th key={index}>{coluna}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((pedido) => (
-              <tr key={pedido.cod_pedido}>
-                <td>{pedido.cod_pedido}</td>
-                <td>
-                  {pedido.data_pedido
-                    ? new Date(pedido.data_pedido).toLocaleDateString('pt-BR')
-                    : '-'}
-                </td>
-                <td>{formatarTexto(pedido.tipo_venda?.tipo_venda)}</td>
-                <td>{pedido.zona_telefonica?.area_telefonica}</td>
-                <td>{pedido.nome_completo || pedido.nome_empresa}</td>
-                <td>{pedido.cpf || pedido.cnpj}</td>
-                <td>{pedido.cidade?.nome_cidade}</td>
-                <td className="textStatus">
-                  <StatusSpan status={pedido.status_pedido}>{pedido.status_pedido}</StatusSpan>
-                </td>
-                <ActionsCell>
-                  <EllipsisIcon onClick={() => handleAbrirMenu(pedido.cod_pedido)} />
-                  {menuAbertoId === pedido.cod_pedido && (
-                    <ActionsMenu>
-                      <MenuItem onClick={() => handleVerPedido(pedido)}>Ver Pedido</MenuItem>
-                      {/* ✅ ALTERAÇÃO AQUI: O botão de excluir agora aparece para todos */}
-                      <MenuItem
-                        className="delete"
-                        onClick={() => handleExcluirPedido(pedido.cod_pedido)}>
-                        Excluir Pedido
-                      </MenuItem>
-                    </ActionsMenu>
-                  )}
-                </ActionsCell>
+        <BoxInfoDashboard>
+          <InfoDashboard
+            title="Total de Números"
+            number={getTotalPedidos()}
+            colorBackground="linear-gradient(to right,rgba(214, 234, 248, 1), rgba(234, 242, 253, 1) )"
+            colorTitle="rgba(0, 82, 204, 1)"
+          />
+          <InfoDashboard
+            title="Ativos"
+            number={getTotalByStatus('CONCLUÍDO')}
+            colorBackground="rgba(230, 247, 235, 1)"
+            colorTitle="rgba(0, 100, 33, 1)"
+          />
+          <InfoDashboard
+            title="Em Andamento"
+            number={getTotalByStatus('EM ANDAMENTO')}
+            colorBackground="rgba(255, 251, 230, 1)"
+            colorTitle="rgba(183, 121, 31, 1)"
+          />
+          <InfoDashboard
+            title="Recusados"
+            number={getTotalByStatus('RECUSADO')}
+            colorBackground="rgba(255, 235, 235, 1)"
+            colorTitle="rgba(204, 0, 0, 1)"
+          />
+        </BoxInfoDashboard>
+        <DivFilter>
+          <InputWithIcon
+            placeholder="Buscar por cliente, por cidade, por CPF/CNPJ..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            showIcon={true}
+            padding="10px 40px 10px 60px"
+          />
+          <Select
+            options={statusOptions} // Sugestão: usar os valores reais do backend
+            onChange={(value) => setValueSelected(value)}
+            value={valueSelected}
+            width="200px"
+            height="100%"
+            isOpen={openSelectId === 'status'}
+            onToggle={handleSelectToggle}
+          />
+        </DivFilter>
+        <div>
+          <Table>
+            <thead>
+              <tr>
+                {colunas.map((coluna, index) => (
+                  <th key={index}>{coluna}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </Table>
-        <PaginationContainer>
-          <span>
-            Mostrando {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} de{' '}
-            {filteredData.length} registros
-          </span>
-          <div className="pagination-buttons">
-            <PaginationButton
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}>
-              <ChevronLeftIcon />
-            </PaginationButton>
-            <PaginationButton
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}>
-              <ChevronRightIcon />
-            </PaginationButton>
-          </div>
-        </PaginationContainer>
-      </div>
-    </Container>
+            </thead>
+            <tbody>
+              {currentItems.map((pedido) => (
+                <tr key={pedido.cod_pedido}>
+                  <td>{pedido.cod_pedido}</td>
+                  <td>
+                    {pedido.data_pedido
+                      ? new Date(pedido.data_pedido).toLocaleDateString('pt-BR')
+                      : '-'}
+                  </td>
+                  <td>{formatarTexto(pedido.tipo_venda?.tipo_venda)}</td>
+                  <td>{pedido.zona_telefonica?.area_telefonica}</td>
+                  <td>{pedido.nome_completo || pedido.nome_empresa}</td>
+                  <td>{pedido.cpf || pedido.cnpj}</td>
+                  <td>{pedido.cidade?.nome_cidade}</td>
+                  <td className="textStatus">
+                    <StatusSpan status={pedido.status_pedido}>{pedido.status_pedido}</StatusSpan>
+                  </td>
+                  <ActionsCell>
+                    <EllipsisIcon onClick={() => handleAbrirMenu(pedido.cod_pedido)} />
+                    {menuAbertoId === pedido.cod_pedido && (
+                      <ActionsMenu>
+                        <MenuItem onClick={() => handleVerPedido(pedido)}>Ver Pedido</MenuItem>
+                        {/* ✅ ALTERAÇÃO AQUI: O botão de excluir agora aparece para todos */}
+                        <MenuItem
+                          className="delete"
+                          onClick={() => handleExcluirPedido(pedido.cod_pedido)}>
+                          Excluir Pedido
+                        </MenuItem>
+                      </ActionsMenu>
+                    )}
+                  </ActionsCell>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <PaginationContainer>
+            <span>
+              Mostrando {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} de{' '}
+              {filteredData.length} registros
+            </span>
+            <div className="pagination-buttons">
+              <PaginationButton
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}>
+                <ChevronLeftIcon />
+              </PaginationButton>
+              <PaginationButton
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}>
+                <ChevronRightIcon />
+              </PaginationButton>
+            </div>
+          </PaginationContainer>
+        </div>
+      </Container>
+      <Footer />
+    </>
   );
 }

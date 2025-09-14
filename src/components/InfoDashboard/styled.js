@@ -14,6 +14,7 @@ export const BoxInfo = styled.div`
   .infoNumber {
     font-size: 28px;
     font-weight: 800;
+    color: ${(props) => props.color};
   }
 `;
 
@@ -26,6 +27,6 @@ export const InfoTitle = styled.div`
   p {
     font-size: 16px;
     font-weight: 400;
-    color: rgba(100, 116, 139, 1);
+    color: ${(props) => props.color};
   }
 `;

@@ -1,10 +1,10 @@
 import { BoxInfo, InfoTitle } from './styled';
 import PropTypes from 'prop-types';
 
-export default function InfoDashboard({ title, number, colorBackground }) {
+export default function InfoDashboard({ title, number, colorBackground, colorTitle }) {
   return (
-    <BoxInfo backgroundColor={colorBackground}>
-      <InfoTitle>
+    <BoxInfo backgroundColor={colorBackground} color={colorTitle}>
+      <InfoTitle color={colorTitle}>
         <p>{title}</p>
         <p>#</p>
       </InfoTitle>

@@ -115,15 +115,11 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     else {
       // Sub-cenário 2.1: Modo de inserção "Individual"
       if (formData.modo === 'individual') {
-        // 1. Filtra para encontrar apenas os campos que o usuário de fato preencheu.
         const numerosPreenchidos = formData.numerosIndividuais.filter((n) => n.value.trim() !== '');
 
-        // 2. Se a lista de campos preenchidos estiver vazia, gera um erro.
-        // ISTO IMPEDE DE AVANÇAR COM TODOS OS CAMPOS VAZIOS.
         if (numerosPreenchidos.length === 0) {
           newErrors.numerosIndividuais = 'Você deve adicionar pelo menos um número.';
         } else {
-          // 3. Se houver números preenchidos, verifica se TODOS eles são válidos (têm 11 dígitos).
           const todosNumerosValidos = numerosPreenchidos.every(
             (n) => n.value.replace(/\D/g, '').length === 11
           );
@@ -134,10 +130,8 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
           }
         }
       }
-      // Se não houver erros no objeto, retorne um objeto vazio
       // Sub-cenário 2.2: Modo de inserção "Range"
       else if (formData.modo === 'range') {
-        // (Validação para o modo range)
         const rangesPreenchidos = formData.ranges.filter(
           (r) => r.prefixo || r.rangeInicial || r.rangeFinal
         );
@@ -145,16 +139,25 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
         if (rangesPreenchidos.length === 0) {
           newErrors.ranges = 'Você deve preencher pelo menos um range.';
         } else {
-          const todosRangesValidos = rangesPreenchidos.every(
-            (r) => r.prefixo && r.rangeInicial && r.rangeFinal
-          );
-          if (!todosRangesValidos) {
-            newErrors.ranges = 'Todos os campos de um range preenchido são obrigatórios.';
+          const rangesSaoValidos = rangesPreenchidos.every((r) => {
+            const camposCompletos = r.prefixo && r.rangeInicial && r.rangeFinal;
+            if (!camposCompletos) return false; // Falha se algum campo estiver em falta
+
+            const inicio = parseInt(r.rangeInicial, 10);
+            const fim = parseInt(r.rangeFinal, 10);
+            // Falha se o início for maior que o fim
+            return inicio <= fim;
+          });
+
+          if (!rangesSaoValidos) {
+            newErrors.ranges =
+              'Verifique os ranges: todos os campos são obrigatórios e o inicial não pode ser maior que o final.';
           }
         }
       }
-      const documentosFaltantes = [];
 
+      // Validação dos anexos obrigatórios para portabilidade
+      const documentosFaltantes = [];
       if (!anexos.termo_contrato) {
         documentosFaltantes.push('Termo de Contrato');
       }
@@ -164,7 +167,6 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
       if (!anexos.fatura) {
         documentosFaltantes.push('Fatura');
       }
-
       if (documentosFaltantes.length > 0) {
         newErrors.anexos = `Anexos obrigatórios em falta: ${documentosFaltantes.join(', ')}.`;
       }
@@ -262,21 +264,21 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     }
   };
 
+  // No seu CadastroPedido.jsx
+
   const handleSubmit = async () => {
     const validationErrors = validateStep3();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      // Mostra o primeiro erro encontrado
       const primeiroErro = Object.values(validationErrors)[0];
       toast.error(primeiroErro);
       return;
     }
 
     if (isLoading) return;
-
     setIsLoading(true);
+
     try {
-      // 1. Monta o objeto de dados base (lógica que você já tinha)
       const cidadeSelecionada = cidadesData.find(
         (c) => formatarTexto(c.nome_cidade) === formData.cidade
       );
@@ -286,6 +288,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
 
       if (!cidadeSelecionada || !tipoVendaSelecionado) {
         toast.error('Cidade ou Tipo de Venda inválido.');
+        setIsLoading(false);
         return;
       }
 
@@ -294,6 +297,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
         cod_tipo_venda: tipoVendaSelecionado.cod_tipo_venda,
         observacoes: formData.observacoes
       };
+
       const docLimpo = formData.cpfCnpj.replace(/\D/g, '');
       if (docLimpo.length <= 11) {
         dadosParaApi.cpf = docLimpo;
@@ -302,27 +306,44 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
         dadosParaApi.cnpj = docLimpo;
         dadosParaApi.nome_empresa = formData.nomeCompleto;
       }
-      if (formData.tipoVenda !== 'Novo Numero') {
-        const numerosParaPortar = formData.numerosIndividuais
-          .map((n) => n.value.replace(/\D/g, ''))
-          .filter(Boolean);
+
+      if (formData.tipoVenda === 'Novo Numero') {
+        dadosParaApi.quantidade_novos_numeros = parseInt(formData.quantidadeNumero, 10);
+      } else {
+        // Se for Portabilidade
+        let numerosParaPortar = [];
+
+        if (formData.modo === 'individual') {
+          numerosParaPortar = formData.numerosIndividuais
+            .map((n) => n.value.replace(/\D/g, ''))
+            .filter(Boolean);
+        } else if (formData.modo === 'range') {
+          // ================ A LÓGICA CORRETA E SIMPLIFICADA ================
+          // Pega o primeiro (e único) range do estado
+          formData.ranges.forEach((range) => {
+            // A lógica agora é aplicada a cada range individualmente
+            if (range.prefixo && range.rangeInicial && range.rangeFinal) {
+              // Junta os 3 campos para formar UM número para CADA range
+              const numeroCompleto = `${range.prefixo}${range.rangeInicial}${range.rangeFinal}`;
+              numerosParaPortar.push(numeroCompleto.replace(/\D/g, ''));
+            }
+          });
+          // ===============================================================
+        }
+
+        // Adiciona a lista (que terá 1 ou mais números) aos dados para a API
         dadosParaApi.numeros_portabilidade = numerosParaPortar;
       }
 
-      // 2. Cria o FormData para a requisição
       const finalFormData = new FormData();
 
-      // 3. Anexa o ficheiro
       Object.keys(anexos).forEach((tipoAnexo) => {
         if (anexos[tipoAnexo]) {
-          // O nome do campo no backend será 'termo', 'documento', 'fatura'
           finalFormData.append(tipoAnexo, anexos[tipoAnexo]);
         }
       });
 
-      // 4. Anexa todos os outros campos de dados
       for (const key in dadosParaApi) {
-        // Trata o array de números de forma especial para o backend
         if (key === 'numeros_portabilidade' && Array.isArray(dadosParaApi[key])) {
           dadosParaApi[key].forEach((numero) => {
             finalFormData.append('numeros_portabilidade[]', numero);
@@ -331,15 +352,19 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
           finalFormData.append(key, dadosParaApi[key]);
         }
       }
+      console.log('Dados a serem enviados para a API:');
+      for (const pair of finalFormData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
 
-      console.log('ENVIANDO FORMDATA PARA A API:', finalFormData);
       await axios.post('/pedido', finalFormData);
 
       toast.success('Pedido criado com sucesso!');
       if (onPedidoCriado) onPedidoCriado();
       onClose();
     } catch (error) {
-      const errorMsg = error.response?.data?.errors?.[0] || 'Ocorreu um erro ao enviar o pedido.';
+      const errorMsg =
+        error.message || error.response?.data?.errors?.[0] || 'Ocorreu um erro ao enviar o pedido.';
       console.error(error);
       toast.error(errorMsg);
     } finally {

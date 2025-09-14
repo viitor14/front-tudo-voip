@@ -128,6 +128,12 @@ export default function PedidoNumero({
           onRemoveRange={handleRemoveRange}
           onRangeChange={handleRangeChange}
           errors={errors}
+          onBlur={onBlur}
+          anexos={anexos}
+          onAnexarClick={onAnexarClick}
+          onFileChange={onFileChange}
+          onRemoverAnexo={onRemoverAnexo}
+          inputRefs={inputRefs}
         /> // Este já se gerencia sozinho, como definimos antes
       )}
     </DivPedidoNumero>

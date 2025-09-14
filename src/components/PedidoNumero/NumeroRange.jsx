@@ -6,10 +6,56 @@ import {
   LabelInput,
   StyledInput,
   StyledTrashIcon,
-  ErrorMessage
+  ErrorMessage,
+  AnexarButton,
+  DivAnexo,
+  DivMessageAnexo,
+  RemoveAnexo
 } from './styled';
 
-export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRangeChange, errors }) {
+import { BsTrash } from 'react-icons/bs';
+
+const BlocoAnexo = ({ tipo, label, anexo, onAnexar, onRemover, onFileChange, inputRef, error }) => (
+  <div style={{ marginTop: '15px' }}>
+    <input
+      type="file"
+      ref={inputRef}
+      onChange={onFileChange}
+      style={{ display: 'none' }}
+      accept=".pdf,.jpg,.jpeg,.png"
+    />
+
+    <AnexarButton type="button" onClick={onAnexar} hasError={!!error && !anexo}>
+      {label}
+    </AnexarButton>
+
+    {anexo ? (
+      <DivMessageAnexo>
+        <span>Ficheiro: {anexo.name}</span>
+        <RemoveAnexo type="button" onClick={onRemover}>
+          <BsTrash size={20} />
+        </RemoveAnexo>
+      </DivMessageAnexo>
+    ) : (
+      error && <ErrorMessage>{error}</ErrorMessage>
+    )}
+  </div>
+);
+
+export default function NumeroRange({
+  ranges,
+  onAddRange,
+  onRemoveRange,
+  onRangeChange,
+  errors,
+  onBlur,
+  anexos,
+  onAnexarClick,
+  onFileChange,
+  onRemoverAnexo,
+  inputRefs
+}) {
+  const anexosError = errors?.anexos;
   return (
     <DivInputsNumber>
       <InputsContainer>
@@ -53,7 +99,7 @@ export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRange
               value={rangeItem.rangeInicial}
               onChange={(e) => {
                 const valor = e.target.value;
-                if (/^[0-9]*$/.test(valor) && valor.length <= 5) {
+                if (/^[0-9]*$/.test(valor) && valor.length <= 4) {
                   onRangeChange(rangeItem.id, 'rangeInicial', valor);
                 }
               }}
@@ -69,7 +115,7 @@ export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRange
               value={rangeItem.rangeFinal}
               onChange={(e) => {
                 const valor = e.target.value;
-                if (/^[0-9]*$/.test(valor) && valor.length <= 4) {
+                if (/^[0-9]*$/.test(valor) && valor.length <= 5) {
                   onRangeChange(rangeItem.id, 'rangeFinal', valor);
                 }
               }}
@@ -87,6 +133,39 @@ export default function NumeroRange({ ranges, onAddRange, onRemoveRange, onRange
       <button type="button" onClick={onAddRange}>
         + Adicionar outro range
       </button>
+
+      <DivAnexo>
+        <BlocoAnexo
+          tipo="termo_contrato"
+          label="Anexar Termo"
+          anexo={anexos.termo_contrato}
+          onAnexar={() => onAnexarClick('termo_contrato')}
+          onRemover={() => onRemoverAnexo('termo_contrato')}
+          onFileChange={(e) => onFileChange('termo_contrato', e)}
+          inputRef={(el) => (inputRefs.current.termo_contrato = el)}
+          error={anexosError}
+        />
+        <BlocoAnexo
+          tipo="foto_documento" // ALTERADO
+          label="Anexar Foto do Documento"
+          anexo={anexos.foto_documento} // ALTERADO
+          onAnexar={() => onAnexarClick('foto_documento')} // ALTERADO
+          onRemover={() => onRemoverAnexo('foto_documento')} // ALTERADO
+          onFileChange={(e) => onFileChange('foto_documento', e)} // ALTERADO
+          inputRef={(el) => (inputRefs.current.foto_documento = el)}
+          error={anexosError}
+        />
+        <BlocoAnexo
+          tipo="fatura"
+          label="Anexar Fatura"
+          anexo={anexos.fatura}
+          onAnexar={() => onAnexarClick('fatura')}
+          onRemover={() => onRemoverAnexo('fatura')}
+          onFileChange={(e) => onFileChange('fatura', e)}
+          inputRef={(el) => (inputRefs.current.fatura = el)}
+          error={anexosError}
+        />
+      </DivAnexo>
     </DivInputsNumber>
   );
 }

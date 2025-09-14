@@ -33,7 +33,6 @@ export default function ResumoPedido({ formData, onFormChange, errors, anexos })
     .filter(Boolean) // Remove os ficheiros não anexados (que são null)
     .map((file) => file.name) // Pega o nome de cada ficheiro
     .join(', '); // Junta tudo numa string, separado por vírgula
-
   return (
     <DivGeral>
       <DivResumoPedido>

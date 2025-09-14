@@ -94,6 +94,7 @@ export const DivIconUser = styled.div`
 
   hr {
     height: 32px;
+    border-left: 1px solid ${borderColor};
   }
 `;
 
@@ -115,4 +116,19 @@ export const UserIcon = styled(LiaUserCircleSolid)`
 export const IconUserAdd = styled(FiUserPlus)`
   font-size: 18px;
   color: #000;
+`;
+
+export const DownloadButton = styled.a`
+  display: inline-flex; /* Para alinhar o ícone e o texto */
+  align-items: center;
+  gap: 10px;
+  color: rgba(107, 107, 107, 1);
+
+  text-decoration: none; /* Remove o sublinhado padrão do link */
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: rgba(255, 115, 0, 1);
+  }
 `;

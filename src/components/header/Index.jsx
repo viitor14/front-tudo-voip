@@ -15,7 +15,8 @@ import {
   LogoutIcon,
   DocumentIcon,
   IconUserAdd,
-  DivIconUser
+  DivIconUser,
+  DownloadButton
 } from './styled';
 import logo from './img/logo2.png';
 
@@ -41,10 +42,14 @@ export default function Header() {
         <img src={logo} alt="" />
         {isLoggedIn && (
           <DivIconUser>
-            <button type="button">
+            <DownloadButton
+              // O caminho começa com '/' porque a pasta 'public' é a raiz do servidor
+              href="/documentos/termo-de-portabilidade.docx"
+              // Opcional: define o nome que o ficheiro terá ao ser baixado
+              download="Termo_de_Portabilidade.docx">
               <DocumentIcon />
               Termo de portabilidade
-            </button>
+            </DownloadButton>
 
             <hr />
 

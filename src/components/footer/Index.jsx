@@ -1,10 +1,17 @@
-import { FooterContainer, DivContainer, DivText } from './styled';
+import {
+  FooterContainer,
+  DivContainer,
+  DivText,
+  IconHeadset,
+  IconTrademark,
+  IconMail
+} from './styled';
 
 export default function Footer() {
   return (
     <FooterContainer>
       <DivContainer>
-        <div>img</div>
+        <IconHeadset size={40} />
         <DivText>
           <p>Horario de atendimento</p>
           <p>Seg. à Sáb. Das 8h as 18h</p>
@@ -12,7 +19,7 @@ export default function Footer() {
       </DivContainer>
 
       <DivContainer>
-        <div>img</div>
+        <IconTrademark size={40} />
         <DivText>
           <p>Copyright @ 2014 - 2025 Tudo Voip.</p>
           <p>Todos os direitos reservados.</p>
@@ -20,7 +27,7 @@ export default function Footer() {
       </DivContainer>
 
       <DivContainer>
-        <div>img</div>
+        <IconMail size={40} />
         <DivText>
           <p>Para abertura de chamados técnicos:</p>
           <p>contato@tudovoip.com.br</p>

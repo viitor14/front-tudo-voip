@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+import { BsHeadset } from 'react-icons/bs';
+import { AiOutlineTrademark } from 'react-icons/ai';
+import { HiOutlineMail } from 'react-icons/hi';
+
 export const FooterContainer = styled.div`
   width: 100%;
   height: 100px;
@@ -23,4 +27,16 @@ export const DivText = styled.div`
   flex-direction: column;
   color: white;
   gap: 10px;
+`;
+
+export const IconHeadset = styled(BsHeadset)`
+  color: white;
+`;
+
+export const IconTrademark = styled(AiOutlineTrademark)`
+  color: white;
+`;
+
+export const IconMail = styled(HiOutlineMail)`
+  color: white;
 `;

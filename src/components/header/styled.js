@@ -8,7 +8,7 @@ import { FiUserPlus } from 'react-icons/fi';
 
 export const Nav = styled.nav`
   background-color: ${primaryColor};
-  padding: 20px;
+  padding: 20px 100px;
   display: flex;
   align-items: center;
   border-bottom: 2px solid ${borderColor};
@@ -76,6 +76,27 @@ export const NameEmail = styled.div`
     color: rgba(112, 127, 148, 1);
   }
 `;
+
+export const DivIconUser = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 50px;
+
+  button {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: 10px;
+    background: transparent;
+    color: rgba(107, 107, 107, 1);
+    font-size: 16px;
+  }
+
+  hr {
+    height: 32px;
+  }
+`;
+
 export const LogoutIcon = styled(SlLogout)`
   color: #000;
   font-size: 18px;
@@ -83,7 +104,7 @@ export const LogoutIcon = styled(SlLogout)`
 `;
 export const DocumentIcon = styled(GrDocumentText)`
   font-size: 18px;
-  color: #000;
+  color: rgba(107, 107, 107, 1);
 `;
 export const UserIcon = styled(LiaUserCircleSolid)`
   color: rgba(100, 116, 139, 1);

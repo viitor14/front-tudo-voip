@@ -14,7 +14,8 @@ import {
   NameEmail,
   LogoutIcon,
   DocumentIcon,
-  IconUserAdd
+  IconUserAdd,
+  DivIconUser
 } from './styled';
 import logo from './img/logo2.png';
 
@@ -39,36 +40,40 @@ export default function Header() {
       <Div>
         <img src={logo} alt="" />
         {isLoggedIn && (
-          <DivIcon>
-            <UserIcon onClick={() => setOpen(!open)} />
-            {open && (
-              <DivInfoUser>
-                {user && (
-                  <NameEmail>
-                    <p>{user.nome}</p>
-                    <p>{user.email}</p>
-                  </NameEmail>
-                )}
+          <DivIconUser>
+            <button type="button">
+              <DocumentIcon />
+              Termo de portabilidade
+            </button>
 
-                <button type="button">
-                  <DocumentIcon />
-                  Termo de portabilidade
-                </button>
+            <hr />
 
-                {isAdmin && (
-                  <button type="button">
-                    <IconUserAdd />
-                    Criar Usuario
+            <DivIcon>
+              <UserIcon onClick={() => setOpen(!open)} />
+              {open && (
+                <DivInfoUser>
+                  {user && (
+                    <NameEmail>
+                      <p>{user.nome}</p>
+                      <p>{user.email}</p>
+                    </NameEmail>
+                  )}
+
+                  {isAdmin && (
+                    <button type="button">
+                      <IconUserAdd />
+                      Criar Usuario
+                    </button>
+                  )}
+
+                  <button type="button" onClick={logout}>
+                    <LogoutIcon />
+                    Sair
                   </button>
-                )}
-
-                <button type="button" onClick={logout}>
-                  <LogoutIcon />
-                  Sair
-                </button>
-              </DivInfoUser>
-            )}
-          </DivIcon>
+                </DivInfoUser>
+              )}
+            </DivIcon>
+          </DivIconUser>
         )}
       </Div>
     </Nav>

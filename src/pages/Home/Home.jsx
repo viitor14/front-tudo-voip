@@ -28,6 +28,10 @@ import CadastroPedido from '../../components/NewPedido/Index';
 import ModalVerPedido from '../../components/ModalVerPedido/Index';
 import Footer from '../../components/footer/Index';
 
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
+import { BiLoaderAlt } from 'react-icons/bi';
+import { CiCircleRemove } from 'react-icons/ci';
+
 export default function Home() {
   const [pedidos, setPedidos] = useState([]);
   const [openSelectId, setOpenSelectId] = useState(null);
@@ -206,18 +210,21 @@ export default function Home() {
           />
           <InfoDashboard
             title="Ativos"
+            icon={IoMdCheckmarkCircleOutline}
             number={getTotalByStatus('CONCLUÍDO')}
             colorBackground="rgba(230, 247, 235, 1)"
             colorTitle="rgba(0, 100, 33, 1)"
           />
           <InfoDashboard
             title="Em Andamento"
+            icon={BiLoaderAlt}
             number={getTotalByStatus('EM ANDAMENTO')}
             colorBackground="rgba(255, 251, 230, 1)"
             colorTitle="rgba(183, 121, 31, 1)"
           />
           <InfoDashboard
             title="Recusados"
+            icon={CiCircleRemove}
             number={getTotalByStatus('RECUSADO')}
             colorBackground="rgba(255, 235, 235, 1)"
             colorTitle="rgba(204, 0, 0, 1)"

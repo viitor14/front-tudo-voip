@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { BsHeadset } from 'react-icons/bs';
 import { AiOutlineTrademark } from 'react-icons/ai';
-import { HiOutlineMail } from 'react-icons/hi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 export const FooterContainer = styled.div`
   width: 100%;
@@ -37,6 +37,6 @@ export const IconTrademark = styled(AiOutlineTrademark)`
   color: white;
 `;
 
-export const IconMail = styled(HiOutlineMail)`
+export const IconWhatsapp = styled(FaWhatsapp)`
   color: white;
 `;

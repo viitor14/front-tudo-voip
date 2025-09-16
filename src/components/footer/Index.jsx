@@ -4,7 +4,7 @@ import {
   DivText,
   IconHeadset,
   IconTrademark,
-  IconMail
+  IconWhatsapp
 } from './styled';
 
 export default function Footer() {
@@ -27,10 +27,10 @@ export default function Footer() {
       </DivContainer>
 
       <DivContainer>
-        <IconMail size={40} />
+        <IconWhatsapp size={40} />
         <DivText>
           <p>Para abertura de chamados técnicos:</p>
-          <p>contato@tudovoip.com.br</p>
+          <p>81 99364-1925</p>
         </DivText>
       </DivContainer>
     </FooterContainer>

@@ -65,20 +65,21 @@ export default function Cadastro() {
               onChange={(e) => setCpf(e.target.value)}
             />
           </label>
-          <label>
-            <p>CPF</p>
-            <InputWithIcon
-              placeholder="000.000.000.00"
-              value={cpf}
-              onChange={(e) => setCpf(e.target.value)}
-            />
-          </label>
+
           <label>
             <p>Nome Completo</p>
             <InputWithIcon
               placeholder="Nome completo"
               value={nome_completo}
               onChange={(e) => setNome_completo(e.target.value)}
+            />
+          </label>
+          <label>
+            <p>Email</p>
+            <InputWithIcon
+              placeholder="000.000.000.00"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </label>
           <label>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const DivMain = styled.div`
   display: flex;
@@ -62,7 +63,10 @@ export const FormInputs = styled.form`
 
 export const ButtonLogin = styled.div`
   display: flex;
+  gap: 20px;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
 
   button {
@@ -70,4 +74,16 @@ export const ButtonLogin = styled.div`
     background: rgba(0, 47, 109, 1);
     font-weight: 600;
   }
+
+  button:last-child {
+    width: fit-content;
+    height: fit-content;
+    background: red !important;
+    font-weight: 400;
+    color: #747474ff;
+  }
+`;
+
+export const ButtonCadastro = styled(Link)`
+  background-color: transparent;
 `;

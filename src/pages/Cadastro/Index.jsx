@@ -25,7 +25,7 @@ export default function Cadastro() {
       formErrors = true;
       return;
     }
-    if (password.trim()) {
+    if (!password.trim()) {
       toast.error('Informe uma senha');
       formErrors = true;
       return;
@@ -42,7 +42,7 @@ export default function Cadastro() {
     }
 
     if (!formErrors) {
-      dispatch(actions.loginRequest({ cpf, nome_completo, password, email }));
+      dispatch(actions.registerRequest({ cpf, nome_completo, password, email }));
     }
   }
 
@@ -83,7 +83,7 @@ export default function Cadastro() {
             />
           </label>
           <label>
-            <p>Password</p>
+            <p>Senha</p>
             <InputWithIcon
               placeholder=""
               type="password"

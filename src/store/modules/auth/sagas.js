@@ -54,7 +54,7 @@ function* registerRequest({ payload }) {
     yield call(axios.post, '/users', payload);
     yield put(actions.registerSuccess());
     toast.success('Conta criada com sucesso');
-    history.push('/Login');
+    history.push('/');
   } catch (e) {
     const errors = get(e, 'response.data.errors', []);
     const status = get(e, 'response.status', 0);

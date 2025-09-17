@@ -77,7 +77,7 @@ export default function Cadastro() {
           <label>
             <p>Email</p>
             <InputWithIcon
-              placeholder="000.000.000.00"
+              placeholder="example@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -85,7 +85,7 @@ export default function Cadastro() {
           <label>
             <p>Senha</p>
             <InputWithIcon
-              placeholder=""
+              placeholder="*******"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

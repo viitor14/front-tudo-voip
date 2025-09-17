@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const DivMain = styled.div`
   display: flex;
@@ -82,8 +81,4 @@ export const ButtonLogin = styled.div`
     font-weight: 400;
     color: #747474ff;
   }
-`;
-
-export const ButtonCadastro = styled(Link)`
-  background-color: transparent;
 `;

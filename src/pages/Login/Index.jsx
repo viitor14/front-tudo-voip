@@ -5,15 +5,7 @@ import { toast } from 'react-toastify';
 import InputWithIcon from '../../components/Input/Index';
 import Loading from '../../components/Loading/Index';
 
-import {
-  DivMain,
-  DivLogo,
-  DivLogin,
-  TitleLogin,
-  FormInputs,
-  ButtonLogin,
-  ButtonCadastro
-} from './styled';
+import { DivMain, DivLogo, DivLogin, TitleLogin, FormInputs, ButtonLogin } from './styled';
 
 import * as actions from '../../store/modules/auth/actions';
 
@@ -72,7 +64,6 @@ export default function Login() {
             </label>
             <ButtonLogin>
               <button type="submit">Fazer Login</button>
-              <ButtonCadastro to="/Cadastro">Criar novo usuario</ButtonCadastro>
             </ButtonLogin>
           </FormInputs>
         </DivLogin>

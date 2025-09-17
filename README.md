@@ -2,6 +2,10 @@
 
 Siga os passos abaixo para executar o projeto localmente:
 
+**Observações:**
+
+- Certifique-se de ter o Node.js
+
 1. **Baixar o MySQLWorkbench**
 
 ```
@@ -47,7 +51,3 @@ LOGIN ADMIN PADRÃO: 01002003025
 SENHA ADMIN PADRÃO: @dm!n00
 
 ---
-
-**Observações:**
-
-- Certifique-se de ter o Node.js

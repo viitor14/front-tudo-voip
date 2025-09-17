@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { borderColor, secondaryColor } from '../../config/colors';
+import { borderColor, secondaryColor, orangeColor } from '../../config/colors';
 import { IoIosArrowDown } from 'react-icons/io';
 
 export const SelectWrapper = styled.div`
@@ -47,7 +47,7 @@ export const OptionItem = styled.li`
   padding: 10px;
   cursor: pointer;
   &:hover {
-    background: ${secondaryColor};
+    background: ${orangeColor};
     color: #fff;
     transition: all 0.3s ease-in-out;
   }

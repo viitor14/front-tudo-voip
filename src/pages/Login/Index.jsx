@@ -1,8 +1,9 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import InputWithIcon from '../../components/Input/Index';
+import Loading from '../../components/Loading/Index';
 
 import {
   DivMain,
@@ -23,6 +24,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   function handleSubmitForm(e) {
     e.preventDefault();
     let formErrors = false;
@@ -38,39 +41,42 @@ export default function Login() {
   }
 
   return (
-    <DivMain>
-      <DivLogo>
-        <img src={Logo} alt="" />
-      </DivLogo>
-      <DivLogin>
-        <TitleLogin>
-          <p>Faça login na sua conta</p>
-          <p>Insira suas credenciais para acessar o painel</p>
-        </TitleLogin>
-        <FormInputs onSubmit={handleSubmitForm}>
-          <label>
-            <p>CPF/CPNJ</p>
-            <InputWithIcon
-              placeholder="00.000.000/0000-00"
-              value={documento}
-              onChange={(e) => setDocumento(e.target.value)}
-            />
-          </label>
-          <label>
-            <p>Senha</p>
-            <InputWithIcon
-              placeholder=""
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          <ButtonLogin>
-            <button type="submit">Fazer Login</button>
-            <ButtonCadastro to="/Cadastro">Criar novo usuario</ButtonCadastro>
-          </ButtonLogin>
-        </FormInputs>
-      </DivLogin>
-    </DivMain>
+    <>
+      <Loading isLoading={isLoading} />
+      <DivMain>
+        <DivLogo>
+          <img src={Logo} alt="" />
+        </DivLogo>
+        <DivLogin>
+          <TitleLogin>
+            <p>Faça login na sua conta</p>
+            <p>Insira suas credenciais para acessar o painel</p>
+          </TitleLogin>
+          <FormInputs onSubmit={handleSubmitForm}>
+            <label>
+              <p>CPF/CPNJ</p>
+              <InputWithIcon
+                placeholder="00.000.000/0000-00"
+                value={documento}
+                onChange={(e) => setDocumento(e.target.value)}
+              />
+            </label>
+            <label>
+              <p>Senha</p>
+              <InputWithIcon
+                placeholder=""
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+            <ButtonLogin>
+              <button type="submit">Fazer Login</button>
+              <ButtonCadastro to="/Cadastro">Criar novo usuario</ButtonCadastro>
+            </ButtonLogin>
+          </FormInputs>
+        </DivLogin>
+      </DivMain>
+    </>
   );
 }

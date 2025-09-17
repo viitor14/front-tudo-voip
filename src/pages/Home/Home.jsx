@@ -27,6 +27,7 @@ import Select from '../../components/select/Index';
 import CadastroPedido from '../../components/NewPedido/Index';
 import ModalVerPedido from '../../components/ModalVerPedido/Index';
 import Footer from '../../components/footer/Index';
+import Loading from '../../components/Loading/Index';
 
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import { BiLoaderAlt } from 'react-icons/bi';
@@ -38,6 +39,7 @@ export default function Home() {
   const [showCadastro, setShowCadastro] = useState(false);
   const [valueSelected, setValueSelected] = useState('Todos os Status');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [menuAbertoId, setMenuAbertoId] = useState(null); // Controla qual menu de 3 pontos está aberto
   const [modalVisivel, setModalVisivel] = useState(false); // Controla a visibilidade do modal de detalhes
@@ -116,10 +118,10 @@ export default function Home() {
 
   const fetchData = useCallback(async () => {
     if (!token) {
-      //setIsLoading(false);
+      setIsLoading(false);
       return;
     }
-    //setIsLoading(true);
+    setIsLoading(true);
     try {
       const response = await axios.get('/pedido', {
         headers: {
@@ -130,7 +132,7 @@ export default function Home() {
     } catch (error) {
       console.error('Erro ao buscar pedidos:', error);
     } finally {
-      //setIsLoading(false);
+      setIsLoading(false);
     }
   }, [token]); // A função é recriada se o token mudar
 
@@ -184,6 +186,7 @@ export default function Home() {
 
   return (
     <>
+      <Loading isLoading={isLoading} />
       <Container>
         {showCadastro && (
           <CadastroPedido onClose={() => setShowCadastro(false)} onPedidoCriado={fetchData} />

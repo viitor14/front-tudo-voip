@@ -20,7 +20,6 @@ const requisicao = () =>
 
 function* loginRequest({ payload }) {
   try {
-    console.log(payload);
     const response = yield call(axios.post, '/tokens', payload);
     yield put(actions.loginSuccess({ ...response.data }));
     toast.success('Você fez login');
@@ -46,6 +45,35 @@ function* loginRequest({ payload }) {
     yield put(actions.loginFailure());
   }
 }
+
+function* registerRequest({ payload }) {
+  try {
+    //yield call(requisicao);
+    console.log('estou criando user');
+    console.log(payload);
+    yield call(axios.post, '/clientes', payload);
+    yield put(actions.registerSuccess());
+    toast.success('Conta criada com sucesso');
+    history.push('/Login');
+  } catch (e) {
+    const errors = get(e, 'response.data.errors', []);
+    const status = get(e, 'response.status', 0);
+
+    if (status === 0) {
+      toast.error(
+        'Estamos tendo dificuldades para conectar ao servidor. Tente novamente em alguns minutos.',
+        {
+          autoClose: 30000
+        }
+      );
+    } else {
+      errors.map((error) => toast.error(error));
+    }
+
+    yield put(actions.registerFailure());
+  }
+}
+
 function persistRehydrate({ payload }) {
   const token = get(payload, 'auth.token', '');
   if (!token) return;
@@ -54,5 +82,6 @@ function persistRehydrate({ payload }) {
 
 export default all([
   takeLatest(types.LOGIN_REQUEST, loginRequest),
+  takeLatest(types.REGISTER_REQUEST, registerRequest),
   takeLatest(types.PERSIST_REHYDRATE, persistRehydrate)
 ]);

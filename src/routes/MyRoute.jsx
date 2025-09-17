@@ -26,7 +26,20 @@ export default function MyRoute({
   }
 
   // CORREÇÃO 3: Renderiza 'children' se existir, senão renderiza o 'component'
-  return <Route {...rest} component={Component} />;
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        // Se um 'Component' foi passado, renderize-o
+        Component ? (
+          <Component {...props} />
+        ) : (
+          // Senão, renderize os 'children'
+          children
+        )
+      }
+    />
+  );
 }
 
 // Boa prática: definir valores padrão para as props

@@ -14,7 +14,7 @@ export default function Routes() {
     <Switch>
       {/* ROTA PÚBLICA: Não usa o DefaultLayout */}
       <MyRoute exact path="/login" component={Login} />
-      <MyRoute exact path="/cadastro" component={Cadastro} />
+      <MyRoute exact path="/cadastro" component={Cadastro} isAdminOnly />
 
       {/* ROTA PRIVADA: Usa o DefaultLayout para ter o Header ----- TRAVAR ROTA PARA APENAS USUARIOS LOGADOS */}
       <MyRoute exact path="/" isClosed={true}>

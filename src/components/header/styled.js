@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { primaryColor, borderColor, secondaryColor } from '../../config/colors';
 import { LiaUserCircleSolid } from 'react-icons/lia';
-import { PiUserCirclePlusThin } from 'react-icons/pi';
 import { SlLogout } from 'react-icons/sl';
 import { GrDocumentText } from 'react-icons/gr';
 import { FiUserPlus } from 'react-icons/fi';
+
+import { Link } from 'react-router-dom';
 
 export const Nav = styled.nav`
   background-color: ${primaryColor};
@@ -131,4 +132,20 @@ export const DownloadButton = styled.a`
   &:hover {
     color: rgba(255, 115, 0, 1);
   }
+`;
+
+export const AdminButton = styled(Link)`
+  /* Coloque aqui exatamente os mesmos estilos que você usaria para um botão */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre o ícone e o texto */
+
+  color: white;
+  border: none;
+  border-radius: 5px;
+  color: rgba(107, 107, 107, 1);
+
+  text-decoration: none; /* Essencial para remover o sublinhado do link */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 `;

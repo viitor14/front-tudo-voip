@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 import * as actions from '../../store/modules/auth/actions';
 import history from '../../services/history';
@@ -16,7 +17,8 @@ import {
   DocumentIcon,
   IconUserAdd,
   DivIconUser,
-  DownloadButton
+  DownloadButton,
+  AdminButton
 } from './styled';
 import logo from './img/logo2.png';
 
@@ -65,10 +67,10 @@ export default function Header() {
                   )}
 
                   {isAdmin && (
-                    <button type="button">
+                    <AdminButton to="/cadastro">
                       <IconUserAdd />
                       Criar Usuario
-                    </button>
+                    </AdminButton>
                   )}
 
                   <button type="button" onClick={logout}>

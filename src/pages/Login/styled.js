@@ -73,12 +73,4 @@ export const ButtonLogin = styled.div`
     background: rgba(0, 47, 109, 1);
     font-weight: 600;
   }
-
-  button:last-child {
-    width: fit-content;
-    height: fit-content;
-    background: red !important;
-    font-weight: 400;
-    color: #747474ff;
-  }
 `;

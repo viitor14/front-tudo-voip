@@ -20,6 +20,7 @@ import PedidoNumero from '../PedidoNumero/Index';
 import ResumoPedido from '../ResumoPedido/Index';
 import NovoNumero from '../NovoNumero/Index';
 import IconNavigation from '../IconNavigation/Index';
+import Loading from '../Loading/Index';
 
 import { formatarTexto } from '../../utils/formatters';
 
@@ -49,22 +50,26 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     aceitouTermos: false
   });
 
+  // Estado para os anexos
   const [anexos, setAnexos] = useState({
     termo_contrato: null,
     foto_documento: null,
     fatura: null
   });
 
+  // Referências para os inputs de arquivo
   const inputRefs = useRef({
     termo: null,
     documento: null,
     fatura: null
   });
 
+  // Funções para manipular anexos
   const handleAnexarClick = (tipoAnexo) => {
     inputRefs.current[tipoAnexo]?.click();
   };
 
+  // Manipula a seleção de arquivo
   const handleFileChange = (tipoAnexo, event) => {
     const file = event.target.files[0];
     if (file) {
@@ -75,6 +80,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     }
   };
 
+  // Remove o anexo selecionado
   const handleRemoverAnexo = (tipoAnexo) => {
     setAnexos((prevAnexos) => ({
       ...prevAnexos,
@@ -82,6 +88,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     }));
   };
 
+  // Manipula mudanças no formulário
   const handleFormChange = (campo, valor) => {
     setFormData((dadosAnteriores) => {
       const newState = { ...dadosAnteriores, [campo]: valor };
@@ -209,7 +216,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
   const etapaAnterior = () => {
     if (etapa > 1) setEtapa((etapaAtual) => etapaAtual - 1);
   };
-
+  // Validação ao sair do campo (blur)
   const validateField = (name, value) => {
     if (name.startsWith('numero_')) {
       const valorLimpo = value.replace(/\D/g, '');
@@ -243,6 +250,7 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     }
   };
 
+  // Manipulação do evento blur
   const handleBlur = (event) => {
     const { name, value } = event.target;
     const errorMessage = validateField(name, value);
@@ -352,7 +360,6 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
           finalFormData.append(key, dadosParaApi[key]);
         }
       }
-      console.log('Dados a serem enviados para a API:');
       for (const pair of finalFormData.entries()) {
         console.log(`${pair[0]}: ${pair[1]}`);
       }
@@ -365,7 +372,6 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     } catch (error) {
       const errorMsg =
         error.message || error.response?.data?.errors?.[0] || 'Ocorreu um erro ao enviar o pedido.';
-      console.error(error);
       toast.error(errorMsg);
     } finally {
       setIsLoading(false);
@@ -373,75 +379,82 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
   };
 
   return (
-    <ModalOverlay>
-      <ModalContent>
-        <DivModal>
-          <div>
-            <CloseButton onClick={onClose}>X</CloseButton>
-            <h2>Cadastro de Pedido</h2>
-          </div>
-          <DivIcon>
-            <IconNavigation currentStep={etapa} />
-          </DivIcon>
+    <>
+      <Loading isLoading={isLoading} />
+      <ModalOverlay>
+        <ModalContent>
+          <DivModal>
+            <div>
+              <CloseButton onClick={onClose}>X</CloseButton>
+              <h2>Cadastro de Pedido</h2>
+            </div>
+            <DivIcon>
+              <IconNavigation currentStep={etapa} />
+            </DivIcon>
 
-          <DivContent>
-            {etapa === 1 && (
-              <FormularioCliente
-                dados={formData}
-                onFormChange={handleFormChange}
-                errors={errors}
-                onBlur={handleBlur}
-              />
-            )}
-            {etapa === 2 && (
-              <>
-                {formData.tipoVenda === 'Novo Numero' ? (
-                  <NovoNumero formData={formData} onFormChange={handleFormChange} errors={errors} />
-                ) : (
-                  <PedidoNumero
-                    dados={formData}
-                    onFormChange={handleFormChange}
-                    errors={errors}
-                    onBlur={handleBlur}
-                    anexos={anexos}
-                    onAnexarClick={handleAnexarClick}
-                    onFileChange={handleFileChange}
-                    onRemoverAnexo={handleRemoverAnexo}
-                    inputRefs={inputRefs}
-                  />
-                )}
-              </>
-            )}
-            {etapa === 3 && (
-              <ResumoPedido
-                formData={formData}
-                onFormChange={handleFormChange}
-                errors={errors}
-                anexos={anexos}
-              />
-            )}
-          </DivContent>
-        </DivModal>
+            <DivContent>
+              {etapa === 1 && (
+                <FormularioCliente
+                  dados={formData}
+                  onFormChange={handleFormChange}
+                  errors={errors}
+                  onBlur={handleBlur}
+                />
+              )}
+              {etapa === 2 && (
+                <>
+                  {formData.tipoVenda === 'Novo Numero' ? (
+                    <NovoNumero
+                      formData={formData}
+                      onFormChange={handleFormChange}
+                      errors={errors}
+                    />
+                  ) : (
+                    <PedidoNumero
+                      dados={formData}
+                      onFormChange={handleFormChange}
+                      errors={errors}
+                      onBlur={handleBlur}
+                      anexos={anexos}
+                      onAnexarClick={handleAnexarClick}
+                      onFileChange={handleFileChange}
+                      onRemoverAnexo={handleRemoverAnexo}
+                      inputRefs={inputRefs}
+                    />
+                  )}
+                </>
+              )}
+              {etapa === 3 && (
+                <ResumoPedido
+                  formData={formData}
+                  onFormChange={handleFormChange}
+                  errors={errors}
+                  anexos={anexos}
+                />
+              )}
+            </DivContent>
+          </DivModal>
 
-        <ContainerBotoes>
-          {etapa > 1 ? (
-            <BotaoVoltar onClick={etapaAnterior}>
-              <StyledIconBack />
-              <span>Voltar</span>
-            </BotaoVoltar>
-          ) : (
-            <div />
-          )}
+          <ContainerBotoes>
+            {etapa > 1 ? (
+              <BotaoVoltar onClick={etapaAnterior}>
+                <StyledIconBack />
+                <span>Voltar</span>
+              </BotaoVoltar>
+            ) : (
+              <div />
+            )}
 
-          {etapa < 3 ? (
-            <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
-          ) : (
-            <ButtonNext onClick={handleSubmit} disabled={isLoading}>
-              {isLoading ? 'A Enviar...' : 'Concluir Pedido'}
-            </ButtonNext>
-          )}
-        </ContainerBotoes>
-      </ModalContent>
-    </ModalOverlay>
+            {etapa < 3 ? (
+              <ButtonNext onClick={proximaEtapa}>Avançar</ButtonNext>
+            ) : (
+              <ButtonNext onClick={handleSubmit} disabled={isLoading}>
+                {isLoading ? 'A Enviar...' : 'Concluir Pedido'}
+              </ButtonNext>
+            )}
+          </ContainerBotoes>
+        </ModalContent>
+      </ModalOverlay>
+    </>
   );
 }

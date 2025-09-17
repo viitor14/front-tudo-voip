@@ -69,6 +69,7 @@ export default createGlobalStyle`
 export const Container = styled.section`
   display: flex;
   flex-direction: column;
+  min-height: 70vh;
   gap: 50px;
   background-color: rgba(240, 240, 240, 1);
   margin: 50px 100px;

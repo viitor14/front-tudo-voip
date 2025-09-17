@@ -32,9 +32,11 @@ Crie um arquivo `.env` na raiz do projeto e adicione as variáveis necessárias 
 4. **No CMD dentro da pasta do projeto inicie**
 
 ```bash
-Front - npm start
+  1.Back - npx sequelize-cli db:seed:all (Criar um usuario adm local e regiões)
 
-Back - npm run dev
+  2.Back - npm run dev
+
+  3.Front - npm start
 ```
 
 5. **Acesse no navegador**

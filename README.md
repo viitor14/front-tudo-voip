@@ -43,6 +43,9 @@ Crie um arquivo `.env` na raiz do projeto e adicione as variáveis necessárias 
 
 Abra [http://localhost:3002](http://localhost:3002) para visualizar o projeto em execução.
 
+LOGIN ADMIN PADRÃO: 01002003025
+SENHA ADMIN PADRÃO: @dm!n00
+
 ---
 
 **Observações:**

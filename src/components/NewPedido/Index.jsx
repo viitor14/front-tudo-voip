@@ -371,7 +371,6 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
         }
       }
       for (const pair of finalFormData.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
       }
 
       await axios.post('/pedido', finalFormData);

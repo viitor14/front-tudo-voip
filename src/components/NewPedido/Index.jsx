@@ -377,7 +377,6 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
 
       toast.success('Pedido criado com sucesso!');
       if (onPedidoCriado) onPedidoCriado();
-      onClose();
     } catch (error) {
       const errorMsg =
         error.message || error.response?.data?.errors?.[0] || 'Ocorreu um erro ao enviar o pedido.';

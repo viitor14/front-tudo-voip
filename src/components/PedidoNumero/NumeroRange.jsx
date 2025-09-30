@@ -129,7 +129,7 @@ export default function NumeroRange({
           )}
         </InputsContainer>
       ))}
-      {errors.numerosIndividuais && <ErrorMessage>{errors.numerosIndividuais}</ErrorMessage>}
+      {errors.ranges && <ErrorMessage>{errors.ranges}</ErrorMessage>}
       <button type="button" onClick={onAddRange}>
         + Adicionar outro range
       </button>

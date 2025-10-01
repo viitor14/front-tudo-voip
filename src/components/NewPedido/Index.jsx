@@ -76,18 +76,19 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
     const file = event.target.files[0];
 
     if (!file) {
-      // O utilizador abriu a janela de seleção mas não escolheu um ficheiro
       return;
     }
+
     if (file.size > MAX_FILE_SIZE_BYTES) {
       toast.error('O ficheiro é muito grande. O limite é de 5MB.');
-
-      // Limpa o valor do input para que o utilizador possa selecionar outro ficheiro
-      // (ou o mesmo ficheiro novamente, se quiser)
       event.target.value = null;
-
       return;
     }
+
+    setAnexos((prevAnexos) => ({
+      ...prevAnexos,
+      [tipoAnexo]: file
+    }));
   };
 
   // Remove o anexo selecionado
@@ -371,12 +372,14 @@ export default function CadastroPedido({ onClose, onPedidoCriado }) {
         }
       }
       for (const pair of finalFormData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
       }
 
       await axios.post('/pedido', finalFormData);
 
       toast.success('Pedido criado com sucesso!');
       if (onPedidoCriado) onPedidoCriado();
+      onClose();
     } catch (error) {
       const errorMsg =
         error.message || error.response?.data?.errors?.[0] || 'Ocorreu um erro ao enviar o pedido.';

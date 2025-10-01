@@ -47,7 +47,7 @@ export default function ModalVerPedido({ pedido, onClose, onUpdate }) {
 
   if (!pedido) return null;
 
-  const API_URL = 'http://localhost:3002'; //Criar um .env
+  const API_URL = process.env.API_URL;
 
   // IMPORTANTE: Seu componente Select espera um array de objetos.
   // Vamos ajustar o formato das opções.

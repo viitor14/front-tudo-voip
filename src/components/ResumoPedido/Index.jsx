@@ -96,7 +96,12 @@ export default function ResumoPedido({ formData, onFormChange, errors, anexos })
           checked={formData.aceitouTermos}
           onChange={(e) => onFormChange('aceitouTermos', e.target.checked)}
         />
-        <label htmlFor="termos">Eu declaro que li e aceito os Termos e condições do pedido</label>
+        <label htmlFor="termos">
+          Eu declaro que li e aceito os{' '}
+          <a href="/documentos/tudovoipoficial.pdf" target="_blank" rel="noopener noreferrer">
+            termos e condições do pedido
+          </a>
+        </label>
       </DivTermo>
       {errors.aceitouTermos && <ErrorMessage>{errors.aceitouTermos}</ErrorMessage>}
     </DivGeral>

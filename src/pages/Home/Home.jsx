@@ -79,6 +79,10 @@ export default function Home() {
 
   //CONSULTA DE PESQUISA (CASO PRECISE ADICIONAR NOVA COLUNA SÓ MUDAR A COLUNA)
   const getFilteredData = () => {
+    if (!Array.isArray(pedidos)) {
+      console.log('Pedidos não é um array:', pedidos);
+      return [];
+    }
     return pedidos.filter((item) => {
       const searchFilter =
         searchTerm === '' ||
@@ -113,6 +117,9 @@ export default function Home() {
 
   //TOTAL DE PEDIDOS DE ACORDO COM O STATUS
   const getTotalByStatus = (status) => {
+    if (!Array.isArray(pedidos)) {
+      return 0;
+    }
     return pedidos.filter((item) => item.status_pedido === status).length;
   };
 

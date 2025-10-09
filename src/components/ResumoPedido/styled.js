@@ -73,9 +73,15 @@ export const TextArea = styled.textarea`
 export const DivTermo = styled.div`
   display: flex;
   width: 100%;
+  color: #000;
   gap: 10px;
   align-items: center;
   cursor: pointer; /* Para o usuário saber que a área é clicável */
+
+  a {
+    color: #000;
+    font-weight: 600;
+  }
 
   /* 1. Esconde o checkbox original, mas o mantém funcional */
   input[type='checkbox'] {
@@ -126,6 +132,7 @@ export const DivTermo = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+    gap: 4px;
   }
 `;
 

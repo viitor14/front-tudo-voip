@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { primaryColor } from '../../config/colors'; // Supondo que tem um ficheiro de cores
+import { orangeColor } from '../../config/colors'; // Supondo que tem um ficheiro de cores
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -85,13 +85,10 @@ export const DetailItem = styled.div`
 `;
 
 export const DownloadLink = styled.a`
-  /* Documentação dos Estilos */
   color: #007bff;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-
-  /* Usando um pseudo-elemento ::before para adicionar um ícone. */
   &::before {
     content: '📥'; /* Você pode usar um emoji ou um caractere unicode. */
     margin-right: 8px; /* Espaçamento entre o ícone e o texto. */
@@ -99,75 +96,35 @@ export const DownloadLink = styled.a`
   }
 
   &:hover {
-    text-decoration: underline;
-    color: #0056b3;
+    color: ${orangeColor};
+    transition: all 0.2s ease-out;
   }
 `;
 
 export const SaveChangesButton = styled.button`
-  /* Documentação dos Estilos */
-
-  /* ========= ESTILO BASE ========= */
-
-  /* Espaçamento interno para que o texto não fique colado nas bordas. */
   padding: 10px 20px;
-
-  /* Tamanho e peso da fonte para boa legibilidade. */
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
   font-weight: bold;
-
-  /* Cor do texto. Branco contrasta bem com fundos coloridos. */
   color: #ffffff;
-
-  /* Cor de fundo. Verde é ótimo para ações de "salvar" ou "sucesso". */
   background-color: #28a745;
-
-  /* Remove a borda padrão do navegador. */
   border: none;
-
-  /* Cantos arredondados para um visual mais moderno. */
   border-radius: 5px;
-
-  /* O cursor vira uma "mãozinha", indicando que é um elemento clicável. */
   cursor: pointer;
-
-  /* Adiciona uma transição suave para as mudanças de cor e sombra. */
   transition:
     background-color 0.2s ease-in-out,
     transform 0.1s ease;
-
-  /* Alinha o botão no final do contêiner do modal. */
-  margin-top: 20px; /* Adiciona um espaço acima do botão */
-  align-self: flex-end; /* Alinha à direita se o container for flex */
-
-  /* ========= ESTADOS DE INTERAÇÃO ========= */
-
-  /* Efeito ao passar o mouse por cima. */
+  margin-top: 20px;
+  align-self: flex-end;
   &:hover {
-    /* Escurece um pouco a cor de fundo para dar feedback visual. */
     background-color: #218838;
   }
-
-  /* Efeito ao clicar no botão. */
   &:active {
-    /* Diminui levemente o tamanho do botão para simular um "pressionar". */
     transform: scale(0.98);
   }
-
-  /* ========= ESTADO DESATIVADO (MUITO IMPORTANTE) ========= */
-
-  /* Estilo aplicado quando o atributo 'disabled' é verdadeiro. */
   &:disabled {
-    /* Cor de fundo acinzentada para indicar inatividade. */
     background-color: #cccccc;
-
-    /* Cor do texto mais escura para contraste com o fundo cinza. */
     color: #666666;
-
-    /* O cursor muda para 'not-allowed', informando que a ação não é permitida. */
     cursor: not-allowed;
-
-    /* Remove qualquer efeito de transformação. */
     transform: scale(1);
   }
 `;

@@ -49,8 +49,6 @@ function* loginRequest({ payload }) {
 function* registerRequest({ payload }) {
   try {
     //yield call(requisicao);
-    console.log('estou criando user');
-    console.log(payload);
     yield call(axios.post, '/users', payload);
     yield put(actions.registerSuccess());
     toast.success('Conta criada com sucesso');

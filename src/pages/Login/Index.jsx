@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import InputWithIcon from '../../components/Input/Index';
-import Loading from '../../components/Loading/Index';
+import Loading from '../../components/loading/Index';
 
 import { DivMain, DivLogo, DivLogin, TitleLogin, FormInputs, ButtonLogin } from './styled';
 

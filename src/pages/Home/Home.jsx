@@ -27,7 +27,7 @@ import Select from '../../components/select/Index';
 import CadastroPedido from '../../components/NewPedido/Index';
 import ModalVerPedido from '../../components/ModalVerPedido/Index';
 import Footer from '../../components/footer/Index';
-import Loading from '../../components/Loading/Index';
+import Loading from '../../components/loading/Index';
 
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import { BiLoaderAlt } from 'react-icons/bi';

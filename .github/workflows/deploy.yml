@@ -1,0 +1,51 @@
+name: Deploy Frontend (Tudo Voip - Vite)
+
+on:
+  push:
+    branches:
+      - main # Rodar quando você der push na branch 'main'
+
+jobs:
+  deploy-frontend:
+    name: Build e Deploy Frontend
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Baixa o seu código do repositório
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Configura o ambiente Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Mude se seu projeto usar outra versão
+          cache: 'npm'
+
+      # 3. CRIA O ARQUIVO .env.local
+      # (Usando o prefixo VITE_ que você usa no seu app)
+      - name: Criar .env.local
+        run: |
+          echo "VITE_API_URL=${{ secrets.FRONTEND_VITE_API_URL }}" > .env.local
+          # Adicione uma linha 'echo' para CADA variável do seu app
+          # Ex: echo "VITE_ALGUMA_CHAVE=${{ secrets.FRONTEND_VITE_ALGUMA_CHAVE }}" >> .env.local
+
+      # 4. Instala as dependências e builda o projeto
+      - name: Instalar e Buildar Frontend
+        run: |
+          npm ci
+          npm run build
+
+      # 5. Envia os arquivos buildados para a Localweb
+      - name: FTP Deploy Frontend
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.3
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          # ATENÇÃO AQUI:
+          # O 'vite build' gera uma pasta chamada 'dist'
+          local-dir: ./dist/
+
+          # Para onde enviar: o secret que você criou
+          server-dir: ${{ secrets.FRONTEND_DIR_REMOTE }} # (public_html/)

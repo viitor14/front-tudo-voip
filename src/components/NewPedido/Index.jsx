@@ -20,7 +20,7 @@ import PedidoNumero from '../PedidoNumero/Index';
 import ResumoPedido from '../ResumoPedido/Index';
 import NovoNumero from '../NovoNumero/Index';
 import IconNavigation from '../IconNavigation/Index';
-import Loading from '../Loading/Index';
+import Loading from '../loading/Index';
 
 import { formatarTexto } from '../../utils/formatters';
 
